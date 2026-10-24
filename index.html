@@ -3,103 +3,396 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pencatatan Keuangan - Web App</title>
+    <title>Pencatatan Keuangan Cloud</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .toast-enter { transform: translateY(100%); opacity: 0; }
+        .toast-enter-active { transform: translateY(0); opacity: 1; transition: all 0.3s ease-out; }
+        .toast-exit { transform: translateY(0); opacity: 1; }
+        .toast-exit-active { transform: translateY(100%); opacity: 0; transition: all 0.3s ease-in; }
+    </style>
 </head>
-<body class="bg-gray-100 font-sans leading-normal tracking-normal">
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col items-center">
 
-    <div class="max-w-md mx-auto mt-10 bg-white p-6 rounded-lg shadow-md">
-        <h1 class="text-2xl font-bold text-center text-gray-800 mb-6">Pencatatan Keuangan</h1>
-        
-        <!-- Saldo -->
-        <div class="bg-blue-500 text-white rounded p-4 mb-6 text-center">
-            <p class="text-sm">Total Saldo</p>
-            <h2 id="saldo-total" class="text-3xl font-bold">Rp 0</h2>
-        </div>
+    <!-- Loading Screen (Saat mengecek Auth) -->
+    <div id="loading-screen" class="fixed inset-0 bg-white z-50 flex flex-col items-center justify-center">
+        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4"></div>
+        <p class="text-slate-500 font-medium">Memuat Aplikasi...</p>
+    </div>
 
-        <!-- Form Input -->
-        <form id="form-transaksi" class="mb-6">
-            <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2">Nama Transaksi</label>
-                <input type="text" id="keterangan" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Contoh: Makan siang">
+    <!-- Halaman Login -->
+    <div id="login-view" class="hidden w-full max-w-md p-6 mt-20">
+        <div class="bg-white rounded-2xl shadow-xl p-8 text-center border border-slate-100">
+            <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
             </div>
-            <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2">Jumlah (Rp)</label>
-                <input type="number" id="jumlah" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Contoh: 50000">
-            </div>
-            <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2">Jenis</label>
-                <select id="jenis" class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                    <option value="pemasukan">Pemasukan (+)</option>
-                    <option value="pengeluaran">Pengeluaran (-)</option>
-                </select>
-            </div>
-            <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded w-full focus:outline-none focus:shadow-outline">
-                Tambah Transaksi
+            <h1 class="text-2xl font-bold mb-2 text-slate-800">Pencatatan Keuangan</h1>
+            <p class="text-slate-500 mb-8 text-sm">Masuk untuk mulai mencatat dan menyimpan data keuangan Anda secara aman di Cloud.</p>
+            
+            <button id="btn-login-google" class="w-full flex items-center justify-center gap-3 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 font-semibold py-3 px-4 rounded-xl transition duration-200">
+                <svg class="w-5 h-5" viewBox="0 0 24 24">
+                    <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                    <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                    <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+                    <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+                </svg>
+                Masuk dengan Google
             </button>
-        </form>
-
-        <!-- Daftar Transaksi -->
-        <div>
-            <h3 class="text-lg font-bold text-gray-800 mb-3">Riwayat Transaksi</h3>
-            <ul id="daftar-transaksi" class="divide-y divide-gray-200">
-                <!-- Data akan muncul di sini -->
-            </ul>
+            <button id="btn-login-anon" class="w-full mt-4 flex items-center justify-center gap-3 bg-slate-100 hover:bg-slate-200 text-slate-600 font-medium py-3 px-4 rounded-xl transition duration-200">
+                Masuk sebagai Tamu
+            </button>
         </div>
     </div>
 
-    <script>
-        // Logika JavaScript Sederhana
-        let transaksi = JSON.parse(localStorage.getItem('transaksi')) || [];
+    <!-- Main App View -->
+    <div id="app-view" class="hidden w-full max-w-md md:max-w-4xl mx-auto sm:mt-10 mb-20 px-4 md:px-0">
+        
+        <!-- Header -->
+        <div class="flex justify-between items-center p-6 bg-white sm:rounded-t-2xl border-b border-slate-100">
+            <div>
+                <h1 class="text-xl font-bold text-slate-800">KeuanganKu</h1>
+                <p id="user-greeting" class="text-sm text-slate-500">Halo, Pengguna</p>
+            </div>
+            <button id="btn-logout" class="text-sm bg-red-50 hover:bg-red-100 text-red-600 font-semibold py-2 px-4 rounded-lg transition">Keluar</button>
+        </div>
 
-        function perbaruiUI() {
-            const list = document.getElementById('daftar-transaksi');
-            const saldoTotal = document.getElementById('saldo-total');
+        <div class="bg-white p-6 sm:rounded-b-2xl shadow-sm border border-slate-100 border-t-0 md:p-8">
             
-            list.innerHTML = '';
-            let saldo = 0;
-
-            transaksi.forEach((t, index) => {
-                const isPemasukan = t.jenis === 'pemasukan';
-                saldo += isPemasukan ? t.jumlah : -t.jumlah;
-
-                const li = document.createElement('li');
-                li.className = 'py-3 flex justify-between items-center';
-                li.innerHTML = `
-                    <div>
-                        <p class="font-bold text-gray-700">${t.keterangan}</p>
-                        <button onclick="hapusTransaksi(${index})" class="text-xs text-red-500 hover:underline">Hapus</button>
+            <!-- Grid Layout: 1 Kolom (Mobile) -> 2 Kolom (Desktop) -->
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+                
+                <!-- KIRI: Saldo & Form -->
+                <div class="md:col-span-5 flex flex-col">
+                    <!-- Saldo -->
+                    <div class="bg-gradient-to-br from-blue-600 to-indigo-700 text-white rounded-xl p-6 mb-6 shadow-md relative overflow-hidden">
+                        <div class="absolute -right-4 -top-4 w-24 h-24 bg-white opacity-10 rounded-full"></div>
+                        <p class="text-blue-100 text-sm font-medium mb-1">Total Saldo Saat Ini</p>
+                        <h2 id="saldo-total" class="text-3xl font-bold tracking-tight">Rp 0</h2>
                     </div>
-                    <span class="${isPemasukan ? 'text-green-500' : 'text-red-500'} font-bold">
-                        ${isPemasukan ? '+' : '-'} Rp ${t.jumlah.toLocaleString('id-ID')}
-                    </span>
-                `;
-                list.appendChild(li);
-            });
 
-            saldoTotal.innerText = `Rp ${saldo.toLocaleString('id-ID')}`;
-            localStorage.setItem('transaksi', JSON.stringify(transaksi));
+                    <!-- Form Input -->
+                    <form id="form-transaksi" class="bg-slate-50 p-4 rounded-xl border border-slate-100">
+                        <h3 class="text-sm font-bold text-slate-700 mb-4 uppercase tracking-wider">Tambah Transaksi Baru</h3>
+                        <div class="mb-4">
+                            <label class="block text-slate-600 text-sm font-medium mb-1.5">Nama Transaksi</label>
+                            <input type="text" id="keterangan" required class="w-full border-slate-200 rounded-lg py-2.5 px-3 text-slate-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition" placeholder="Cth: Makan siang, Gaji">
+                        </div>
+                        <div class="flex gap-3 mb-4">
+                            <div class="w-2/3">
+                                <label class="block text-slate-600 text-sm font-medium mb-1.5">Jumlah (Rp)</label>
+                                <input type="number" id="jumlah" required min="1" class="w-full border-slate-200 rounded-lg py-2.5 px-3 text-slate-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition" placeholder="50000">
+                            </div>
+                            <div class="w-1/3">
+                                <label class="block text-slate-600 text-sm font-medium mb-1.5">Jenis</label>
+                                <select id="jenis" class="w-full border-slate-200 rounded-lg py-2.5 px-3 text-slate-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition">
+                                    <option value="pengeluaran">Keluar (-)</option>
+                                    <option value="pemasukan">Masuk (+)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-4 rounded-lg w-full transition shadow-sm">
+                            Simpan Transaksi
+                        </button>
+                    </form>
+                </div>
+
+                <!-- KANAN: Daftar Transaksi -->
+                <div class="md:col-span-7">
+                    <div class="flex justify-between items-end mb-4">
+                        <h3 class="text-lg font-bold text-slate-800">Riwayat Terakhir</h3>
+                    </div>
+                    
+                    <!-- Tambahan max-h dan overflow agar daftar bisa di-scroll terpisah di versi Desktop -->
+                    <div class="md:max-h-[500px] md:overflow-y-auto md:pr-2">
+                        <ul id="daftar-transaksi" class="space-y-3">
+                            <!-- Data transaksi akan di-render di sini -->
+                        </ul>
+                        <div id="empty-state" class="hidden text-center py-8">
+                            <div class="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                                <svg class="w-8 h-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                            </div>
+                            <p class="text-slate-500 text-sm">Belum ada transaksi dicatat.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Modal Konfirmasi Hapus -->
+    <div id="modal-confirm" class="hidden fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl p-6 w-full max-w-sm shadow-xl transform scale-100 transition-all">
+            <h3 class="text-lg font-bold text-slate-800 mb-2">Hapus Transaksi?</h3>
+            <p class="text-slate-600 text-sm mb-6">Tindakan ini tidak dapat dibatalkan. Saldo Anda akan otomatis disesuaikan.</p>
+            <div class="flex justify-end gap-3">
+                <button id="btn-cancel-delete" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium rounded-lg transition">Batal</button>
+                <button id="btn-confirm-delete" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg transition">Ya, Hapus</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Toast Notification -->
+    <div id="toast-container" class="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <script type="module">
+        // 1. IMPORT FIREBASE SDK (Versi 11.6.1)
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, deleteDoc, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // 2. KONFIGURASI FIREBASE
+        // PENTING UNTUK GITHUB PAGES:
+        // Jika aplikasi ini dijalankan di GitHub Pages, variabel __firebase_config tidak ada.
+        // Anda HARUS mengganti objek di dalam 'else' dengan konfigurasi Firebase Anda sendiri dari console.firebase.google.com
+        let firebaseConfig;
+        if (typeof __firebase_config !== 'undefined') {
+            firebaseConfig = JSON.parse(__firebase_config);
+        } else {
+            // 👇 GANTI DENGAN CONFIG FIREBASE PROYEK ANDA 👇
+            firebaseConfig = {
+                apiKey: "API_KEY_ANDA",
+                authDomain: "PROJECT_ID.firebaseapp.com",
+                projectId: "PROJECT_ID",
+                storageBucket: "PROJECT_ID.appspot.com",
+                messagingSenderId: "SENDER_ID",
+                appId: "APP_ID"
+            };
+            // 👆 GANTI DENGAN CONFIG FIREBASE PROYEK ANDA 👆
         }
 
-        document.getElementById('form-transaksi').addEventListener('submit', function(e) {
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'pencatatan-keuangan-app';
+        
+        // Inisialisasi Aplikasi
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const googleProvider = new GoogleAuthProvider();
+
+        // Variabel Global
+        let currentUser = null;
+        let unsubscribeSnapshot = null;
+        let transaksiData = [];
+        let idToDelete = null;
+
+        // Referensi Elemen UI
+        const viewLoading = document.getElementById('loading-screen');
+        const viewLogin = document.getElementById('login-view');
+        const viewApp = document.getElementById('app-view');
+        const userGreeting = document.getElementById('user-greeting');
+        const emptyState = document.getElementById('empty-state');
+        const listTransaksi = document.getElementById('daftar-transaksi');
+        const saldoTotal = document.getElementById('saldo-total');
+        const formTransaksi = document.getElementById('form-transaksi');
+        const modalConfirm = document.getElementById('modal-confirm');
+
+        // --- SISTEM NOTIFIKASI (TOAST) ---
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            const bgColor = type === 'error' ? 'bg-red-600' : 'bg-green-600';
+            toast.className = `${bgColor} text-white px-6 py-3 rounded-full shadow-lg text-sm font-medium toast-enter-active`;
+            toast.innerText = message;
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.classList.remove('toast-enter-active');
+                toast.classList.add('toast-exit-active');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // --- MANAJEMEN AUTENTIKASI ---
+        
+        // Auto-login jika berada di environment khusus (Canvas)
+        if (typeof __initial_auth_token !== 'undefined') {
+            signInWithCustomToken(auth, __initial_auth_token).catch(e => console.error("Auto auth error:", e));
+        }
+
+        // Pantau status login
+        onAuthStateChanged(auth, (user) => {
+            viewLoading.classList.add('hidden');
+            if (user) {
+                currentUser = user;
+                viewLogin.classList.add('hidden');
+                viewApp.classList.remove('hidden');
+                
+                // Tampilkan nama pengguna
+                const nama = user.displayName || (user.isAnonymous ? "Tamu" : "Pengguna");
+                userGreeting.innerText = `Halo, ${nama}`;
+                
+                showToast(`Selamat datang, ${nama}!`);
+                loadDataTransaksi(); // Panggil data dari database
+            } else {
+                currentUser = null;
+                viewApp.classList.add('hidden');
+                viewLogin.classList.remove('hidden');
+                
+                // Bersihkan data lokal saat logout
+                if (unsubscribeSnapshot) unsubscribeSnapshot();
+                transaksiData = [];
+                renderUI();
+            }
+        });
+
+        // Tombol Login Google
+        document.getElementById('btn-login-google').addEventListener('click', () => {
+            signInWithPopup(auth, googleProvider).catch(error => {
+                showToast(error.message, 'error');
+            });
+        });
+
+        // Tombol Login Tamu (Anonim)
+        document.getElementById('btn-login-anon').addEventListener('click', () => {
+            signInAnonymously(auth).catch(error => {
+                showToast(error.message, 'error');
+            });
+        });
+
+        // Tombol Logout
+        document.getElementById('btn-logout').addEventListener('click', () => {
+            signOut(auth).then(() => showToast("Berhasil keluar")).catch(e => showToast(e.message, 'error'));
+        });
+
+
+        // --- OPERASI DATABASE (FIRESTORE) ---
+
+        function loadDataTransaksi() {
+            if (!currentUser) return; // Wajib: Pastikan user login
+
+            // Path Wajib Firebase Firestore: /artifacts/{appId}/users/{userId}/{collectionName}
+            const transaksiRef = collection(db, 'artifacts', appId, 'users', currentUser.uid, 'transaksi');
+
+            // Dengarkan perubahan data secara real-time
+            unsubscribeSnapshot = onSnapshot(transaksiRef, (snapshot) => {
+                transaksiData = [];
+                snapshot.forEach((document) => {
+                    transaksiData.push({ id: document.id, ...document.data() });
+                });
+
+                // Urutkan data di memory (Javascript) - Menghindari query kompleks di Firestore
+                transaksiData.sort((a, b) => b.createdAt - a.createdAt);
+                
+                renderUI();
+            }, (error) => {
+                console.error("Error fetching data:", error);
+                showToast("Gagal memuat data", 'error');
+            });
+        }
+
+        // Tambah Transaksi
+        formTransaksi.addEventListener('submit', async (e) => {
             e.preventDefault();
+            if (!currentUser) return;
+
+            const btnSubmit = formTransaksi.querySelector('button[type="submit"]');
+            btnSubmit.disabled = true;
+            btnSubmit.innerText = "Menyimpan...";
+
             const keterangan = document.getElementById('keterangan').value;
             const jumlah = parseInt(document.getElementById('jumlah').value);
             const jenis = document.getElementById('jenis').value;
 
-            transaksi.push({ keterangan, jumlah, jenis });
-            
-            this.reset();
-            perbaruiUI();
+            try {
+                const transaksiRef = collection(db, 'artifacts', appId, 'users', currentUser.uid, 'transaksi');
+                await addDoc(transaksiRef, {
+                    keterangan: keterangan,
+                    jumlah: jumlah,
+                    jenis: jenis,
+                    createdAt: Date.now() // Timestamp untuk sorting
+                });
+                formTransaksi.reset();
+                showToast("Transaksi berhasil dicatat");
+            } catch (error) {
+                showToast("Gagal menyimpan: " + error.message, 'error');
+            } finally {
+                btnSubmit.disabled = false;
+                btnSubmit.innerText = "Simpan Transaksi";
+            }
         });
 
-        function hapusTransaksi(index) {
-            transaksi.splice(index, 1);
-            perbaruiUI();
+        // --- SISTEM HAPUS & UI ---
+
+        // Render UI List & Saldo
+        function renderUI() {
+            listTransaksi.innerHTML = '';
+            let saldo = 0;
+
+            if (transaksiData.length === 0) {
+                emptyState.classList.remove('hidden');
+            } else {
+                emptyState.classList.add('hidden');
+            }
+
+            transaksiData.forEach((t) => {
+                const isPemasukan = t.jenis === 'pemasukan';
+                saldo += isPemasukan ? t.jumlah : -t.jumlah;
+
+                const li = document.createElement('li');
+                li.className = 'bg-white border border-slate-100 rounded-xl p-4 flex justify-between items-center hover:shadow-sm transition';
+                
+                // Format Rupiah
+                const formattedJumlah = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(t.jumlah);
+
+                li.innerHTML = `
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-full flex items-center justify-center ${isPemasukan ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'}">
+                            ${isPemasukan 
+                                ? '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>'
+                                : '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg>'
+                            }
+                        </div>
+                        <div>
+                            <p class="font-bold text-slate-800">${t.keterangan}</p>
+                            <button onclick="window.triggerDelete('${t.id}')" class="text-xs text-red-500 hover:text-red-700 font-medium transition">Hapus</button>
+                        </div>
+                    </div>
+                    <span class="${isPemasukan ? 'text-green-600' : 'text-slate-800'} font-bold">
+                        ${isPemasukan ? '+' : '-'}${formattedJumlah}
+                    </span>
+                `;
+                listTransaksi.appendChild(li);
+            });
+
+            // Update Saldo Total
+            const formattedSaldo = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(saldo);
+            saldoTotal.innerText = formattedSaldo;
         }
 
-        // Inisialisasi awal
-        perbaruiUI();
+        // Setup Modal Hapus (Menggantikan fungsi alert/confirm bawaan browser)
+        window.triggerDelete = (id) => {
+            idToDelete = id;
+            modalConfirm.classList.remove('hidden');
+        };
+
+        document.getElementById('btn-cancel-delete').addEventListener('click', () => {
+            idToDelete = null;
+            modalConfirm.classList.add('hidden');
+        });
+
+        document.getElementById('btn-confirm-delete').addEventListener('click', async () => {
+            if (!currentUser || !idToDelete) return;
+            
+            const btnConfirm = document.getElementById('btn-confirm-delete');
+            btnConfirm.innerText = "Menghapus...";
+            btnConfirm.disabled = true;
+
+            try {
+                const docRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'transaksi', idToDelete);
+                await deleteDoc(docRef);
+                showToast("Transaksi dihapus");
+            } catch (error) {
+                showToast("Gagal menghapus", "error");
+            } finally {
+                idToDelete = null;
+                modalConfirm.classList.add('hidden');
+                btnConfirm.innerText = "Ya, Hapus";
+                btnConfirm.disabled = false;
+            }
+        });
+
     </script>
 </body>
 </html>
