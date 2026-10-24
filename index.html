@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pencatatan Keuangan - Web App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans leading-normal tracking-normal">
+
+    <div class="max-w-md mx-auto mt-10 bg-white p-6 rounded-lg shadow-md">
+        <h1 class="text-2xl font-bold text-center text-gray-800 mb-6">Pencatatan Keuangan</h1>
+        
+        <!-- Saldo -->
+        <div class="bg-blue-500 text-white rounded p-4 mb-6 text-center">
+            <p class="text-sm">Total Saldo</p>
+            <h2 id="saldo-total" class="text-3xl font-bold">Rp 0</h2>
+        </div>
+
+        <!-- Form Input -->
+        <form id="form-transaksi" class="mb-6">
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2">Nama Transaksi</label>
+                <input type="text" id="keterangan" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Contoh: Makan siang">
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2">Jumlah (Rp)</label>
+                <input type="number" id="jumlah" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Contoh: 50000">
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2">Jenis</label>
+                <select id="jenis" class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    <option value="pemasukan">Pemasukan (+)</option>
+                    <option value="pengeluaran">Pengeluaran (-)</option>
+                </select>
+            </div>
+            <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded w-full focus:outline-none focus:shadow-outline">
+                Tambah Transaksi
+            </button>
+        </form>
+
+        <!-- Daftar Transaksi -->
+        <div>
+            <h3 class="text-lg font-bold text-gray-800 mb-3">Riwayat Transaksi</h3>
+            <ul id="daftar-transaksi" class="divide-y divide-gray-200">
+                <!-- Data akan muncul di sini -->
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Logika JavaScript Sederhana
+        let transaksi = JSON.parse(localStorage.getItem('transaksi')) || [];
+
+        function perbaruiUI() {
+            const list = document.getElementById('daftar-transaksi');
+            const saldoTotal = document.getElementById('saldo-total');
+            
+            list.innerHTML = '';
+            let saldo = 0;
+
+            transaksi.forEach((t, index) => {
+                const isPemasukan = t.jenis === 'pemasukan';
+                saldo += isPemasukan ? t.jumlah : -t.jumlah;
+
+                const li = document.createElement('li');
+                li.className = 'py-3 flex justify-between items-center';
+                li.innerHTML = `
+                    <div>
+                        <p class="font-bold text-gray-700">${t.keterangan}</p>
+                        <button onclick="hapusTransaksi(${index})" class="text-xs text-red-500 hover:underline">Hapus</button>
+                    </div>
+                    <span class="${isPemasukan ? 'text-green-500' : 'text-red-500'} font-bold">
+                        ${isPemasukan ? '+' : '-'} Rp ${t.jumlah.toLocaleString('id-ID')}
+                    </span>
+                `;
+                list.appendChild(li);
+            });
+
+            saldoTotal.innerText = `Rp ${saldo.toLocaleString('id-ID')}`;
+            localStorage.setItem('transaksi', JSON.stringify(transaksi));
+        }
+
+        document.getElementById('form-transaksi').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const keterangan = document.getElementById('keterangan').value;
+            const jumlah = parseInt(document.getElementById('jumlah').value);
+            const jenis = document.getElementById('jenis').value;
+
+            transaksi.push({ keterangan, jumlah, jenis });
+            
+            this.reset();
+            perbaruiUI();
+        });
+
+        function hapusTransaksi(index) {
+            transaksi.splice(index, 1);
+            perbaruiUI();
+        }
+
+        // Inisialisasi awal
+        perbaruiUI();
+    </script>
+</body>
+</html>
