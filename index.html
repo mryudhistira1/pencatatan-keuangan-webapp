@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RUN FINANCE</title>
     
-    <!-- FAVICON BARU: Memanggil file logo.png -->
+    <!-- FAVICON -->
     <link rel="icon" href="logo.png" type="image/png">
     <link rel="apple-touch-icon" href="logo.png">
     
@@ -26,7 +26,7 @@
         }
     </script>
 
-    <!-- FONT BARU: Montserrat Alternates (Untuk Logo) & Inter (Untuk Teks Dasar) -->
+    <!-- FONT -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@600;700;800;900&family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Inter', sans-serif; background-color: #FEFEFE; }
@@ -80,7 +80,6 @@
     <div id="app-view" class="hidden w-full h-full flex flex-col md:flex-row flex-1">
         
         <!-- SIDEBAR -->
-        <!-- Overlay untuk HP saat sidebar terbuka -->
         <div id="sidebar-overlay" class="fixed inset-0 bg-run-purple/50 z-40 hidden md:hidden backdrop-blur-sm transition-opacity"></div>
         
         <aside id="sidebar" class="fixed md:relative inset-y-0 left-0 z-50 w-64 bg-run-white border-r border-run-purple/10 transform -translate-x-full md:translate-x-0 transition-transform duration-300 flex flex-col shadow-2xl md:shadow-none">
@@ -104,7 +103,7 @@
                     <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
                     Dashboard
                 </button>
-                <button class="w-full flex items-center gap-3 px-4 py-3 text-sm font-bold text-run-white bg-run-purple shadow-md rounded-xl transition">
+                <button id="nav-rekam" class="w-full flex items-center gap-3 px-4 py-3 text-sm font-bold text-run-white bg-run-purple shadow-md rounded-xl transition nav-btn">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
                     Rekam Harian
                 </button>
@@ -112,9 +111,14 @@
                     <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                     Perencanaan
                 </button>
-                <button onclick="window.showComingSoon('Report Mingguan')" class="w-full flex items-center gap-3 px-4 py-3 text-sm font-semibold text-run-purple/60 hover:text-run-purple hover:bg-run-purple/5 rounded-xl transition">
+                <button onclick="window.showComingSoon('Report')" class="w-full flex items-center gap-3 px-4 py-3 text-sm font-semibold text-run-purple/60 hover:text-run-purple hover:bg-run-purple/5 rounded-xl transition">
                     <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                     Report
+                </button>
+                <!-- Tombol Navigasi Pengaturan -->
+                <button id="nav-pengaturan" class="w-full flex items-center gap-3 px-4 py-3 text-sm font-semibold text-run-purple/60 hover:text-run-purple hover:bg-run-purple/5 rounded-xl transition nav-btn">
+                    <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                    Pengaturan
                 </button>
             </nav>
 
@@ -128,21 +132,22 @@
         </aside>
 
         <!-- KONTEN UTAMA -->
-        <div class="flex-1 flex flex-col h-full overflow-hidden">
+        <div class="flex-1 flex flex-col h-full overflow-hidden relative">
             
-            <!-- Mobile Header (Hanya tampil di HP) -->
-            <header class="md:hidden flex items-center justify-between h-20 px-6 bg-run-white border-b border-run-purple/10 z-30">
+            <!-- Mobile Header -->
+            <header class="md:hidden flex items-center justify-between h-20 px-6 bg-run-white border-b border-run-purple/10 z-30 shrink-0">
                 <button id="btn-open-sidebar" class="text-run-purple hover:text-run-red p-2 -ml-2 rounded-lg transition">
                     <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16M4 18h16"></path></svg>
                 </button>
                 <h1 class="text-xl font-extrabold text-run-purple tracking-tight font-montserrat">RUN<span class="text-run-red">FINANCE</span></h1>
-                <div class="w-8"></div> <!-- Spacer penyeimbang -->
+                <div class="w-8"></div>
             </header>
 
             <!-- Area Scroll Konten -->
             <main class="flex-1 overflow-y-auto bg-run-white p-4 md:p-8 custom-scroll">
-                <div class="max-w-6xl mx-auto pb-24 md:pb-10">
-                    
+                
+                <!-- TAMPILAN: REKAM HARIAN -->
+                <div id="view-rekam" class="max-w-6xl mx-auto pb-24 md:pb-10">
                     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10">
                         
                         <!-- KIRI: Saldo & Form -->
@@ -218,14 +223,76 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
+
+                <!-- TAMPILAN: PENGATURAN -->
+                <div id="view-pengaturan" class="hidden max-w-4xl mx-auto pb-24 md:pb-10">
+                    <h2 class="text-2xl font-extrabold text-run-purple mb-6">Pengaturan Aplikasi</h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        
+                        <!-- Panel: Kategori Kustom -->
+                        <div class="bg-run-white p-6 rounded-3xl border border-run-purple/10 shadow-sm">
+                            <div class="flex items-center gap-3 mb-5 border-b border-run-purple/10 pb-4">
+                                <div class="w-10 h-10 bg-run-purple/10 text-run-purple rounded-xl flex items-center justify-center">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path></svg>
+                                </div>
+                                <div>
+                                    <h3 class="text-sm font-bold text-run-purple uppercase tracking-widest">Kategori Kustom</h3>
+                                    <p class="text-xs text-run-purple/50 font-medium mt-0.5">Kelola jenis kategori Anda sendiri</p>
+                                </div>
+                            </div>
+
+                            <!-- Toggle Pengaturan Kategori -->
+                            <div class="flex gap-2 p-1.5 bg-run-purple/5 rounded-2xl mb-5">
+                                <button type="button" id="set-tab-pengeluaran" class="flex-1 py-2 text-xs font-bold rounded-xl bg-run-red text-run-white shadow-sm transition-all">Pengeluaran</button>
+                                <button type="button" id="set-tab-pemasukan" class="flex-1 py-2 text-xs font-bold rounded-xl text-run-purple/50 hover:text-run-purple hover:bg-run-purple/10 transition-all">Pemasukan</button>
+                            </div>
+
+                            <form id="form-tambah-kategori" class="flex gap-2 mb-5">
+                                <input type="text" id="input-kategori-baru" required class="flex-1 bg-run-purple/5 border-2 border-transparent rounded-xl py-2.5 px-3 text-sm text-run-purple font-medium focus:bg-run-white focus:ring-0 focus:border-run-red outline-none transition" placeholder="Nama Kategori Baru...">
+                                <button type="submit" class="bg-run-purple hover:bg-[#3d1d56] text-run-white font-bold py-2.5 px-4 rounded-xl transition shadow-md text-sm whitespace-nowrap">Tambah</button>
+                            </form>
+
+                            <div class="bg-run-purple/5 rounded-xl border border-run-purple/10 p-3 h-48 overflow-y-auto custom-scroll">
+                                <ul id="list-kategori-kustom" class="space-y-2">
+                                    <!-- List kategori kustom dimuat disini -->
+                                </ul>
+                                <p id="empty-kategori-kustom" class="text-xs text-center text-run-purple/40 font-medium py-16">Belum ada kategori kustom.</p>
+                            </div>
+                        </div>
+
+                        <!-- Panel: Export Data -->
+                        <div class="bg-run-white p-6 rounded-3xl border border-run-purple/10 shadow-sm h-max">
+                            <div class="flex items-center gap-3 mb-5 border-b border-run-purple/10 pb-4">
+                                <div class="w-10 h-10 bg-green-100 text-green-600 rounded-xl flex items-center justify-center">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"></path></svg>
+                                </div>
+                                <div>
+                                    <h3 class="text-sm font-bold text-run-purple uppercase tracking-widest">Ekspor Data (CSV)</h3>
+                                    <p class="text-xs text-run-purple/50 font-medium mt-0.5">Unduh data untuk dibuka di Excel</p>
+                                </div>
+                            </div>
+                            
+                            <p class="text-sm text-run-purple/70 font-medium mb-6 leading-relaxed">
+                                Unduh seluruh riwayat transaksi Anda dalam format CSV. Format ini dapat dibuka menggunakan aplikasi Spreadsheet seperti Microsoft Excel atau Google Sheets untuk keperluan analisis lebih lanjut.
+                            </p>
+
+                            <button onclick="window.eksporKeCSV()" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3.5 px-4 rounded-xl transition duration-300 shadow-lg shadow-green-500/20 flex items-center justify-center gap-2">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                                Unduh Sekarang
+                            </button>
+                        </div>
+                        
+                    </div>
+                </div>
+
             </main>
         </div>
     </div>
 
-    <!-- Custom Modal Konfirmasi Hapus -->
+    <!-- Custom Modal Konfirmasi Hapus Transaksi -->
     <div id="modal-confirm" class="hidden fixed inset-0 bg-run-purple/90 backdrop-blur-sm z-50 flex items-center justify-center p-4">
         <div class="bg-run-white rounded-3xl p-7 w-full max-w-sm shadow-2xl transform scale-100 transition-all text-center">
             <div class="w-16 h-16 bg-run-red/10 text-run-red rounded-full flex items-center justify-center mx-auto mb-4">
@@ -246,9 +313,8 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, deleteDoc, doc, updateDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, deleteDoc, doc, updateDoc, onSnapshot, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // API KEYS MILIK ANDA
         const firebaseConfig = {
             apiKey: "AIzaSyCWEeg8GmM_xu3lu4BAOCEkBgUK4Ke6-qw",
             authDomain: "mryudhistira.firebaseapp.com",
@@ -259,7 +325,6 @@
             measurementId: "G-5BFXLYCNY0"
         };
         
-        // Inisialisasi Aplikasi
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
@@ -270,28 +335,36 @@
         let transaksiData = [];
         let idToDelete = null;
         
-        // State Form (Mode Edit / Normal)
+        // VARIABEL GLOBAL PENGATURAN & FORM
+        let customKategori = { pengeluaran: [], pemasukan: [] };
         let isPengeluaran = true;
+        let isSettingsPengeluaran = true;
         let currentEditId = null;
 
-        // Referensi Elemen UI
+        // Referensi Elemen UI Utama
         const viewLoading = document.getElementById('loading-screen');
         const viewLogin = document.getElementById('login-view');
         const viewApp = document.getElementById('app-view');
         const userGreeting = document.getElementById('user-greeting');
-        const emptyState = document.getElementById('empty-state');
-        const listTransaksi = document.getElementById('daftar-transaksi');
-        const saldoTotal = document.getElementById('saldo-total');
-        const formTransaksi = document.getElementById('form-transaksi');
-        const modalConfirm = document.getElementById('modal-confirm');
         
+        // Referensi View Navigasi
+        const viewRekam = document.getElementById('view-rekam');
+        const viewPengaturan = document.getElementById('view-pengaturan');
+        const navBtns = document.querySelectorAll('.nav-btn');
+        const navRekam = document.getElementById('nav-rekam');
+        const navPengaturan = document.getElementById('nav-pengaturan');
+
         // Form Elements
+        const formTransaksi = document.getElementById('form-transaksi');
         const inputKeterangan = document.getElementById('keterangan');
         const inputKategori = document.getElementById('kategori');
         const inputJumlah = document.getElementById('jumlah');
         const inputTanggal = document.getElementById('tanggal');
+        const emptyState = document.getElementById('empty-state');
+        const listTransaksi = document.getElementById('daftar-transaksi');
+        const saldoTotal = document.getElementById('saldo-total');
+        const modalConfirm = document.getElementById('modal-confirm');
         
-        // Sidebar & Toggles
         const tabPengeluaran = document.getElementById('tab-pengeluaran');
         const tabPemasukan = document.getElementById('tab-pemasukan');
         const sidebar = document.getElementById('sidebar');
@@ -302,8 +375,16 @@
         const formTitle = document.getElementById('form-title');
         const textSubmitForm = document.getElementById('text-submit-form');
 
+        // Referensi Pengaturan
+        const setTabPengeluaran = document.getElementById('set-tab-pengeluaran');
+        const setTabPemasukan = document.getElementById('set-tab-pemasukan');
+        const formTambahKategori = document.getElementById('form-tambah-kategori');
+        const inputKategoriBaru = document.getElementById('input-kategori-baru');
+        const listKategoriKustom = document.getElementById('list-kategori-kustom');
+        const emptyKategoriKustom = document.getElementById('empty-kategori-kustom');
+
         // ----------------------------------------------------
-        // DATA KATEGORI (Sesuai Permintaan)
+        // DATA KATEGORI BAWAAN SISTEM
         // ----------------------------------------------------
         const kategoriPengeluaran = [
             { group: "MAKANAN", items: ["11 - Makanan Pokok", "12 - Aqua Galon", "13 - Makanan Ringan", "14 - Makanan Khusus Olahraga", "15 - Pemberian Makanan"] },
@@ -322,6 +403,233 @@
         const kategoriPemasukan = [
             { group: "PEMASUKAN", items: ["1 - Gaji/Pendapatan Utama", "2 - Bonus/Tunjangan", "3 - Hasil Usaha/Investasi", "4 - Uang Masuk/Pengalihan", "5 - Pemasukan Lainnya"] }
         ];
+
+        // ----------------------------------------------------
+        // NAVIGASI VIEW & SIDEBAR
+        // ----------------------------------------------------
+        const toggleSidebar = () => {
+            sidebar.classList.toggle('-translate-x-full');
+            sidebarOverlay.classList.toggle('hidden');
+        };
+        btnOpenSidebar.addEventListener('click', toggleSidebar);
+        btnCloseSidebar.addEventListener('click', toggleSidebar);
+        sidebarOverlay.addEventListener('click', toggleSidebar);
+
+        function setActiveNav(activeId) {
+            navBtns.forEach(btn => {
+                if(btn.id === activeId) {
+                    btn.className = "w-full flex items-center gap-3 px-4 py-3 text-sm font-bold text-run-white bg-run-purple shadow-md rounded-xl transition nav-btn";
+                    btn.querySelector('svg').classList.remove('opacity-70');
+                } else {
+                    btn.className = "w-full flex items-center gap-3 px-4 py-3 text-sm font-semibold text-run-purple/60 hover:text-run-purple hover:bg-run-purple/5 rounded-xl transition nav-btn";
+                    btn.querySelector('svg').classList.add('opacity-70');
+                }
+            });
+        }
+
+        window.showComingSoon = (menuName) => {
+            showToast(`Menu ${menuName} akan segera hadir!`, "success");
+            if(window.innerWidth < 768) toggleSidebar();
+        };
+
+        navRekam.addEventListener('click', () => {
+            setActiveNav('nav-rekam');
+            viewRekam.classList.remove('hidden');
+            viewPengaturan.classList.add('hidden');
+            if(window.innerWidth < 768) toggleSidebar();
+        });
+
+        navPengaturan.addEventListener('click', () => {
+            setActiveNav('nav-pengaturan');
+            viewRekam.classList.add('hidden');
+            viewPengaturan.classList.remove('hidden');
+            renderUIKategoriKustom();
+            if(window.innerWidth < 768) toggleSidebar();
+        });
+
+        // ----------------------------------------------------
+        // LOGIKA KATEGORI (FORM UTAMA & PENGATURAN)
+        // ----------------------------------------------------
+        
+        async function loadSettings() {
+            if (!currentUser) return;
+            try {
+                const docRef = doc(db, 'users', currentUser.uid, 'settings', 'kategori');
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists()) {
+                    customKategori = docSnap.data();
+                    // Pastikan array selalu ada meski kosong
+                    if(!customKategori.pengeluaran) customKategori.pengeluaran = [];
+                    if(!customKategori.pemasukan) customKategori.pemasukan = [];
+                }
+                renderDropdownKategori();
+                renderUIKategoriKustom();
+            } catch (error) {
+                console.log("Error loading settings:", error);
+            }
+        }
+
+        async function saveSettings() {
+            if (!currentUser) return;
+            try {
+                const docRef = doc(db, 'users', currentUser.uid, 'settings', 'kategori');
+                await setDoc(docRef, customKategori);
+                renderDropdownKategori(); // Update form dropdown
+                renderUIKategoriKustom(); // Update list di settings
+                showToast("Pengaturan disimpan");
+            } catch (error) {
+                showToast("Gagal menyimpan pengaturan", "error");
+            }
+        }
+
+        function renderDropdownKategori() {
+            inputKategori.innerHTML = '';
+            const dataDefault = isPengeluaran ? kategoriPengeluaran : kategoriPemasukan;
+            const dataKustom = isPengeluaran ? customKategori.pengeluaran : customKategori.pemasukan;
+            
+            // Render Kategori Kustom
+            if (dataKustom && dataKustom.length > 0) {
+                const optgroupKustom = document.createElement('optgroup');
+                optgroupKustom.label = "KATEGORI SAYA (KUSTOM)";
+                optgroupKustom.className = 'font-bold text-run-red';
+                
+                dataKustom.forEach(item => {
+                    const option = document.createElement('option');
+                    option.value = item;
+                    option.textContent = item;
+                    option.className = 'font-medium text-gray-800';
+                    optgroupKustom.appendChild(option);
+                });
+                inputKategori.appendChild(optgroupKustom);
+            }
+
+            // Render Kategori Bawaan
+            dataDefault.forEach(group => {
+                const optgroup = document.createElement('optgroup');
+                optgroup.label = group.group;
+                optgroup.className = 'font-bold text-run-purple';
+                
+                group.items.forEach(item => {
+                    const option = document.createElement('option');
+                    option.value = item;
+                    option.textContent = item;
+                    option.className = 'font-medium text-gray-600';
+                    optgroup.appendChild(option);
+                });
+                inputKategori.appendChild(optgroup);
+            });
+        }
+
+        function setModeTransaksi(kePengeluaran) {
+            isPengeluaran = kePengeluaran;
+            if (isPengeluaran) {
+                tabPengeluaran.className = "flex-1 py-3 text-sm font-bold rounded-xl bg-run-red text-run-white shadow-md transition-all";
+                tabPemasukan.className = "flex-1 py-3 text-sm font-bold rounded-xl text-run-purple/50 hover:text-run-purple hover:bg-run-purple/10 transition-all";
+            } else {
+                tabPemasukan.className = "flex-1 py-3 text-sm font-bold rounded-xl bg-run-purple text-run-white shadow-md transition-all";
+                tabPengeluaran.className = "flex-1 py-3 text-sm font-bold rounded-xl text-run-purple/50 hover:text-run-purple hover:bg-run-purple/10 transition-all";
+            }
+            renderDropdownKategori();
+        }
+        tabPengeluaran.addEventListener('click', () => setModeTransaksi(true));
+        tabPemasukan.addEventListener('click', () => setModeTransaksi(false));
+
+        // Pengaturan Kategori UI Switcher
+        function setModePengaturanKategori(kePengeluaran) {
+            isSettingsPengeluaran = kePengeluaran;
+            if (isSettingsPengeluaran) {
+                setTabPengeluaran.className = "flex-1 py-2 text-xs font-bold rounded-xl bg-run-red text-run-white shadow-sm transition-all";
+                setTabPemasukan.className = "flex-1 py-2 text-xs font-bold rounded-xl text-run-purple/50 hover:text-run-purple hover:bg-run-purple/10 transition-all";
+            } else {
+                setTabPemasukan.className = "flex-1 py-2 text-xs font-bold rounded-xl bg-run-purple text-run-white shadow-sm transition-all";
+                setTabPengeluaran.className = "flex-1 py-2 text-xs font-bold rounded-xl text-run-purple/50 hover:text-run-purple hover:bg-run-purple/10 transition-all";
+            }
+            renderUIKategoriKustom();
+        }
+        setTabPengeluaran.addEventListener('click', () => setModePengaturanKategori(true));
+        setTabPemasukan.addEventListener('click', () => setModePengaturanKategori(false));
+
+        function renderUIKategoriKustom() {
+            listKategoriKustom.innerHTML = '';
+            const dataTarget = isSettingsPengeluaran ? customKategori.pengeluaran : customKategori.pemasukan;
+
+            if (!dataTarget || dataTarget.length === 0) {
+                emptyKategoriKustom.classList.remove('hidden');
+            } else {
+                emptyKategoriKustom.classList.add('hidden');
+                dataTarget.forEach((item, index) => {
+                    const li = document.createElement('li');
+                    li.className = "flex justify-between items-center bg-run-white p-2.5 rounded-lg border border-run-purple/5";
+                    li.innerHTML = `
+                        <span class="text-sm font-bold text-run-purple truncate pr-2">${item}</span>
+                        <button onclick="window.hapusKategoriKustom(${index})" class="text-run-red hover:bg-run-red/10 p-1.5 rounded-md transition shrink-0">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                        </button>
+                    `;
+                    listKategoriKustom.appendChild(li);
+                });
+            }
+        }
+
+        formTambahKategori.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const val = inputKategoriBaru.value.trim();
+            if(!val) return;
+            
+            if(isSettingsPengeluaran) {
+                if(customKategori.pengeluaran.includes(val)) return showToast("Kategori sudah ada", "error");
+                customKategori.pengeluaran.push(val);
+            } else {
+                if(customKategori.pemasukan.includes(val)) return showToast("Kategori sudah ada", "error");
+                customKategori.pemasukan.push(val);
+            }
+            
+            inputKategoriBaru.value = '';
+            saveSettings();
+        });
+
+        window.hapusKategoriKustom = (index) => {
+            if(isSettingsPengeluaran) {
+                customKategori.pengeluaran.splice(index, 1);
+            } else {
+                customKategori.pemasukan.splice(index, 1);
+            }
+            saveSettings();
+        };
+
+        // ----------------------------------------------------
+        // FITUR EXPORT CSV
+        // ----------------------------------------------------
+        window.eksporKeCSV = () => {
+            if (transaksiData.length === 0) {
+                return showToast("Belum ada data untuk diekspor", "error");
+            }
+            
+            let csvContent = "data:text/csv;charset=utf-8,";
+            // Header CSV
+            csvContent += "Tanggal,Nama Transaksi,Kategori,Jenis,Jumlah (Rp)\n";
+            
+            // Loop data transaksi
+            transaksiData.forEach(t => {
+                // Bersihkan teks dari koma agar tidak merusak format CSV
+                const ket = t.keterangan ? t.keterangan.replace(/,/g, "") : "";
+                const kat = t.kategori ? t.kategori.replace(/,/g, "") : "";
+                const row = `${t.tanggal},${ket},${kat},${t.jenis},${t.jumlah}`;
+                csvContent += row + "\n";
+            });
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            const dateStr = new Date().toISOString().split('T')[0];
+            
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `RUN_FINANCE_Export_${dateStr}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            showToast("Proses unduh dimulai!");
+        };
 
         // ----------------------------------------------------
         // FITUR PWA (BISA DI-INSTALL)
@@ -352,63 +660,13 @@
         }
 
         // ----------------------------------------------------
-        // LOGIKA UI & EVENT LISTENER
+        // LOGIKA INPUT FORM & NOTIFIKASI
         // ----------------------------------------------------
-        
-        // Sidebar Toggle Mobile
-        const toggleSidebar = () => {
-            sidebar.classList.toggle('-translate-x-full');
-            sidebarOverlay.classList.toggle('hidden');
-        };
-        btnOpenSidebar.addEventListener('click', toggleSidebar);
-        btnCloseSidebar.addEventListener('click', toggleSidebar);
-        sidebarOverlay.addEventListener('click', toggleSidebar);
-
-        // Render Dropdown Kategori
-        function renderDropdownKategori() {
-            inputKategori.innerHTML = '';
-            const data = isPengeluaran ? kategoriPengeluaran : kategoriPemasukan;
-            
-            data.forEach(group => {
-                const optgroup = document.createElement('optgroup');
-                optgroup.label = group.group;
-                optgroup.className = 'font-bold text-run-purple';
-                
-                group.items.forEach(item => {
-                    const option = document.createElement('option');
-                    option.value = item;
-                    option.textContent = item;
-                    option.className = 'font-medium text-gray-700';
-                    optgroup.appendChild(option);
-                });
-                inputKategori.appendChild(optgroup);
-            });
-        }
-
-        // Handle Switch Pengeluaran/Pemasukan
-        function setModeTransaksi(kePengeluaran) {
-            isPengeluaran = kePengeluaran;
-            if (isPengeluaran) {
-                // Style Active Pengeluaran
-                tabPengeluaran.className = "flex-1 py-3 text-sm font-bold rounded-xl bg-run-red text-run-white shadow-md transition-all";
-                tabPemasukan.className = "flex-1 py-3 text-sm font-bold rounded-xl text-run-purple/50 hover:text-run-purple hover:bg-run-purple/10 transition-all";
-            } else {
-                // Style Active Pemasukan
-                tabPemasukan.className = "flex-1 py-3 text-sm font-bold rounded-xl bg-run-purple text-run-white shadow-md transition-all";
-                tabPengeluaran.className = "flex-1 py-3 text-sm font-bold rounded-xl text-run-purple/50 hover:text-run-purple hover:bg-run-purple/10 transition-all";
-            }
-            renderDropdownKategori();
-        }
-        tabPengeluaran.addEventListener('click', () => setModeTransaksi(true));
-        tabPemasukan.addEventListener('click', () => setModeTransaksi(false));
-        
-        // Inisialisasi awal form
         setModeTransaksi(true);
+        setModePengaturanKategori(true);
         setTanggalHariIni();
 
-        // Fitur Pemisah Ribuan dan Desimal
         function formatNumberForInput(num) {
-            // Konversi dari database (float) ke format input UI (titik & koma)
             let str = num.toString().replace('.', ',');
             let parts = str.split(',');
             parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
@@ -432,7 +690,6 @@
             }
         });
 
-        // Fungsi Set Tanggal
         function setTanggalHariIni() {
             const today = new Date();
             const year = today.getFullYear();
@@ -456,12 +713,6 @@
             }, 3500);
         }
 
-        window.showComingSoon = (menuName) => {
-            showToast(`Menu ${menuName} akan segera hadir!`, "success");
-            if(window.innerWidth < 768) toggleSidebar();
-        };
-
-        // Reset Form Mode (Kembali dari Edit)
         function resetFormState() {
             currentEditId = null;
             formTransaksi.reset();
@@ -490,6 +741,7 @@
                 userGreeting.innerText = `Halo, ${nama}`;
                 
                 showToast(`Selamat datang, ${nama}!`);
+                loadSettings(); // Memanggil pengaturan kategori
                 loadDataTransaksi();
             } else {
                 currentUser = null;
@@ -498,6 +750,7 @@
                 
                 if (unsubscribeSnapshot) unsubscribeSnapshot();
                 transaksiData = [];
+                customKategori = { pengeluaran: [], pemasukan: [] };
                 renderUI();
             }
         });
@@ -512,7 +765,6 @@
             signOut(auth).then(() => showToast("Berhasil keluar")).catch(e => showToast(e.message, 'error'));
         });
 
-        // Load Firestore
         function loadDataTransaksi() {
             if (!currentUser) return;
             const transaksiRef = collection(db, 'users', currentUser.uid, 'transaksi');
@@ -523,7 +775,6 @@
                     transaksiData.push({ id: document.id, ...document.data() });
                 });
 
-                // Urutkan: Tanggal Terkini -> Waktu Buat Terkini
                 transaksiData.sort((a, b) => {
                     const dateA = a.tanggal || "1970-01-01";
                     const dateB = b.tanggal || "1970-01-01";
@@ -536,7 +787,6 @@
             });
         }
 
-        // Simpan / Update Data
         formTransaksi.addEventListener('submit', async (e) => {
             e.preventDefault();
             if (!currentUser) return;
@@ -546,7 +796,6 @@
             textSubmitForm.innerText = "Menyimpan...";
 
             try {
-                // Parsing nilai dari input text format indonesia ke float
                 const jumlahRaw = inputJumlah.value;
                 const jumlahClean = jumlahRaw.replace(/\./g, '').replace(',', '.');
                 const jumlahFloat = parseFloat(jumlahClean);
@@ -562,33 +811,28 @@
                     jenis: isPengeluaran ? 'pengeluaran' : 'pemasukan',
                     kategori: inputKategori.value,
                     tanggal: inputTanggal.value,
-                    // Tetap pertahankan createdAt lama jika mode edit, buat baru jika insert
                     createdAt: currentEditId ? undefined : Date.now() 
                 };
 
                 if (currentEditId) {
-                    // Update Mode
-                    delete dataSimpan.createdAt; // Jangan ubah waktu pembuatan awal
+                    delete dataSimpan.createdAt;
                     const docRef = doc(db, 'users', currentUser.uid, 'transaksi', currentEditId);
                     await updateDoc(docRef, dataSimpan);
                     showToast("Transaksi berhasil diperbarui");
                 } else {
-                    // Insert Mode
                     const transaksiRef = collection(db, 'users', currentUser.uid, 'transaksi');
                     await addDoc(transaksiRef, dataSimpan);
                     showToast("Transaksi berhasil dicatat");
                 }
-                
                 resetFormState();
             } catch (error) {
                 if(error.message !== "Invalid Input") showToast("Gagal menyimpan: " + error.message, 'error');
             } finally {
                 btnSubmit.disabled = false;
-                textSubmitForm.innerText = currentEditId ? "Simpan Perubahan" : "Simpan Transaksi";
+                textSubmitForm.innerText = currentEditId ? "Update Transaksi" : "Simpan Transaksi";
             }
         });
 
-        // Render Tampilan List Transaksi
         function renderUI() {
             listTransaksi.innerHTML = '';
             let saldo = 0;
@@ -604,11 +848,9 @@
                 saldo += !isItemPengeluaran ? t.jumlah : -t.jumlah;
 
                 const li = document.createElement('li');
-                // Highlight jika sedang diedit
                 const bgClass = (currentEditId === t.id) ? 'bg-run-purple/10 border-run-purple/30' : 'bg-run-white border-run-purple/5 hover:border-run-purple/20';
-                li.className = `${bgClass} border-2 rounded-2xl p-4 md:p-5 flex justify-between items-start md:items-center transition duration-200 group relative overflow-hidden gap-2 md:gap-0`;
+                li.className = `${bgClass} border-2 rounded-2xl p-4 md:p-5 flex justify-between items-start transition duration-200 gap-3 md:gap-4`;
                 
-                // Format rupiah
                 const formattedJumlah = new Intl.NumberFormat('id-ID', { 
                     style: 'currency', currency: 'IDR', minimumFractionDigits: 0, maximumFractionDigits: 2 
                 }).format(t.jumlah);
@@ -620,8 +862,8 @@
                 }
 
                 li.innerHTML = `
-                    <div class="flex items-start md:items-center gap-3 md:gap-4 relative z-10 flex-1 min-w-0">
-                        <div class="w-10 h-10 md:w-12 md:h-12 rounded-xl flex items-center justify-center flex-shrink-0 shadow-inner mt-0.5 md:mt-0 ${!isItemPengeluaran ? 'bg-run-purple/10 text-run-purple' : 'bg-run-red/10 text-run-red'}">
+                    <div class="flex items-start gap-3 md:gap-4 flex-1 min-w-0 pt-0.5">
+                        <div class="w-10 h-10 md:w-12 md:h-12 rounded-xl flex items-center justify-center shrink-0 shadow-inner ${!isItemPengeluaran ? 'bg-run-purple/10 text-run-purple' : 'bg-run-red/10 text-run-red'}">
                             ${!isItemPengeluaran 
                                 ? '<svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>'
                                 : '<svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg>'
@@ -640,7 +882,7 @@
                             </div>
                         </div>
                     </div>
-                    <span class="${!isItemPengeluaran ? 'text-run-purple' : 'text-run-red'} font-extrabold text-[15px] md:text-lg whitespace-nowrap pl-1 md:pl-2 z-10 flex-shrink-0 mt-0.5 md:mt-0 text-right">
+                    <span class="${!isItemPengeluaran ? 'text-run-purple' : 'text-run-red'} font-extrabold text-[15px] md:text-lg whitespace-nowrap shrink-0 text-right pt-0.5">
                         ${!isItemPengeluaran ? '+' : '-'}${formattedJumlah}
                     </span>
                 `;
@@ -652,33 +894,27 @@
             }).format(saldo);
         }
 
-        // Aksi Edit Transaksi
         window.triggerEdit = (id) => {
             const dataToEdit = transaksiData.find(t => t.id === id);
             if (!dataToEdit) return;
 
             currentEditId = id;
-            
-            // Set Toggle & Form values
             setModeTransaksi(dataToEdit.jenis === 'pengeluaran');
             
             inputKeterangan.value = dataToEdit.keterangan;
             inputJumlah.value = formatNumberForInput(dataToEdit.jumlah);
             inputTanggal.value = dataToEdit.tanggal;
-            inputKategori.value = dataToEdit.kategori || ""; // Mengatur value select
+            inputKategori.value = dataToEdit.kategori || ""; 
 
-            // Ubah UI Form
             formTitle.innerText = "Edit Transaksi";
-            textSubmitForm.innerText = "Simpan Perubahan";
+            textSubmitForm.innerText = "Update Transaksi";
             btnCancelEdit.classList.remove('hidden');
             formTransaksi.classList.add('ring-4', 'ring-run-purple/20');
             
-            // Scroll layar ke form (Penting untuk mode HP)
             formTransaksi.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            renderUI(); // Re-render untuk efek highlight list yang sedang diedit
+            renderUI(); 
         };
 
-        // Aksi Hapus Transaksi
         window.triggerDelete = (id) => {
             idToDelete = id;
             modalConfirm.classList.remove('hidden');
@@ -697,10 +933,7 @@
 
             try {
                 await deleteDoc(doc(db, 'users', currentUser.uid, 'transaksi', idToDelete));
-                
-                // Jika sedang ngedit data yang barusan dihapus, reset formnya
                 if (currentEditId === idToDelete) resetFormState();
-                
                 showToast("Transaksi dihapus");
             } catch (error) {
                 showToast("Gagal menghapus", "error");
