@@ -606,7 +606,7 @@
                 const li = document.createElement('li');
                 // Highlight jika sedang diedit
                 const bgClass = (currentEditId === t.id) ? 'bg-run-purple/10 border-run-purple/30' : 'bg-run-white border-run-purple/5 hover:border-run-purple/20';
-                li.className = `${bgClass} border-2 rounded-2xl p-4 md:p-5 flex justify-between items-center transition duration-200 group relative overflow-hidden`;
+                li.className = `${bgClass} border-2 rounded-2xl p-4 md:p-5 flex justify-between items-start md:items-center transition duration-200 group relative overflow-hidden gap-2 md:gap-0`;
                 
                 // Format rupiah
                 const formattedJumlah = new Intl.NumberFormat('id-ID', { 
@@ -620,27 +620,27 @@
                 }
 
                 li.innerHTML = `
-                    <div class="flex items-center gap-4 relative z-10 w-full md:w-auto overflow-hidden">
-                        <div class="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 shadow-inner ${!isItemPengeluaran ? 'bg-run-purple/10 text-run-purple' : 'bg-run-red/10 text-run-red'}">
+                    <div class="flex items-start md:items-center gap-3 md:gap-4 relative z-10 flex-1 min-w-0">
+                        <div class="w-10 h-10 md:w-12 md:h-12 rounded-xl flex items-center justify-center flex-shrink-0 shadow-inner mt-0.5 md:mt-0 ${!isItemPengeluaran ? 'bg-run-purple/10 text-run-purple' : 'bg-run-red/10 text-run-red'}">
                             ${!isItemPengeluaran 
-                                ? '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>'
-                                : '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg>'
+                                ? '<svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>'
+                                : '<svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg>'
                             }
                         </div>
-                        <div class="flex-1 min-w-0 pr-2">
-                            <p class="font-extrabold text-run-purple text-base sm:text-lg tracking-tight truncate">${t.keterangan}</p>
-                            <p class="text-[10px] sm:text-xs text-run-purple/50 font-bold truncate uppercase tracking-wider mb-1">${t.kategori || t.jenis}</p>
+                        <div class="flex-1 min-w-0">
+                            <p class="font-extrabold text-run-purple text-[15px] md:text-lg tracking-tight truncate leading-tight">${t.keterangan}</p>
+                            <p class="text-[10px] md:text-xs text-run-purple/50 font-bold truncate uppercase tracking-wider mb-1 mt-0.5">${t.kategori || t.jenis}</p>
                             
-                            <div class="flex items-center gap-2 mt-0.5">
-                                ${formattedTanggal ? `<span class="text-xs sm:text-sm text-run-purple/60 font-semibold">${formattedTanggal}</span>` : ''}
-                                <span class="text-xs text-run-purple/30 mx-1">•</span>
-                                <button onclick="window.triggerEdit('${t.id}')" class="text-xs sm:text-sm text-run-purple hover:text-run-purple/70 font-bold transition">Edit</button>
-                                <span class="text-xs text-run-purple/30 mx-1">•</span>
-                                <button onclick="window.triggerDelete('${t.id}')" class="text-xs sm:text-sm text-run-red hover:text-[#c40024] font-bold transition">Hapus</button>
+                            <div class="flex flex-wrap items-center gap-x-1.5 md:gap-x-2 gap-y-1 mt-1">
+                                ${formattedTanggal ? `<span class="text-[11px] md:text-sm text-run-purple/60 font-semibold whitespace-nowrap">${formattedTanggal}</span>` : ''}
+                                <span class="text-[10px] text-run-purple/30">•</span>
+                                <button onclick="window.triggerEdit('${t.id}')" class="text-[11px] md:text-sm text-run-purple hover:text-run-purple/70 font-bold transition whitespace-nowrap">Edit</button>
+                                <span class="text-[10px] text-run-purple/30">•</span>
+                                <button onclick="window.triggerDelete('${t.id}')" class="text-[11px] md:text-sm text-run-red hover:text-[#c40024] font-bold transition whitespace-nowrap">Hapus</button>
                             </div>
                         </div>
                     </div>
-                    <span class="${!isItemPengeluaran ? 'text-run-purple' : 'text-run-red'} font-extrabold text-base md:text-lg whitespace-nowrap pl-2 z-10 self-start md:self-center mt-1 md:mt-0">
+                    <span class="${!isItemPengeluaran ? 'text-run-purple' : 'text-run-red'} font-extrabold text-[15px] md:text-lg whitespace-nowrap pl-1 md:pl-2 z-10 flex-shrink-0 mt-0.5 md:mt-0 text-right">
                         ${!isItemPengeluaran ? '+' : '-'}${formattedJumlah}
                     </span>
                 `;
