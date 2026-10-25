@@ -5,8 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RUN APP - Keuangan</title>
     
-    <!-- FAVICON SUPER KOMPRES (SVG): Menggunakan logo R dengan warna #E4002B dan #512D6D -->
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23FEFEFE' rx='20'/%3E%3Cpath d='M28 20 h28 c15 0 25 10 25 24 c0 11 -7 19 -15 22 l18 29 h-22 l-15 -25 h-3 v25 h-16 z' fill='%23E4002B'/%3E%3Cpath d='M28 65 c 15 -25, 48 -10, 48 -25 c 0 -15 -18 -20 -32 -20 v 35 z' fill='%23512D6D'/%3E%3C/svg%3E" type="image/svg+xml">
+    <!-- FAVICON BARU: Memanggil file logo asli (Pastikan file bernama logo.png sudah di-upload ke GitHub) -->
+    <link rel="icon" href="logo.png" type="image/png">
+    <link rel="apple-touch-icon" href="logo.png">
     
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -125,7 +126,8 @@
                         <div class="flex gap-4 mb-6">
                             <div class="w-3/5">
                                 <label class="block text-run-purple text-sm font-bold mb-2">Jumlah (Rp)</label>
-                                <input type="number" id="jumlah" required min="1" class="w-full bg-run-purple/5 border-2 border-transparent rounded-xl py-3 px-4 text-run-purple font-medium focus:bg-run-white focus:ring-0 focus:border-run-red outline-none transition" placeholder="50000">
+                                <!-- Tipe diubah jadi text agar bisa menerima titik dan koma -->
+                                <input type="text" id="jumlah" inputmode="decimal" required class="w-full bg-run-purple/5 border-2 border-transparent rounded-xl py-3 px-4 text-run-purple font-medium focus:bg-run-white focus:ring-0 focus:border-run-red outline-none transition" placeholder="10.000,50">
                             </div>
                             <div class="w-2/5">
                                 <label class="block text-run-purple text-sm font-bold mb-2">Jenis</label>
@@ -221,6 +223,51 @@
         const formTransaksi = document.getElementById('form-transaksi');
         const modalConfirm = document.getElementById('modal-confirm');
         const inputTanggal = document.getElementById('tanggal');
+        const inputJumlah = document.getElementById('jumlah'); // Tambahan referensi
+
+        // ----------------------------------------------------
+        // FITUR PWA (BISA DI-INSTALL SEBAGAI APLIKASI DI HP)
+        // ----------------------------------------------------
+        const manifest = {
+            "name": "RUN APP - Keuangan",
+            "short_name": "RUN APP",
+            "start_url": ".",
+            "display": "standalone",
+            "background_color": "#FEFEFE",
+            "theme_color": "#E4002B",
+            "icons": [
+                { "src": "logo.png", "sizes": "192x192", "type": "image/png" },
+                { "src": "logo.png", "sizes": "512x512", "type": "image/png" }
+            ]
+        };
+        const manifestUrl = 'data:application/manifest+json;charset=utf-8,' + encodeURIComponent(JSON.stringify(manifest));
+        document.head.insertAdjacentHTML('beforeend', `<link rel="manifest" href="${manifestUrl}">`);
+
+        const swCode = `
+            self.addEventListener('install', (e) => { self.skipWaiting(); });
+            self.addEventListener('activate', (e) => { e.waitUntil(clients.claim()); });
+            self.addEventListener('fetch', (e) => { });
+        `;
+        const swBlob = new Blob([swCode], {type: 'application/javascript'});
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register(URL.createObjectURL(swBlob)).catch(err => console.log(err));
+        }
+        // ----------------------------------------------------
+
+        // Fitur Pemisah Ribuan (Titik) dan Desimal (Koma) saat mengetik
+        inputJumlah.addEventListener('input', function(e) {
+            let val = this.value.replace(/[^0-9,]/g, ''); // Hapus selain angka dan koma
+            const parts = val.split(',');
+            if (parts.length > 2) val = parts[0] + ',' + parts.slice(1).join('');
+            if (parts[0].length > 0) parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+            
+            if (parts[1] !== undefined) {
+                parts[1] = parts[1].substring(0, 2); // Maksimal 2 angka desimal
+                this.value = parts[0] + ',' + parts[1];
+            } else {
+                this.value = parts[0];
+            }
+        });
 
         // Fungsi Toast
         function showToast(message, type = 'success') {
@@ -322,10 +369,22 @@
             btnSubmit.innerHTML = "Menyimpan...";
 
             try {
+                // Parsing format ribuan dan desimal menjadi angka baku untuk database
+                const jumlahRaw = document.getElementById('jumlah').value;
+                const jumlahClean = jumlahRaw.replace(/\./g, '').replace(',', '.');
+                const jumlahFloat = parseFloat(jumlahClean);
+
+                if (isNaN(jumlahFloat) || jumlahFloat <= 0) {
+                    showToast("Jumlah tidak valid", 'error');
+                    btnSubmit.disabled = false;
+                    btnSubmit.innerHTML = `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path></svg> Simpan Transaksi`;
+                    return;
+                }
+
                 const transaksiRef = collection(db, 'users', currentUser.uid, 'transaksi');
                 await addDoc(transaksiRef, {
                     keterangan: document.getElementById('keterangan').value,
-                    jumlah: parseInt(document.getElementById('jumlah').value),
+                    jumlah: jumlahFloat, // Mengirim format angka bersih
                     jenis: document.getElementById('jenis').value,
                     tanggal: inputTanggal.value,
                     createdAt: Date.now()
@@ -359,7 +418,13 @@
                 const li = document.createElement('li');
                 li.className = 'bg-run-white border-2 border-run-purple/5 hover:border-run-purple/20 rounded-2xl p-4 md:p-5 flex justify-between items-center transition duration-200 group';
                 
-                const formattedJumlah = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(t.jumlah);
+                // Format rupiah dengan dukungan maksimal 2 angka desimal
+                const formattedJumlah = new Intl.NumberFormat('id-ID', { 
+                    style: 'currency', 
+                    currency: 'IDR', 
+                    minimumFractionDigits: 0, 
+                    maximumFractionDigits: 2 
+                }).format(t.jumlah);
 
                 let formattedTanggal = "";
                 if (t.tanggal) {
@@ -392,7 +457,13 @@
                 listTransaksi.appendChild(li);
             });
 
-            saldoTotal.innerText = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(saldo);
+            // Tampilkan saldo total juga dengan desimal
+            saldoTotal.innerText = new Intl.NumberFormat('id-ID', { 
+                style: 'currency', 
+                currency: 'IDR', 
+                minimumFractionDigits: 0, 
+                maximumFractionDigits: 2 
+            }).format(saldo);
         }
 
         window.triggerDelete = (id) => {
