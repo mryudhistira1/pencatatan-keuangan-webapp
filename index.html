@@ -239,8 +239,8 @@
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path></svg>
                                 </div>
                                 <div>
-                                    <h3 class="text-sm font-bold text-run-purple uppercase tracking-widest">Kategori Kustom</h3>
-                                    <p class="text-xs text-run-purple/50 font-medium mt-0.5">Kelola jenis kategori Anda sendiri</p>
+                                    <h3 class="text-sm font-bold text-run-purple uppercase tracking-widest">Kategori Transaksi</h3>
+                                    <p class="text-xs text-run-purple/50 font-medium mt-0.5">Kelola seluruh daftar kategori Anda</p>
                                 </div>
                             </div>
 
@@ -251,15 +251,16 @@
                             </div>
 
                             <form id="form-tambah-kategori" class="flex gap-2 mb-5">
-                                <input type="text" id="input-kategori-baru" required class="flex-1 bg-run-purple/5 border-2 border-transparent rounded-xl py-2.5 px-3 text-sm text-run-purple font-medium focus:bg-run-white focus:ring-0 focus:border-run-red outline-none transition" placeholder="Nama Kategori Baru...">
-                                <button type="submit" class="bg-run-purple hover:bg-[#3d1d56] text-run-white font-bold py-2.5 px-4 rounded-xl transition shadow-md text-sm whitespace-nowrap">Tambah</button>
+                                <input type="text" id="input-kategori-baru" required class="flex-1 bg-run-purple/5 border-2 border-transparent rounded-xl py-2.5 px-3 text-sm text-run-purple font-medium focus:bg-run-white focus:ring-0 focus:border-run-red outline-none transition" placeholder="Nama Kategori...">
+                                <button type="button" id="btn-cancel-edit-kategori" class="hidden bg-run-purple/10 hover:bg-run-purple/20 text-run-purple font-bold py-2.5 px-3 rounded-xl transition text-sm">Batal</button>
+                                <button type="submit" id="btn-submit-kategori" class="bg-run-purple hover:bg-[#3d1d56] text-run-white font-bold py-2.5 px-4 rounded-xl transition shadow-md text-sm whitespace-nowrap">Tambah</button>
                             </form>
 
                             <div class="bg-run-purple/5 rounded-xl border border-run-purple/10 p-3 h-48 overflow-y-auto custom-scroll">
                                 <ul id="list-kategori-kustom" class="space-y-2">
                                     <!-- List kategori kustom dimuat disini -->
                                 </ul>
-                                <p id="empty-kategori-kustom" class="text-xs text-center text-run-purple/40 font-medium py-16">Belum ada kategori kustom.</p>
+                                <p id="empty-kategori-kustom" class="text-xs text-center text-run-purple/40 font-medium py-16">Belum ada kategori.</p>
                             </div>
                         </div>
 
@@ -336,7 +337,7 @@
         let idToDelete = null;
         
         // VARIABEL GLOBAL PENGATURAN & FORM
-        let customKategori = { pengeluaran: [], pemasukan: [] };
+        let kategoriData = { pengeluaran: [], pemasukan: [] };
         let isPengeluaran = true;
         let isSettingsPengeluaran = true;
         let currentEditId = null;
@@ -382,26 +383,28 @@
         const inputKategoriBaru = document.getElementById('input-kategori-baru');
         const listKategoriKustom = document.getElementById('list-kategori-kustom');
         const emptyKategoriKustom = document.getElementById('empty-kategori-kustom');
+        const btnCancelEditKategori = document.getElementById('btn-cancel-edit-kategori');
+        const btnSubmitKategori = document.getElementById('btn-submit-kategori');
 
         // ----------------------------------------------------
-        // DATA KATEGORI BAWAAN SISTEM
+        // DATA KATEGORI BAWAAN SISTEM (Akan Dimasukkan Saat Akun Baru)
         // ----------------------------------------------------
-        const kategoriPengeluaran = [
-            { group: "MAKANAN", items: ["11 - Makanan Pokok", "12 - Aqua Galon", "13 - Makanan Ringan", "14 - Makanan Khusus Olahraga", "15 - Pemberian Makanan"] },
-            { group: "TRANSPORTASI", items: ["21 - Bensin Motor", "22 - Travel/Perjalanan", "23 - Parkir", "24 - Sewa Kendaraan"] },
-            { group: "GAMING", items: ["31 - Top Up Game"] },
-            { group: "KEBUTUHAN BULANAN", items: ["41 - Kuota Internet", "42 - Wifi", "43 - Listrik", "44 - Laundry", "45 - Gas Kompor", "46 - Bahan-Bahan Dapur"] },
-            { group: "BELANJA/BEBAN", items: ["51 - Selfcare/Cleaning/Healthy", "52 - Perlengkapan", "53 - Alat Pendidikan/Edukasi", "54 - Pengiriman"] },
-            { group: "SEWA/KONTRAK PROPERTI", items: ["61 - Kos/Sewa Rumah"] },
-            { group: "PEMELIHARAAN", items: ["71 - Pemeliharaan AC Split", "72 - Pemeliharaan Motor", "73 - Pemeliharaan Laptop", "74 - Pemeliharaan Handphone", "75 - Pemeliharaan Aset Lainnya"] },
-            { group: "ENTERTAINMENT/LANGGANAN", items: ["81 - Netflix", "82 - Spotify", "83 - Aplikasi Lainnya"] },
-            { group: "HOBI/KONSUMTIF", items: ["91 - Belanja Hobi/Kesenangan", "92 - Hotel", "93 - Wahana/Wisata", "94 - Fashion"] },
-            { group: "OLAHRAGA", items: ["101 - Member Gym", "102 - Alat dan Event Olahraga"] },
-            { group: "UANG KELUAR/PENGALIHAN", items: ["111 - Uang Kas Paguyuban/Seksi", "112 - Iuran CBB", "113 - Biaya Administrasi Bank", "114 - Donasi/Iuran Lainnya", "115 - Bea Meterai", "116 - Pemberian Hadiah/Oleh-oleh", "117 - Biaya Administrasi Lainnya", "118 - Simpanan Pokok KKMP", "119 - Simpanan Wajib KKMP"] }
+        const defaultPengeluaran = [
+            "11 - Makanan Pokok", "12 - Aqua Galon", "13 - Makanan Ringan", "14 - Makanan Khusus Olahraga", "15 - Pemberian Makanan",
+            "21 - Bensin Motor", "22 - Travel/Perjalanan", "23 - Parkir", "24 - Sewa Kendaraan",
+            "31 - Top Up Game",
+            "41 - Kuota Internet", "42 - Wifi", "43 - Listrik", "44 - Laundry", "45 - Gas Kompor", "46 - Bahan-Bahan Dapur",
+            "51 - Selfcare/Cleaning/Healthy", "52 - Perlengkapan", "53 - Alat Pendidikan/Edukasi", "54 - Pengiriman",
+            "61 - Kos/Sewa Rumah",
+            "71 - Pemeliharaan AC Split", "72 - Pemeliharaan Motor", "73 - Pemeliharaan Laptop", "74 - Pemeliharaan Handphone", "75 - Pemeliharaan Aset Lainnya",
+            "81 - Netflix", "82 - Spotify", "83 - Aplikasi Lainnya",
+            "91 - Belanja Hobi/Kesenangan", "92 - Hotel", "93 - Wahana/Wisata", "94 - Fashion",
+            "101 - Member Gym", "102 - Alat dan Event Olahraga",
+            "111 - Uang Kas Paguyuban/Seksi", "112 - Iuran CBB", "113 - Biaya Administrasi Bank", "114 - Donasi/Iuran Lainnya", "115 - Bea Meterai", "116 - Pemberian Hadiah/Oleh-oleh", "117 - Biaya Administrasi Lainnya", "118 - Simpanan Pokok KKMP", "119 - Simpanan Wajib KKMP"
         ];
 
-        const kategoriPemasukan = [
-            { group: "PEMASUKAN", items: ["1 - Gaji/Pendapatan Utama", "2 - Bonus/Tunjangan", "3 - Hasil Usaha/Investasi", "4 - Uang Masuk/Pengalihan", "5 - Pemasukan Lainnya"] }
+        const defaultPemasukan = [
+            "1 - Gaji/Pendapatan Utama", "2 - Bonus/Tunjangan", "3 - Hasil Usaha/Investasi", "4 - Uang Masuk/Pengalihan", "5 - Pemasukan Lainnya"
         ];
 
         // ----------------------------------------------------
@@ -456,12 +459,21 @@
             try {
                 const docRef = doc(db, 'users', currentUser.uid, 'settings', 'kategori');
                 const docSnap = await getDoc(docRef);
+                
                 if (docSnap.exists()) {
-                    customKategori = docSnap.data();
-                    // Pastikan array selalu ada meski kosong
-                    if(!customKategori.pengeluaran) customKategori.pengeluaran = [];
-                    if(!customKategori.pemasukan) customKategori.pemasukan = [];
+                    kategoriData = docSnap.data();
+                    // Jika tidak ada data array karena error atau baru, isi dengan default
+                    if(!kategoriData.pengeluaran || kategoriData.pengeluaran.length === 0) kategoriData.pengeluaran = [...defaultPengeluaran];
+                    if(!kategoriData.pemasukan || kategoriData.pemasukan.length === 0) kategoriData.pemasukan = [...defaultPemasukan];
+                } else {
+                    // Akun baru, buat struktur default dan simpan ke Cloud
+                    kategoriData = {
+                        pengeluaran: [...defaultPengeluaran],
+                        pemasukan: [...defaultPemasukan]
+                    };
+                    await setDoc(docRef, kategoriData);
                 }
+                
                 renderDropdownKategori();
                 renderUIKategoriKustom();
             } catch (error) {
@@ -473,10 +485,9 @@
             if (!currentUser) return;
             try {
                 const docRef = doc(db, 'users', currentUser.uid, 'settings', 'kategori');
-                await setDoc(docRef, customKategori);
+                await setDoc(docRef, kategoriData);
                 renderDropdownKategori(); // Update form dropdown
                 renderUIKategoriKustom(); // Update list di settings
-                showToast("Pengaturan disimpan");
             } catch (error) {
                 showToast("Gagal menyimpan pengaturan", "error");
             }
@@ -484,40 +495,22 @@
 
         function renderDropdownKategori() {
             inputKategori.innerHTML = '';
-            const dataDefault = isPengeluaran ? kategoriPengeluaran : kategoriPemasukan;
-            const dataKustom = isPengeluaran ? customKategori.pengeluaran : customKategori.pemasukan;
+            const dataToRender = isPengeluaran ? kategoriData.pengeluaran : kategoriData.pemasukan;
             
-            // Render Kategori Kustom
-            if (dataKustom && dataKustom.length > 0) {
-                const optgroupKustom = document.createElement('optgroup');
-                optgroupKustom.label = "KATEGORI SAYA (KUSTOM)";
-                optgroupKustom.className = 'font-bold text-run-red';
-                
-                dataKustom.forEach(item => {
+            if (dataToRender && dataToRender.length > 0) {
+                dataToRender.forEach(item => {
                     const option = document.createElement('option');
                     option.value = item;
                     option.textContent = item;
                     option.className = 'font-medium text-gray-800';
-                    optgroupKustom.appendChild(option);
+                    inputKategori.appendChild(option);
                 });
-                inputKategori.appendChild(optgroupKustom);
+            } else {
+                const option = document.createElement('option');
+                option.value = "";
+                option.textContent = "Belum ada kategori";
+                inputKategori.appendChild(option);
             }
-
-            // Render Kategori Bawaan
-            dataDefault.forEach(group => {
-                const optgroup = document.createElement('optgroup');
-                optgroup.label = group.group;
-                optgroup.className = 'font-bold text-run-purple';
-                
-                group.items.forEach(item => {
-                    const option = document.createElement('option');
-                    option.value = item;
-                    option.textContent = item;
-                    option.className = 'font-medium text-gray-600';
-                    optgroup.appendChild(option);
-                });
-                inputKategori.appendChild(optgroup);
-            });
         }
 
         function setModeTransaksi(kePengeluaran) {
@@ -534,6 +527,21 @@
         tabPengeluaran.addEventListener('click', () => setModeTransaksi(true));
         tabPemasukan.addEventListener('click', () => setModeTransaksi(false));
 
+        // Manajemen Status Edit Kategori
+        let isEditingCategory = false;
+        let editingCategoryIndex = null;
+
+        function resetKategoriForm() {
+            isEditingCategory = false;
+            editingCategoryIndex = null;
+            inputKategoriBaru.value = '';
+            btnCancelEditKategori.classList.add('hidden');
+            btnSubmitKategori.innerText = "Tambah";
+            btnSubmitKategori.classList.add('bg-run-purple', 'hover:bg-[#3d1d56]');
+            btnSubmitKategori.classList.remove('bg-run-red', 'hover:bg-[#c40024]', 'shadow-run-red/30');
+        }
+        btnCancelEditKategori.addEventListener('click', resetKategoriForm);
+
         // Pengaturan Kategori UI Switcher
         function setModePengaturanKategori(kePengeluaran) {
             isSettingsPengeluaran = kePengeluaran;
@@ -544,6 +552,7 @@
                 setTabPemasukan.className = "flex-1 py-2 text-xs font-bold rounded-xl bg-run-purple text-run-white shadow-sm transition-all";
                 setTabPengeluaran.className = "flex-1 py-2 text-xs font-bold rounded-xl text-run-purple/50 hover:text-run-purple hover:bg-run-purple/10 transition-all";
             }
+            resetKategoriForm();
             renderUIKategoriKustom();
         }
         setTabPengeluaran.addEventListener('click', () => setModePengaturanKategori(true));
@@ -551,7 +560,7 @@
 
         function renderUIKategoriKustom() {
             listKategoriKustom.innerHTML = '';
-            const dataTarget = isSettingsPengeluaran ? customKategori.pengeluaran : customKategori.pemasukan;
+            const dataTarget = isSettingsPengeluaran ? kategoriData.pengeluaran : kategoriData.pemasukan;
 
             if (!dataTarget || dataTarget.length === 0) {
                 emptyKategoriKustom.classList.remove('hidden');
@@ -562,9 +571,14 @@
                     li.className = "flex justify-between items-center bg-run-white p-2.5 rounded-lg border border-run-purple/5";
                     li.innerHTML = `
                         <span class="text-sm font-bold text-run-purple truncate pr-2">${item}</span>
-                        <button onclick="window.hapusKategoriKustom(${index})" class="text-run-red hover:bg-run-red/10 p-1.5 rounded-md transition shrink-0">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                        </button>
+                        <div class="flex items-center gap-1 shrink-0">
+                            <button onclick="window.editKategori(${index})" class="text-run-purple hover:bg-run-purple/10 p-1.5 rounded-md transition">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+                            </button>
+                            <button onclick="window.hapusKategoriKustom(${index})" class="text-run-red hover:bg-run-red/10 p-1.5 rounded-md transition">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                            </button>
+                        </div>
                     `;
                     listKategoriKustom.appendChild(li);
                 });
@@ -576,24 +590,52 @@
             const val = inputKategoriBaru.value.trim();
             if(!val) return;
             
-            if(isSettingsPengeluaran) {
-                if(customKategori.pengeluaran.includes(val)) return showToast("Kategori sudah ada", "error");
-                customKategori.pengeluaran.push(val);
+            const arr = isSettingsPengeluaran ? kategoriData.pengeluaran : kategoriData.pemasukan;
+            
+            if(isEditingCategory) {
+                // Proses Edit
+                if(arr.includes(val) && val !== arr[editingCategoryIndex]) {
+                    return showToast("Nama kategori sudah digunakan", "error");
+                }
+                arr[editingCategoryIndex] = val;
+                showToast("Kategori diperbarui");
             } else {
-                if(customKategori.pemasukan.includes(val)) return showToast("Kategori sudah ada", "error");
-                customKategori.pemasukan.push(val);
+                // Proses Tambah
+                if(arr.includes(val)) {
+                    return showToast("Kategori sudah ada", "error");
+                }
+                arr.push(val);
+                showToast("Kategori ditambahkan");
             }
             
-            inputKategoriBaru.value = '';
+            resetKategoriForm();
             saveSettings();
         });
 
+        window.editKategori = (index) => {
+            const arr = isSettingsPengeluaran ? kategoriData.pengeluaran : kategoriData.pemasukan;
+            inputKategoriBaru.value = arr[index];
+            isEditingCategory = true;
+            editingCategoryIndex = index;
+            
+            btnCancelEditKategori.classList.remove('hidden');
+            btnSubmitKategori.innerText = "Simpan";
+            btnSubmitKategori.classList.remove('bg-run-purple', 'hover:bg-[#3d1d56]');
+            btnSubmitKategori.classList.add('bg-run-red', 'hover:bg-[#c40024]', 'shadow-run-red/30');
+            inputKategoriBaru.focus();
+        };
+
         window.hapusKategoriKustom = (index) => {
             if(isSettingsPengeluaran) {
-                customKategori.pengeluaran.splice(index, 1);
+                kategoriData.pengeluaran.splice(index, 1);
             } else {
-                customKategori.pemasukan.splice(index, 1);
+                kategoriData.pemasukan.splice(index, 1);
             }
+            // Reset bila menghapus yg sedang diedit
+            if (isEditingCategory && editingCategoryIndex === index) {
+                resetKategoriForm();
+            }
+            showToast("Kategori dihapus");
             saveSettings();
         };
 
@@ -750,7 +792,7 @@
                 
                 if (unsubscribeSnapshot) unsubscribeSnapshot();
                 transaksiData = [];
-                customKategori = { pengeluaran: [], pemasukan: [] };
+                kategoriData = { pengeluaran: [], pemasukan: [] };
                 renderUI();
             }
         });
@@ -875,10 +917,11 @@
                             
                             <div class="flex flex-wrap items-center gap-x-1.5 md:gap-x-2 gap-y-1 mt-1">
                                 ${formattedTanggal ? `<span class="text-[11px] md:text-sm text-run-purple/60 font-semibold whitespace-nowrap">${formattedTanggal}</span>` : ''}
-                                <span class="text-[10px] text-run-purple/30">•</span>
-                                <button onclick="window.triggerEdit('${t.id}')" class="text-[11px] md:text-sm text-run-purple hover:text-run-purple/70 font-bold transition whitespace-nowrap">Edit</button>
-                                <span class="text-[10px] text-run-purple/30">•</span>
-                                <button onclick="window.triggerDelete('${t.id}')" class="text-[11px] md:text-sm text-run-red hover:text-[#c40024] font-bold transition whitespace-nowrap">Hapus</button>
+                                <span class="text-[10px] text-run-purple/30 hidden md:inline">•</span>
+                                <div class="flex gap-2 items-center w-full md:w-auto mt-1 md:mt-0">
+                                    <button onclick="window.triggerEdit('${t.id}')" class="text-[11px] md:text-sm text-run-purple hover:text-run-purple/70 font-bold transition whitespace-nowrap bg-run-purple/5 md:bg-transparent px-2 md:px-0 py-1 md:py-0 rounded-md">Edit</button>
+                                    <button onclick="window.triggerDelete('${t.id}')" class="text-[11px] md:text-sm text-run-red hover:text-[#c40024] font-bold transition whitespace-nowrap bg-run-red/5 md:bg-transparent px-2 md:px-0 py-1 md:py-0 rounded-md">Hapus</button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -911,6 +954,7 @@
             btnCancelEdit.classList.remove('hidden');
             formTransaksi.classList.add('ring-4', 'ring-run-purple/20');
             
+            // Scroll ke form jika sedang di HP
             formTransaksi.scrollIntoView({ behavior: 'smooth', block: 'center' });
             renderUI(); 
         };
