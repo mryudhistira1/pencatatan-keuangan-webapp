@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RUN APP - Keuangan</title>
+    <title>RUN FINANCE</title>
     
-    <!-- FAVICON BARU: Memanggil file logo asli (Pastikan file bernama logo.png sudah di-upload ke GitHub) -->
+    <!-- FAVICON BARU: Memanggil file logo.png -->
     <link rel="icon" href="logo.png" type="image/png">
     <link rel="apple-touch-icon" href="logo.png">
     
@@ -26,33 +26,39 @@
         }
     </script>
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <!-- FONT BARU: Montserrat Alternates (Untuk Logo) & Inter (Untuk Teks Dasar) -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@600;700;800;900&family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Inter', sans-serif; background-color: #FEFEFE; }
+        .font-montserrat { font-family: 'Montserrat Alternates', sans-serif; }
+        
         .toast-enter { transform: translateY(100%); opacity: 0; }
         .toast-enter-active { transform: translateY(0); opacity: 1; transition: all 0.3s ease-out; }
         .toast-exit { transform: translateY(0); opacity: 1; }
         .toast-exit-active { transform: translateY(100%); opacity: 0; transition: all 0.3s ease-in; }
-        .hide-scrollbar::-webkit-scrollbar { display: none; }
-        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        .custom-scroll::-webkit-scrollbar { width: 6px; }
+        .custom-scroll::-webkit-scrollbar-track { background: transparent; }
+        .custom-scroll::-webkit-scrollbar-thumb { background-color: #512D6D20; border-radius: 20px; }
+        .custom-scroll::-webkit-scrollbar-thumb:hover { background-color: #512D6D50; }
     </style>
 </head>
-<body class="text-run-purple antialiased min-h-screen flex flex-col items-center">
+<body class="text-run-purple antialiased min-h-screen flex flex-col md:flex-row overflow-hidden">
 
     <!-- Loading Screen (Saat mengecek Auth) -->
     <div id="loading-screen" class="fixed inset-0 bg-run-white z-50 flex flex-col items-center justify-center">
         <div class="animate-spin rounded-full h-12 w-12 border-b-4 border-run-red mb-4"></div>
-        <p class="text-run-purple font-medium tracking-widest">RUN APP</p>
+        <p class="text-run-purple font-medium tracking-widest font-montserrat">RUN FINANCE</p>
     </div>
 
     <!-- Halaman Login -->
-    <div id="login-view" class="hidden w-full max-w-md p-6 mt-16">
+    <div id="login-view" class="hidden w-full max-w-md p-6 mx-auto mt-16 z-40 overflow-y-auto">
         <div class="bg-run-white rounded-2xl shadow-xl p-8 text-center border border-run-purple/10 relative overflow-hidden">
             <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-run-purple to-run-red"></div>
-            <div class="w-20 h-20 bg-run-purple/10 text-run-red rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-inner transform rotate-3">
-                <svg class="w-10 h-10 transform -rotate-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+            <div class="w-24 h-24 flex items-center justify-center mx-auto mb-4">
+                <img src="logo.png" alt="Logo" class="w-full h-full object-contain drop-shadow-md" onerror="this.style.display='none'">
             </div>
-            <h1 class="text-3xl font-extrabold mb-2 text-run-purple tracking-tight">RUN <span class="text-run-red">APP</span></h1>
+            <h1 class="text-3xl font-extrabold mb-2 text-run-purple tracking-tight font-montserrat">RUN <span class="text-run-red">FINANCE</span></h1>
             <p class="text-run-purple/60 mb-8 text-sm font-medium">Masuk untuk mulai mencatat keuangan harian Anda secara aman di Cloud.</p>
             
             <button id="btn-login-google" class="w-full flex items-center justify-center gap-3 bg-run-white border-2 border-run-purple/20 hover:border-run-purple hover:bg-run-purple/5 text-run-purple font-bold py-3 px-4 rounded-xl transition duration-200 shadow-sm">
@@ -71,126 +77,178 @@
     </div>
 
     <!-- Main App View -->
-    <div id="app-view" class="hidden w-full max-w-md md:max-w-5xl mx-auto md:mt-8 mb-20 px-4 md:px-0">
+    <div id="app-view" class="hidden w-full h-full flex flex-col md:flex-row flex-1">
         
-        <!-- Header -->
-        <div class="flex justify-between items-center p-6 bg-run-white md:rounded-t-2xl md:border md:border-b-0 border-run-purple/10">
-            <div>
-                <h1 class="text-2xl font-extrabold text-run-purple tracking-tight">RUN <span class="text-run-red">APP</span></h1>
-                <p id="user-greeting" class="text-sm font-medium text-run-purple/60">Halo, Pengguna</p>
+        <!-- SIDEBAR -->
+        <!-- Overlay untuk HP saat sidebar terbuka -->
+        <div id="sidebar-overlay" class="fixed inset-0 bg-run-purple/50 z-40 hidden md:hidden backdrop-blur-sm transition-opacity"></div>
+        
+        <aside id="sidebar" class="fixed md:relative inset-y-0 left-0 z-50 w-64 bg-run-white border-r border-run-purple/10 transform -translate-x-full md:translate-x-0 transition-transform duration-300 flex flex-col shadow-2xl md:shadow-none">
+            <!-- Header Sidebar -->
+            <div class="h-20 flex items-center justify-between px-6 border-b border-run-purple/10">
+                <h1 class="text-xl md:text-2xl font-extrabold text-run-purple tracking-tight font-montserrat">RUN<span class="text-run-red">FINANCE</span></h1>
+                <button id="btn-close-sidebar" class="md:hidden text-run-purple/60 hover:text-run-red p-2 rounded-lg">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
             </div>
-            <button id="btn-logout" class="text-sm bg-run-red/10 hover:bg-run-red hover:text-run-white text-run-red font-bold py-2 px-4 rounded-lg transition duration-300">Keluar</button>
-        </div>
-
-        <!-- Tab Navigasi Menu Masa Depan -->
-        <div class="bg-run-white border-b-2 border-run-purple/10 px-4 md:border-x md:border-run-purple/10 overflow-x-auto hide-scrollbar sticky top-0 z-10">
-            <div class="flex space-x-2 sm:space-x-4 min-w-max py-3">
-                <button onclick="window.showComingSoon('Dashboard')" class="px-5 py-2.5 text-sm font-semibold text-run-purple/60 hover:text-run-purple hover:bg-run-purple/5 rounded-xl transition">Dashboard</button>
-                <!-- Menu Aktif Saat Ini -->
-                <button class="px-5 py-2.5 text-sm font-bold text-run-white bg-run-purple shadow-md rounded-xl transition">Rekam Harian</button>
-                <button onclick="window.showComingSoon('Perencanaan')" class="px-5 py-2.5 text-sm font-semibold text-run-purple/60 hover:text-run-purple hover:bg-run-purple/5 rounded-xl transition">Perencanaan</button>
-                <button onclick="window.showComingSoon('Report Mingguan')" class="px-5 py-2.5 text-sm font-semibold text-run-purple/60 hover:text-run-purple hover:bg-run-purple/5 rounded-xl transition">Report</button>
-            </div>
-        </div>
-
-        <!-- Konten Utama (Grid) -->
-        <div class="bg-run-white p-6 md:rounded-b-2xl shadow-xl md:shadow-sm border border-run-purple/10 border-t-0 md:p-8">
             
-            <div class="grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-12">
-                
-                <!-- KIRI: Saldo & Form -->
-                <div class="md:col-span-5 flex flex-col">
-                    <!-- Saldo Card -->
-                    <div class="bg-run-purple text-run-white rounded-2xl p-6 mb-8 shadow-lg relative overflow-hidden">
-                        <div class="absolute -right-10 -top-10 w-32 h-32 bg-run-red rounded-full opacity-90 blur-2xl"></div>
-                        <div class="absolute -left-6 -bottom-6 w-24 h-24 bg-run-white rounded-full opacity-10 blur-xl"></div>
-                        <p class="text-run-white/70 text-sm font-semibold mb-1 relative z-10 uppercase tracking-wider">Total Saldo Saat Ini</p>
-                        <h2 id="saldo-total" class="text-4xl font-extrabold tracking-tight relative z-10 mt-2">Rp 0</h2>
-                    </div>
-
-                    <!-- Form Input -->
-                    <form id="form-transaksi" class="bg-run-white p-6 rounded-2xl border-2 border-run-purple/5 shadow-sm">
-                        <h3 class="text-sm font-bold text-run-red mb-5 uppercase tracking-widest border-b border-run-purple/10 pb-3">Tambah Transaksi</h3>
-                        
-                        <div class="mb-4">
-                            <label class="block text-run-purple text-sm font-bold mb-2">Nama Transaksi</label>
-                            <input type="text" id="keterangan" required class="w-full bg-run-purple/5 border-2 border-transparent rounded-xl py-3 px-4 text-run-purple font-medium focus:bg-run-white focus:ring-0 focus:border-run-red outline-none transition" placeholder="Cth: Makan Siang, Bensin">
-                        </div>
-                        
-                        <!-- Input Tanggal (Bisa diubah/Fleksibel) -->
-                        <div class="mb-4">
-                            <label class="block text-run-purple text-sm font-bold mb-2">Tanggal Transaksi</label>
-                            <input type="date" id="tanggal" required class="w-full bg-run-purple/5 border-2 border-transparent rounded-xl py-3 px-4 text-run-purple font-medium focus:bg-run-white focus:ring-0 focus:border-run-red outline-none transition">
-                        </div>
-
-                        <div class="flex gap-4 mb-6">
-                            <div class="w-3/5">
-                                <label class="block text-run-purple text-sm font-bold mb-2">Jumlah (Rp)</label>
-                                <!-- Tipe diubah jadi text agar bisa menerima titik dan koma -->
-                                <input type="text" id="jumlah" inputmode="decimal" required class="w-full bg-run-purple/5 border-2 border-transparent rounded-xl py-3 px-4 text-run-purple font-medium focus:bg-run-white focus:ring-0 focus:border-run-red outline-none transition" placeholder="10.000,50">
-                            </div>
-                            <div class="w-2/5">
-                                <label class="block text-run-purple text-sm font-bold mb-2">Jenis</label>
-                                <select id="jenis" class="w-full bg-run-purple/5 border-2 border-transparent rounded-xl py-3 px-4 text-run-purple font-bold focus:bg-run-white focus:ring-0 focus:border-run-red outline-none transition appearance-none">
-                                    <option value="pengeluaran">Keluar (-)</option>
-                                    <option value="pemasukan">Masuk (+)</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <button type="submit" class="bg-run-red hover:bg-[#c40024] text-run-white font-bold py-3.5 px-4 rounded-xl w-full transition duration-300 shadow-lg shadow-run-red/30 flex items-center justify-center gap-2">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path></svg>
-                            Simpan Transaksi
-                        </button>
-                    </form>
-                </div>
-
-                <!-- KANAN: Daftar Transaksi -->
-                <div class="md:col-span-7 mt-8 md:mt-0">
-                    <div class="flex justify-between items-end mb-5 px-1">
-                        <h3 class="text-lg font-extrabold text-run-purple">Riwayat Terakhir</h3>
-                    </div>
-                    
-                    <div class="md:max-h-[550px] md:overflow-y-auto md:pr-4 custom-scroll">
-                        <ul id="daftar-transaksi" class="space-y-4">
-                            <!-- Data transaksi akan di-render di sini -->
-                        </ul>
-                        
-                        <div id="empty-state" class="hidden text-center py-12 bg-run-purple/5 rounded-2xl border-2 border-dashed border-run-purple/20">
-                            <div class="w-16 h-16 bg-run-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-sm text-run-purple/40">
-                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                            </div>
-                            <p class="text-run-purple/60 font-semibold text-sm">Belum ada transaksi dicatat.</p>
-                            <p class="text-run-purple/40 text-xs mt-1">Isi form di samping untuk memulai.</p>
-                        </div>
-                    </div>
-                </div>
-
+            <!-- Profil Singkat -->
+            <div class="px-6 py-5 border-b border-run-purple/5">
+                <p class="text-xs font-semibold text-run-purple/50 uppercase tracking-wider mb-1">Akun Anda</p>
+                <p id="user-greeting" class="text-sm font-bold text-run-purple truncate">Halo, Pengguna</p>
             </div>
+
+            <!-- Navigasi Menu -->
+            <nav class="flex-1 px-4 py-6 space-y-2 overflow-y-auto custom-scroll">
+                <button onclick="window.showComingSoon('Dashboard')" class="w-full flex items-center gap-3 px-4 py-3 text-sm font-semibold text-run-purple/60 hover:text-run-purple hover:bg-run-purple/5 rounded-xl transition">
+                    <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+                    Dashboard
+                </button>
+                <button class="w-full flex items-center gap-3 px-4 py-3 text-sm font-bold text-run-white bg-run-purple shadow-md rounded-xl transition">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                    Rekam Harian
+                </button>
+                <button onclick="window.showComingSoon('Perencanaan')" class="w-full flex items-center gap-3 px-4 py-3 text-sm font-semibold text-run-purple/60 hover:text-run-purple hover:bg-run-purple/5 rounded-xl transition">
+                    <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                    Perencanaan
+                </button>
+                <button onclick="window.showComingSoon('Report Mingguan')" class="w-full flex items-center gap-3 px-4 py-3 text-sm font-semibold text-run-purple/60 hover:text-run-purple hover:bg-run-purple/5 rounded-xl transition">
+                    <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                    Report
+                </button>
+            </nav>
+
+            <!-- Bottom Sidebar (Logout) -->
+            <div class="p-4 border-t border-run-purple/10">
+                <button id="btn-logout" class="w-full flex items-center justify-center gap-2 text-sm bg-run-red/10 hover:bg-run-red hover:text-run-white text-run-red font-bold py-3 px-4 rounded-xl transition duration-300">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                    Keluar
+                </button>
+            </div>
+        </aside>
+
+        <!-- KONTEN UTAMA -->
+        <div class="flex-1 flex flex-col h-screen overflow-hidden">
+            
+            <!-- Mobile Header (Hanya tampil di HP) -->
+            <header class="md:hidden flex items-center justify-between h-20 px-6 bg-run-white border-b border-run-purple/10 z-30">
+                <button id="btn-open-sidebar" class="text-run-purple hover:text-run-red p-2 -ml-2 rounded-lg transition">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </button>
+                <h1 class="text-xl font-extrabold text-run-purple tracking-tight font-montserrat">RUN<span class="text-run-red">FINANCE</span></h1>
+                <div class="w-8"></div> <!-- Spacer penyeimbang -->
+            </header>
+
+            <!-- Area Scroll Konten -->
+            <main class="flex-1 overflow-y-auto bg-run-white p-4 md:p-8 custom-scroll">
+                <div class="max-w-6xl mx-auto pb-24 md:pb-10">
+                    
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10">
+                        
+                        <!-- KIRI: Saldo & Form -->
+                        <div class="lg:col-span-5 flex flex-col">
+                            <!-- Saldo Card -->
+                            <div class="bg-run-purple text-run-white rounded-3xl p-7 mb-8 shadow-xl relative overflow-hidden">
+                                <div class="absolute -right-10 -top-10 w-40 h-40 bg-run-red rounded-full opacity-90 blur-3xl"></div>
+                                <div class="absolute -left-6 -bottom-6 w-32 h-32 bg-run-white rounded-full opacity-10 blur-2xl"></div>
+                                <p class="text-run-white/80 text-xs font-bold mb-1 relative z-10 uppercase tracking-widest">Total Saldo Saat Ini</p>
+                                <h2 id="saldo-total" class="text-4xl lg:text-5xl font-extrabold tracking-tighter relative z-10 mt-2">Rp 0</h2>
+                            </div>
+
+                            <!-- Form Input -->
+                            <form id="form-transaksi" class="bg-run-white p-6 rounded-3xl border border-run-purple/10 shadow-sm relative">
+                                <h3 id="form-title" class="text-sm font-bold text-run-purple mb-5 uppercase tracking-widest border-b border-run-purple/10 pb-4">Tambah Transaksi Baru</h3>
+                                
+                                <!-- Toggle Pengeluaran/Pemasukan -->
+                                <div class="flex gap-2 p-1.5 bg-run-purple/5 rounded-2xl mb-6">
+                                    <button type="button" id="tab-pengeluaran" class="flex-1 py-3 text-sm font-bold rounded-xl bg-run-red text-run-white shadow-md transition-all">Pengeluaran</button>
+                                    <button type="button" id="tab-pemasukan" class="flex-1 py-3 text-sm font-bold rounded-xl text-run-purple/50 hover:text-run-purple hover:bg-run-purple/10 transition-all">Pemasukan</button>
+                                </div>
+                                
+                                <div class="mb-4">
+                                    <label class="block text-run-purple text-xs font-bold mb-2 uppercase tracking-wide">Nama Transaksi</label>
+                                    <input type="text" id="keterangan" required class="w-full bg-run-purple/5 border-2 border-transparent rounded-xl py-3.5 px-4 text-run-purple font-medium focus:bg-run-white focus:ring-0 focus:border-run-red outline-none transition" placeholder="Cth: Makan Siang, Bensin">
+                                </div>
+
+                                <div class="mb-4">
+                                    <label class="block text-run-purple text-xs font-bold mb-2 uppercase tracking-wide">Kategori</label>
+                                    <select id="kategori" required class="w-full bg-run-purple/5 border-2 border-transparent rounded-xl py-3.5 px-4 text-run-purple font-semibold focus:bg-run-white focus:ring-0 focus:border-run-red outline-none transition appearance-none cursor-pointer">
+                                        <!-- Opsi kategori akan diisi oleh JavaScript -->
+                                    </select>
+                                </div>
+                                
+                                <div class="flex gap-4 mb-6">
+                                    <div class="w-1/2">
+                                        <label class="block text-run-purple text-xs font-bold mb-2 uppercase tracking-wide">Jumlah (Rp)</label>
+                                        <input type="text" id="jumlah" inputmode="decimal" required class="w-full bg-run-purple/5 border-2 border-transparent rounded-xl py-3.5 px-4 text-run-purple font-medium focus:bg-run-white focus:ring-0 focus:border-run-red outline-none transition" placeholder="10.000,50">
+                                    </div>
+                                    <div class="w-1/2">
+                                        <label class="block text-run-purple text-xs font-bold mb-2 uppercase tracking-wide">Tanggal</label>
+                                        <input type="date" id="tanggal" required class="w-full bg-run-purple/5 border-2 border-transparent rounded-xl py-3.5 px-4 text-run-purple font-medium focus:bg-run-white focus:ring-0 focus:border-run-red outline-none transition cursor-pointer">
+                                    </div>
+                                </div>
+
+                                <div class="flex gap-2">
+                                    <button type="button" id="btn-cancel-edit" class="hidden bg-run-purple/10 hover:bg-run-purple/20 text-run-purple font-bold py-3.5 px-4 rounded-xl transition duration-300 w-1/3">Batal</button>
+                                    <button type="submit" id="btn-submit-form" class="flex-1 bg-run-red hover:bg-[#c40024] text-run-white font-bold py-3.5 px-4 rounded-xl transition duration-300 shadow-lg shadow-run-red/20 flex items-center justify-center gap-2">
+                                        <svg class="w-5 h-5 icon-submit" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path></svg>
+                                        <span id="text-submit-form">Simpan Transaksi</span>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- KANAN: Daftar Transaksi -->
+                        <div class="lg:col-span-7 mt-4 lg:mt-0">
+                            <div class="flex justify-between items-end mb-5 px-1">
+                                <h3 class="text-lg font-extrabold text-run-purple">Riwayat Terakhir</h3>
+                            </div>
+                            
+                            <div>
+                                <ul id="daftar-transaksi" class="space-y-4">
+                                    <!-- Data transaksi akan di-render di sini -->
+                                </ul>
+                                
+                                <div id="empty-state" class="hidden text-center py-16 bg-run-purple/5 rounded-3xl border-2 border-dashed border-run-purple/10">
+                                    <div class="w-20 h-20 bg-run-white rounded-full flex items-center justify-center mx-auto mb-5 shadow-sm text-run-purple/30">
+                                        <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                                    </div>
+                                    <p class="text-run-purple/60 font-bold text-base">Belum ada transaksi dicatat.</p>
+                                    <p class="text-run-purple/40 text-sm mt-1">Isi form di samping untuk memulai.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </main>
         </div>
     </div>
 
     <!-- Custom Modal Konfirmasi Hapus -->
     <div id="modal-confirm" class="hidden fixed inset-0 bg-run-purple/90 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-        <div class="bg-run-white rounded-2xl p-6 w-full max-w-sm shadow-2xl transform scale-100 transition-all">
+        <div class="bg-run-white rounded-3xl p-7 w-full max-w-sm shadow-2xl transform scale-100 transition-all text-center">
+            <div class="w-16 h-16 bg-run-red/10 text-run-red rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+            </div>
             <h3 class="text-xl font-extrabold text-run-purple mb-2">Hapus Transaksi?</h3>
-            <p class="text-run-purple/70 text-sm font-medium mb-8">Data ini akan dihapus permanen. Total saldo Anda akan otomatis disesuaikan.</p>
-            <div class="flex justify-end gap-3">
-                <button id="btn-cancel-delete" class="px-5 py-2.5 bg-run-purple/10 hover:bg-run-purple/20 text-run-purple font-bold rounded-xl transition">Batal</button>
-                <button id="btn-confirm-delete" class="px-5 py-2.5 bg-run-red hover:bg-[#c40024] text-run-white font-bold rounded-xl transition shadow-lg shadow-run-red/30">Ya, Hapus</button>
+            <p class="text-run-purple/60 text-sm font-medium mb-8">Data ini akan dihapus permanen. Total saldo Anda akan otomatis disesuaikan.</p>
+            <div class="flex gap-3">
+                <button id="btn-cancel-delete" class="flex-1 py-3.5 bg-run-purple/10 hover:bg-run-purple/20 text-run-purple font-bold rounded-xl transition">Batal</button>
+                <button id="btn-confirm-delete" class="flex-1 py-3.5 bg-run-red hover:bg-[#c40024] text-run-white font-bold rounded-xl transition shadow-lg shadow-run-red/30">Hapus</button>
             </div>
         </div>
     </div>
 
     <!-- Custom Toast Notification -->
-    <div id="toast-container" class="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-50 flex flex-col gap-3 pointer-events-none"></div>
+    <div id="toast-container" class="fixed bottom-6 md:top-6 md:bottom-auto md:right-6 md:left-auto left-1/2 transform -translate-x-1/2 md:translate-x-0 z-[60] flex flex-col gap-3 pointer-events-none w-max"></div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, deleteDoc, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, deleteDoc, doc, updateDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // API KEYS MILIK ANDA (SUDAH DIMASUKKAN)
+        // API KEYS MILIK ANDA
         const firebaseConfig = {
             apiKey: "AIzaSyCWEeg8GmM_xu3lu4BAOCEkBgUK4Ke6-qw",
             authDomain: "mryudhistira.firebaseapp.com",
@@ -200,7 +258,6 @@
             appId: "1:418998527902:web:8681a1bdf754d08b3d988f",
             measurementId: "G-5BFXLYCNY0"
         };
-        const appId = "mryudhistira"; // Digunakan sebagai identifier database
         
         // Inisialisasi Aplikasi
         const app = initializeApp(firebaseConfig);
@@ -212,7 +269,12 @@
         let unsubscribeSnapshot = null;
         let transaksiData = [];
         let idToDelete = null;
+        
+        // State Form (Mode Edit / Normal)
+        let isPengeluaran = true;
+        let currentEditId = null;
 
+        // Referensi Elemen UI
         const viewLoading = document.getElementById('loading-screen');
         const viewLogin = document.getElementById('login-view');
         const viewApp = document.getElementById('app-view');
@@ -222,19 +284,55 @@
         const saldoTotal = document.getElementById('saldo-total');
         const formTransaksi = document.getElementById('form-transaksi');
         const modalConfirm = document.getElementById('modal-confirm');
+        
+        // Form Elements
+        const inputKeterangan = document.getElementById('keterangan');
+        const inputKategori = document.getElementById('kategori');
+        const inputJumlah = document.getElementById('jumlah');
         const inputTanggal = document.getElementById('tanggal');
-        const inputJumlah = document.getElementById('jumlah'); // Tambahan referensi
+        
+        // Sidebar & Toggles
+        const tabPengeluaran = document.getElementById('tab-pengeluaran');
+        const tabPemasukan = document.getElementById('tab-pemasukan');
+        const sidebar = document.getElementById('sidebar');
+        const sidebarOverlay = document.getElementById('sidebar-overlay');
+        const btnOpenSidebar = document.getElementById('btn-open-sidebar');
+        const btnCloseSidebar = document.getElementById('btn-close-sidebar');
+        const btnCancelEdit = document.getElementById('btn-cancel-edit');
+        const formTitle = document.getElementById('form-title');
+        const textSubmitForm = document.getElementById('text-submit-form');
 
         // ----------------------------------------------------
-        // FITUR PWA (BISA DI-INSTALL SEBAGAI APLIKASI DI HP)
+        // DATA KATEGORI (Sesuai Permintaan)
+        // ----------------------------------------------------
+        const kategoriPengeluaran = [
+            { group: "MAKANAN", items: ["11 - Makanan Pokok", "12 - Aqua Galon", "13 - Makanan Ringan", "14 - Makanan Khusus Olahraga", "15 - Pemberian Makanan"] },
+            { group: "TRANSPORTASI", items: ["21 - Bensin Motor", "22 - Travel/Perjalanan", "23 - Parkir", "24 - Sewa Kendaraan"] },
+            { group: "GAMING", items: ["31 - Top Up Game"] },
+            { group: "KEBUTUHAN BULANAN", items: ["41 - Kuota Internet", "42 - Wifi", "43 - Listrik", "44 - Laundry", "45 - Gas Kompor", "46 - Bahan-Bahan Dapur"] },
+            { group: "BELANJA/BEBAN", items: ["51 - Selfcare/Cleaning/Healthy", "52 - Perlengkapan", "53 - Alat Pendidikan/Edukasi", "54 - Pengiriman"] },
+            { group: "SEWA/KONTRAK PROPERTI", items: ["61 - Kos/Sewa Rumah"] },
+            { group: "PEMELIHARAAN", items: ["71 - Pemeliharaan AC Split", "72 - Pemeliharaan Motor", "73 - Pemeliharaan Laptop", "74 - Pemeliharaan Handphone", "75 - Pemeliharaan Aset Lainnya"] },
+            { group: "ENTERTAINMENT/LANGGANAN", items: ["81 - Netflix", "82 - Spotify", "83 - Aplikasi Lainnya"] },
+            { group: "HOBI/KONSUMTIF", items: ["91 - Belanja Hobi/Kesenangan", "92 - Hotel", "93 - Wahana/Wisata", "94 - Fashion"] },
+            { group: "OLAHRAGA", items: ["101 - Member Gym", "102 - Alat dan Event Olahraga"] },
+            { group: "UANG KELUAR/PENGALIHAN", items: ["111 - Uang Kas Paguyuban/Seksi", "112 - Iuran CBB", "113 - Biaya Administrasi Bank", "114 - Donasi/Iuran Lainnya", "115 - Bea Meterai", "116 - Pemberian Hadiah/Oleh-oleh", "117 - Biaya Administrasi Lainnya", "118 - Simpanan Pokok KKMP", "119 - Simpanan Wajib KKMP"] }
+        ];
+
+        const kategoriPemasukan = [
+            { group: "PEMASUKAN", items: ["1 - Gaji/Pendapatan Utama", "2 - Bonus/Tunjangan", "3 - Hasil Usaha/Investasi", "4 - Uang Masuk/Pengalihan", "5 - Pemasukan Lainnya"] }
+        ];
+
+        // ----------------------------------------------------
+        // FITUR PWA (BISA DI-INSTALL)
         // ----------------------------------------------------
         const manifest = {
-            "name": "RUN APP - Keuangan",
-            "short_name": "RUN APP",
+            "name": "RUN FINANCE",
+            "short_name": "RUN FIN",
             "start_url": ".",
             "display": "standalone",
             "background_color": "#FEFEFE",
-            "theme_color": "#E4002B",
+            "theme_color": "#512D6D",
             "icons": [
                 { "src": "logo.png", "sizes": "192x192", "type": "image/png" },
                 { "src": "logo.png", "sizes": "512x512", "type": "image/png" }
@@ -252,29 +350,102 @@
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register(URL.createObjectURL(swBlob)).catch(err => console.log(err));
         }
-        // ----------------------------------------------------
 
-        // Fitur Pemisah Ribuan (Titik) dan Desimal (Koma) saat mengetik
+        // ----------------------------------------------------
+        // LOGIKA UI & EVENT LISTENER
+        // ----------------------------------------------------
+        
+        // Sidebar Toggle Mobile
+        const toggleSidebar = () => {
+            sidebar.classList.toggle('-translate-x-full');
+            sidebarOverlay.classList.toggle('hidden');
+        };
+        btnOpenSidebar.addEventListener('click', toggleSidebar);
+        btnCloseSidebar.addEventListener('click', toggleSidebar);
+        sidebarOverlay.addEventListener('click', toggleSidebar);
+
+        // Render Dropdown Kategori
+        function renderDropdownKategori() {
+            inputKategori.innerHTML = '';
+            const data = isPengeluaran ? kategoriPengeluaran : kategoriPemasukan;
+            
+            data.forEach(group => {
+                const optgroup = document.createElement('optgroup');
+                optgroup.label = group.group;
+                optgroup.className = 'font-bold text-run-purple';
+                
+                group.items.forEach(item => {
+                    const option = document.createElement('option');
+                    option.value = item;
+                    option.textContent = item;
+                    option.className = 'font-medium text-gray-700';
+                    optgroup.appendChild(option);
+                });
+                inputKategori.appendChild(optgroup);
+            });
+        }
+
+        // Handle Switch Pengeluaran/Pemasukan
+        function setModeTransaksi(kePengeluaran) {
+            isPengeluaran = kePengeluaran;
+            if (isPengeluaran) {
+                // Style Active Pengeluaran
+                tabPengeluaran.className = "flex-1 py-3 text-sm font-bold rounded-xl bg-run-red text-run-white shadow-md transition-all";
+                tabPemasukan.className = "flex-1 py-3 text-sm font-bold rounded-xl text-run-purple/50 hover:text-run-purple hover:bg-run-purple/10 transition-all";
+            } else {
+                // Style Active Pemasukan
+                tabPemasukan.className = "flex-1 py-3 text-sm font-bold rounded-xl bg-run-purple text-run-white shadow-md transition-all";
+                tabPengeluaran.className = "flex-1 py-3 text-sm font-bold rounded-xl text-run-purple/50 hover:text-run-purple hover:bg-run-purple/10 transition-all";
+            }
+            renderDropdownKategori();
+        }
+        tabPengeluaran.addEventListener('click', () => setModeTransaksi(true));
+        tabPemasukan.addEventListener('click', () => setModeTransaksi(false));
+        
+        // Inisialisasi awal form
+        setModeTransaksi(true);
+        setTanggalHariIni();
+
+        // Fitur Pemisah Ribuan dan Desimal
+        function formatNumberForInput(num) {
+            // Konversi dari database (float) ke format input UI (titik & koma)
+            let str = num.toString().replace('.', ',');
+            let parts = str.split(',');
+            parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+            if (parts[1] !== undefined) {
+                return parts[0] + ',' + parts[1].substring(0, 2);
+            }
+            return parts[0];
+        }
+
         inputJumlah.addEventListener('input', function(e) {
-            let val = this.value.replace(/[^0-9,]/g, ''); // Hapus selain angka dan koma
+            let val = this.value.replace(/[^0-9,]/g, '');
             const parts = val.split(',');
             if (parts.length > 2) val = parts[0] + ',' + parts.slice(1).join('');
             if (parts[0].length > 0) parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
             
             if (parts[1] !== undefined) {
-                parts[1] = parts[1].substring(0, 2); // Maksimal 2 angka desimal
+                parts[1] = parts[1].substring(0, 2);
                 this.value = parts[0] + ',' + parts[1];
             } else {
                 this.value = parts[0];
             }
         });
 
-        // Fungsi Toast
+        // Fungsi Set Tanggal
+        function setTanggalHariIni() {
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const day = String(today.getDate()).padStart(2, '0');
+            inputTanggal.value = `${year}-${month}-${day}`;
+        }
+
         function showToast(message, type = 'success') {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
             const bgColor = type === 'error' ? 'bg-run-red' : 'bg-run-purple';
-            toast.className = `${bgColor} text-run-white px-6 py-3.5 rounded-full shadow-2xl text-sm font-bold toast-enter-active flex items-center gap-2`;
+            toast.className = `${bgColor} text-run-white px-5 py-3 rounded-xl shadow-2xl text-sm font-bold toast-enter-active flex items-center gap-2 max-w-xs md:max-w-md`;
             toast.innerText = message;
             container.appendChild(toast);
 
@@ -287,20 +458,27 @@
 
         window.showComingSoon = (menuName) => {
             showToast(`Menu ${menuName} akan segera hadir!`, "success");
+            if(window.innerWidth < 768) toggleSidebar();
         };
 
-        // Fungsi set tanggal hari ini berdasarkan zona waktu HP/Komputer
-        function setTanggalHariIni() {
-            const today = new Date();
-            // Menyesuaikan format YYYY-MM-DD secara lokal
-            const year = today.getFullYear();
-            const month = String(today.getMonth() + 1).padStart(2, '0');
-            const day = String(today.getDate()).padStart(2, '0');
-            inputTanggal.value = `${year}-${month}-${day}`;
+        // Reset Form Mode (Kembali dari Edit)
+        function resetFormState() {
+            currentEditId = null;
+            formTransaksi.reset();
+            setModeTransaksi(true);
+            setTanggalHariIni();
+            
+            formTitle.innerText = "Tambah Transaksi Baru";
+            textSubmitForm.innerText = "Simpan Transaksi";
+            btnCancelEdit.classList.add('hidden');
+            formTransaksi.classList.remove('ring-4', 'ring-run-purple/20');
         }
-        setTanggalHariIni();
 
-        // Autentikasi
+        btnCancelEdit.addEventListener('click', resetFormState);
+
+        // ----------------------------------------------------
+        // AUTENTIKASI & DATABASE FIREBASE
+        // ----------------------------------------------------
         onAuthStateChanged(auth, (user) => {
             viewLoading.classList.add('hidden');
             if (user) {
@@ -327,16 +505,14 @@
         document.getElementById('btn-login-google').addEventListener('click', () => {
             signInWithPopup(auth, googleProvider).catch(error => showToast(error.message, 'error'));
         });
-
         document.getElementById('btn-login-anon').addEventListener('click', () => {
             signInAnonymously(auth).catch(error => showToast(error.message, 'error'));
         });
-
         document.getElementById('btn-logout').addEventListener('click', () => {
             signOut(auth).then(() => showToast("Berhasil keluar")).catch(e => showToast(e.message, 'error'));
         });
 
-        // Database (Firestore)
+        // Load Firestore
         function loadDataTransaksi() {
             if (!currentUser) return;
             const transaksiRef = collection(db, 'users', currentUser.uid, 'transaksi');
@@ -347,7 +523,7 @@
                     transaksiData.push({ id: document.id, ...document.data() });
                 });
 
-                // Urutkan berdasarkan Tanggal (terbaru) lalu Waktu Pembuatan
+                // Urutkan: Tanggal Terkini -> Waktu Buat Terkini
                 transaksiData.sort((a, b) => {
                     const dateA = a.tanggal || "1970-01-01";
                     const dateB = b.tanggal || "1970-01-01";
@@ -360,47 +536,59 @@
             });
         }
 
+        // Simpan / Update Data
         formTransaksi.addEventListener('submit', async (e) => {
             e.preventDefault();
             if (!currentUser) return;
 
             const btnSubmit = formTransaksi.querySelector('button[type="submit"]');
             btnSubmit.disabled = true;
-            btnSubmit.innerHTML = "Menyimpan...";
+            textSubmitForm.innerText = "Menyimpan...";
 
             try {
-                // Parsing format ribuan dan desimal menjadi angka baku untuk database
-                const jumlahRaw = document.getElementById('jumlah').value;
+                // Parsing nilai dari input text format indonesia ke float
+                const jumlahRaw = inputJumlah.value;
                 const jumlahClean = jumlahRaw.replace(/\./g, '').replace(',', '.');
                 const jumlahFloat = parseFloat(jumlahClean);
 
                 if (isNaN(jumlahFloat) || jumlahFloat <= 0) {
                     showToast("Jumlah tidak valid", 'error');
-                    btnSubmit.disabled = false;
-                    btnSubmit.innerHTML = `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path></svg> Simpan Transaksi`;
-                    return;
+                    throw new Error("Invalid Input");
                 }
 
-                const transaksiRef = collection(db, 'users', currentUser.uid, 'transaksi');
-                await addDoc(transaksiRef, {
-                    keterangan: document.getElementById('keterangan').value,
-                    jumlah: jumlahFloat, // Mengirim format angka bersih
-                    jenis: document.getElementById('jenis').value,
+                const dataSimpan = {
+                    keterangan: inputKeterangan.value,
+                    jumlah: jumlahFloat,
+                    jenis: isPengeluaran ? 'pengeluaran' : 'pemasukan',
+                    kategori: inputKategori.value,
                     tanggal: inputTanggal.value,
-                    createdAt: Date.now()
-                });
+                    // Tetap pertahankan createdAt lama jika mode edit, buat baru jika insert
+                    createdAt: currentEditId ? undefined : Date.now() 
+                };
+
+                if (currentEditId) {
+                    // Update Mode
+                    delete dataSimpan.createdAt; // Jangan ubah waktu pembuatan awal
+                    const docRef = doc(db, 'users', currentUser.uid, 'transaksi', currentEditId);
+                    await updateDoc(docRef, dataSimpan);
+                    showToast("Transaksi berhasil diperbarui");
+                } else {
+                    // Insert Mode
+                    const transaksiRef = collection(db, 'users', currentUser.uid, 'transaksi');
+                    await addDoc(transaksiRef, dataSimpan);
+                    showToast("Transaksi berhasil dicatat");
+                }
                 
-                formTransaksi.reset();
-                setTanggalHariIni(); // Kembalikan form tanggal ke hari ini
-                showToast("Transaksi berhasil dicatat");
+                resetFormState();
             } catch (error) {
-                showToast("Gagal menyimpan: " + error.message, 'error');
+                if(error.message !== "Invalid Input") showToast("Gagal menyimpan: " + error.message, 'error');
             } finally {
                 btnSubmit.disabled = false;
-                btnSubmit.innerHTML = `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path></svg> Simpan Transaksi`;
+                textSubmitForm.innerText = currentEditId ? "Simpan Perubahan" : "Simpan Transaksi";
             }
         });
 
+        // Render Tampilan List Transaksi
         function renderUI() {
             listTransaksi.innerHTML = '';
             let saldo = 0;
@@ -412,18 +600,17 @@
             }
 
             transaksiData.forEach((t) => {
-                const isPemasukan = t.jenis === 'pemasukan';
-                saldo += isPemasukan ? t.jumlah : -t.jumlah;
+                const isItemPengeluaran = t.jenis === 'pengeluaran';
+                saldo += !isItemPengeluaran ? t.jumlah : -t.jumlah;
 
                 const li = document.createElement('li');
-                li.className = 'bg-run-white border-2 border-run-purple/5 hover:border-run-purple/20 rounded-2xl p-4 md:p-5 flex justify-between items-center transition duration-200 group';
+                // Highlight jika sedang diedit
+                const bgClass = (currentEditId === t.id) ? 'bg-run-purple/10 border-run-purple/30' : 'bg-run-white border-run-purple/5 hover:border-run-purple/20';
+                li.className = `${bgClass} border-2 rounded-2xl p-4 md:p-5 flex justify-between items-center transition duration-200 group relative overflow-hidden`;
                 
-                // Format rupiah dengan dukungan maksimal 2 angka desimal
+                // Format rupiah
                 const formattedJumlah = new Intl.NumberFormat('id-ID', { 
-                    style: 'currency', 
-                    currency: 'IDR', 
-                    minimumFractionDigits: 0, 
-                    maximumFractionDigits: 2 
+                    style: 'currency', currency: 'IDR', minimumFractionDigits: 0, maximumFractionDigits: 2 
                 }).format(t.jumlah);
 
                 let formattedTanggal = "";
@@ -432,40 +619,66 @@
                     formattedTanggal = new Intl.DateTimeFormat('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }).format(dateObj);
                 }
 
-                // Desain Ikon Berdasarkan Jenis & Tema Run App
                 li.innerHTML = `
-                    <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 shadow-inner ${isPemasukan ? 'bg-run-purple/10 text-run-purple' : 'bg-run-red/10 text-run-red'}">
-                            ${isPemasukan 
+                    <div class="flex items-center gap-4 relative z-10 w-full md:w-auto overflow-hidden">
+                        <div class="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 shadow-inner ${!isItemPengeluaran ? 'bg-run-purple/10 text-run-purple' : 'bg-run-red/10 text-run-red'}">
+                            ${!isItemPengeluaran 
                                 ? '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>'
                                 : '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg>'
                             }
                         </div>
-                        <div>
-                            <p class="font-extrabold text-run-purple text-base sm:text-lg tracking-tight">${t.keterangan}</p>
+                        <div class="flex-1 min-w-0 pr-2">
+                            <p class="font-extrabold text-run-purple text-base sm:text-lg tracking-tight truncate">${t.keterangan}</p>
+                            <p class="text-[10px] sm:text-xs text-run-purple/50 font-bold truncate uppercase tracking-wider mb-1">${t.kategori || t.jenis}</p>
+                            
                             <div class="flex items-center gap-2 mt-0.5">
                                 ${formattedTanggal ? `<span class="text-xs sm:text-sm text-run-purple/60 font-semibold">${formattedTanggal}</span>` : ''}
                                 <span class="text-xs text-run-purple/30 mx-1">•</span>
-                                <button onclick="window.triggerDelete('${t.id}')" class="text-xs sm:text-sm text-run-red hover:text-[#c40024] font-bold opacity-80 group-hover:opacity-100 transition">Hapus</button>
+                                <button onclick="window.triggerEdit('${t.id}')" class="text-xs sm:text-sm text-run-purple hover:text-run-purple/70 font-bold opacity-80 md:opacity-0 md:group-hover:opacity-100 transition">Edit</button>
+                                <span class="text-xs text-run-purple/30 mx-1">•</span>
+                                <button onclick="window.triggerDelete('${t.id}')" class="text-xs sm:text-sm text-run-red hover:text-[#c40024] font-bold opacity-80 md:opacity-0 md:group-hover:opacity-100 transition">Hapus</button>
                             </div>
                         </div>
                     </div>
-                    <span class="${isPemasukan ? 'text-run-purple' : 'text-run-red'} font-extrabold text-base md:text-lg">
-                        ${isPemasukan ? '+' : '-'}${formattedJumlah}
+                    <span class="${!isItemPengeluaran ? 'text-run-purple' : 'text-run-red'} font-extrabold text-base md:text-lg whitespace-nowrap pl-2 z-10 self-start md:self-center mt-1 md:mt-0">
+                        ${!isItemPengeluaran ? '+' : '-'}${formattedJumlah}
                     </span>
                 `;
                 listTransaksi.appendChild(li);
             });
 
-            // Tampilkan saldo total juga dengan desimal
             saldoTotal.innerText = new Intl.NumberFormat('id-ID', { 
-                style: 'currency', 
-                currency: 'IDR', 
-                minimumFractionDigits: 0, 
-                maximumFractionDigits: 2 
+                style: 'currency', currency: 'IDR', minimumFractionDigits: 0, maximumFractionDigits: 2 
             }).format(saldo);
         }
 
+        // Aksi Edit Transaksi
+        window.triggerEdit = (id) => {
+            const dataToEdit = transaksiData.find(t => t.id === id);
+            if (!dataToEdit) return;
+
+            currentEditId = id;
+            
+            // Set Toggle & Form values
+            setModeTransaksi(dataToEdit.jenis === 'pengeluaran');
+            
+            inputKeterangan.value = dataToEdit.keterangan;
+            inputJumlah.value = formatNumberForInput(dataToEdit.jumlah);
+            inputTanggal.value = dataToEdit.tanggal;
+            inputKategori.value = dataToEdit.kategori || ""; // Mengatur value select
+
+            // Ubah UI Form
+            formTitle.innerText = "Edit Transaksi";
+            textSubmitForm.innerText = "Simpan Perubahan";
+            btnCancelEdit.classList.remove('hidden');
+            formTransaksi.classList.add('ring-4', 'ring-run-purple/20');
+            
+            // Scroll layar ke form (Penting untuk mode HP)
+            formTransaksi.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            renderUI(); // Re-render untuk efek highlight list yang sedang diedit
+        };
+
+        // Aksi Hapus Transaksi
         window.triggerDelete = (id) => {
             idToDelete = id;
             modalConfirm.classList.remove('hidden');
@@ -484,33 +697,20 @@
 
             try {
                 await deleteDoc(doc(db, 'users', currentUser.uid, 'transaksi', idToDelete));
+                
+                // Jika sedang ngedit data yang barusan dihapus, reset formnya
+                if (currentEditId === idToDelete) resetFormState();
+                
                 showToast("Transaksi dihapus");
             } catch (error) {
                 showToast("Gagal menghapus", "error");
             } finally {
                 idToDelete = null;
                 modalConfirm.classList.add('hidden');
-                btnConfirm.innerText = "Ya, Hapus";
+                btnConfirm.innerText = "Hapus";
                 btnConfirm.disabled = false;
             }
         });
     </script>
-    
-    <!-- CSS Tambahan untuk Scrollbar Modern di Daftar Transaksi -->
-    <style>
-        .custom-scroll::-webkit-scrollbar {
-            width: 6px;
-        }
-        .custom-scroll::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        .custom-scroll::-webkit-scrollbar-thumb {
-            background-color: #512D6D20;
-            border-radius: 20px;
-        }
-        .custom-scroll::-webkit-scrollbar-thumb:hover {
-            background-color: #512D6D50;
-        }
-    </style>
 </body>
 </html>
