@@ -97,29 +97,28 @@
                 <p id="user-greeting" class="text-sm font-bold text-run-purple truncate">Halo, Pengguna</p>
             </div>
 
-            <!-- Navigasi Menu -->
+            <!-- Navigasi Menu (Diubah menjadi Link Anchor) -->
             <nav class="flex-1 px-4 py-6 space-y-2 overflow-y-auto custom-scroll">
-                <button onclick="window.showComingSoon('Dashboard')" class="w-full flex items-center gap-3 px-4 py-3 text-sm font-semibold text-run-purple/60 hover:text-run-purple hover:bg-run-purple/5 rounded-xl transition">
+                <a href="#dashboard" id="nav-dashboard" class="w-full flex items-center gap-3 px-4 py-3 text-sm font-semibold text-run-purple/60 hover:text-run-purple hover:bg-run-purple/5 rounded-xl transition nav-btn">
                     <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
                     Dashboard
-                </button>
-                <button id="nav-rekam" class="w-full flex items-center gap-3 px-4 py-3 text-sm font-bold text-run-white bg-run-purple shadow-md rounded-xl transition nav-btn">
+                </a>
+                <a href="#rekam" id="nav-rekam" class="w-full flex items-center gap-3 px-4 py-3 text-sm font-bold text-run-white bg-run-purple shadow-md rounded-xl transition nav-btn">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
                     Rekam Harian
-                </button>
-                <button onclick="window.showComingSoon('Perencanaan')" class="w-full flex items-center gap-3 px-4 py-3 text-sm font-semibold text-run-purple/60 hover:text-run-purple hover:bg-run-purple/5 rounded-xl transition">
+                </a>
+                <a href="#perencanaan" id="nav-perencanaan" class="w-full flex items-center gap-3 px-4 py-3 text-sm font-semibold text-run-purple/60 hover:text-run-purple hover:bg-run-purple/5 rounded-xl transition nav-btn">
                     <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                     Perencanaan
-                </button>
-                <button onclick="window.showComingSoon('Report')" class="w-full flex items-center gap-3 px-4 py-3 text-sm font-semibold text-run-purple/60 hover:text-run-purple hover:bg-run-purple/5 rounded-xl transition">
+                </a>
+                <a href="#report" id="nav-report" class="w-full flex items-center gap-3 px-4 py-3 text-sm font-semibold text-run-purple/60 hover:text-run-purple hover:bg-run-purple/5 rounded-xl transition nav-btn">
                     <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                     Report
-                </button>
-                <!-- Tombol Navigasi Pengaturan -->
-                <button id="nav-pengaturan" class="w-full flex items-center gap-3 px-4 py-3 text-sm font-semibold text-run-purple/60 hover:text-run-purple hover:bg-run-purple/5 rounded-xl transition nav-btn">
+                </a>
+                <a href="#pengaturan" id="nav-pengaturan" class="w-full flex items-center gap-3 px-4 py-3 text-sm font-semibold text-run-purple/60 hover:text-run-purple hover:bg-run-purple/5 rounded-xl transition nav-btn">
                     <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
                     Pengaturan
-                </button>
+                </a>
             </nav>
 
             <!-- Bottom Sidebar (Logout) -->
@@ -352,8 +351,6 @@
         const viewRekam = document.getElementById('view-rekam');
         const viewPengaturan = document.getElementById('view-pengaturan');
         const navBtns = document.querySelectorAll('.nav-btn');
-        const navRekam = document.getElementById('nav-rekam');
-        const navPengaturan = document.getElementById('nav-pengaturan');
 
         // Form Elements
         const formTransaksi = document.getElementById('form-transaksi');
@@ -408,7 +405,7 @@
         ];
 
         // ----------------------------------------------------
-        // NAVIGASI VIEW & SIDEBAR
+        // ROUTING BERBASIS HASH URL & SIDEBAR
         // ----------------------------------------------------
         const toggleSidebar = () => {
             sidebar.classList.toggle('-translate-x-full');
@@ -418,37 +415,64 @@
         btnCloseSidebar.addEventListener('click', toggleSidebar);
         sidebarOverlay.addEventListener('click', toggleSidebar);
 
-        function setActiveNav(activeId) {
+        function handleRouting() {
+            if (!currentUser) return;
+            
+            // Dapatkan hash (contoh: #pengaturan). Default ke #rekam jika kosong
+            const hash = window.location.hash.toLowerCase() || '#rekam';
+
+            // Sembunyikan semua tampilan konten
+            viewRekam.classList.add('hidden');
+            viewPengaturan.classList.add('hidden');
+
+            // Reset semua tombol navigasi ke mode tidak aktif
             navBtns.forEach(btn => {
-                if(btn.id === activeId) {
-                    btn.className = "w-full flex items-center gap-3 px-4 py-3 text-sm font-bold text-run-white bg-run-purple shadow-md rounded-xl transition nav-btn";
-                    btn.querySelector('svg').classList.remove('opacity-70');
-                } else {
-                    btn.className = "w-full flex items-center gap-3 px-4 py-3 text-sm font-semibold text-run-purple/60 hover:text-run-purple hover:bg-run-purple/5 rounded-xl transition nav-btn";
-                    btn.querySelector('svg').classList.add('opacity-70');
-                }
+                btn.className = "w-full flex items-center gap-3 px-4 py-3 text-sm font-semibold text-run-purple/60 hover:text-run-purple hover:bg-run-purple/5 rounded-xl transition nav-btn";
+                const svg = btn.querySelector('svg');
+                if (svg) svg.classList.add('opacity-70');
             });
+
+            // Fungsi helper untuk mengaktifkan warna tombol
+            const activateButton = (btnId) => {
+                const btn = document.getElementById(btnId);
+                if (btn) {
+                    btn.className = "w-full flex items-center gap-3 px-4 py-3 text-sm font-bold text-run-white bg-run-purple shadow-md rounded-xl transition nav-btn";
+                    const svg = btn.querySelector('svg');
+                    if (svg) svg.classList.remove('opacity-70');
+                }
+            };
+
+            // Switch view berdasarkan URL hash
+            switch (hash) {
+                case '#pengaturan':
+                    viewPengaturan.classList.remove('hidden');
+                    activateButton('nav-pengaturan');
+                    renderUIKategoriKustom();
+                    break;
+                case '#dashboard':
+                case '#perencanaan':
+                case '#report':
+                    // Karena menu belum dibuat, kembalikan ke #rekam dan tampilkan notifikasi
+                    viewRekam.classList.remove('hidden'); 
+                    activateButton('nav-' + hash.substring(1));
+                    showToast(`Menu ${hash.substring(1).charAt(0).toUpperCase() + hash.substring(2)} akan segera hadir!`, 'success');
+                    window.location.hash = '#rekam'; // Kembalikan URL
+                    break;
+                case '#rekam':
+                default:
+                    viewRekam.classList.remove('hidden');
+                    activateButton('nav-rekam');
+                    break;
+            }
+
+            // Tutup sidebar jika sedang dibuka di HP
+            if (window.innerWidth < 768 && !sidebar.classList.contains('-translate-x-full')) {
+                toggleSidebar();
+            }
         }
 
-        window.showComingSoon = (menuName) => {
-            showToast(`Menu ${menuName} akan segera hadir!`, "success");
-            if(window.innerWidth < 768) toggleSidebar();
-        };
-
-        navRekam.addEventListener('click', () => {
-            setActiveNav('nav-rekam');
-            viewRekam.classList.remove('hidden');
-            viewPengaturan.classList.add('hidden');
-            if(window.innerWidth < 768) toggleSidebar();
-        });
-
-        navPengaturan.addEventListener('click', () => {
-            setActiveNav('nav-pengaturan');
-            viewRekam.classList.add('hidden');
-            viewPengaturan.classList.remove('hidden');
-            renderUIKategoriKustom();
-            if(window.innerWidth < 768) toggleSidebar();
-        });
+        // Tangkap event perubahan URL hash (termasuk tombol back/forward di browser)
+        window.addEventListener('hashchange', handleRouting);
 
         // ----------------------------------------------------
         // LOGIKA KATEGORI (FORM UTAMA & PENGATURAN)
@@ -785,6 +809,9 @@
                 showToast(`Selamat datang, ${nama}!`);
                 loadSettings(); // Memanggil pengaturan kategori
                 loadDataTransaksi();
+                
+                // Panggil handleRouting pertama kali agar view sesuai dengan URL saat ini (misal di-refresh saat di /#pengaturan)
+                handleRouting(); 
             } else {
                 currentUser = null;
                 viewApp.classList.add('hidden');
