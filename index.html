@@ -47,6 +47,26 @@
         .custom-scroll::-webkit-scrollbar-track { background: transparent; }
         .custom-scroll::-webkit-scrollbar-thumb { background-color: #512D6D20; border-radius: 20px; }
         .custom-scroll::-webkit-scrollbar-thumb:hover { background-color: #512D6D50; }
+
+        /* Styling Slider Persentase Kustom */
+        .pct-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--run-red);
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .pct-slider::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--run-red);
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
     </style>
 </head>
 <body class="text-run-purple antialiased fixed inset-0 w-full flex flex-col md:flex-row overflow-hidden bg-run-white">
@@ -103,7 +123,7 @@
                 <p id="user-greeting" class="text-sm font-bold text-run-purple truncate">Halo, Pengguna</p>
             </div>
 
-            <!-- Navigasi Menu -->
+            <!-- Navigasi Menu (Sistem Hash Routing) -->
             <nav class="flex-1 px-4 py-6 space-y-2 overflow-y-auto custom-scroll">
                 <a href="#dashboard" id="nav-dashboard" class="w-full flex items-center gap-3 px-4 py-3 text-sm font-semibold text-run-purple/60 hover:text-run-purple hover:bg-run-purple/5 rounded-xl transition nav-btn">
                     <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
@@ -155,14 +175,21 @@
                 <div id="view-rekam" class="max-w-6xl mx-auto pb-24 md:pb-10">
                     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10">
                         
-                        <!-- KIRI: Saldo & Form -->
+                        <!-- KIRI: Budget Info & Form -->
                         <div class="lg:col-span-5 flex flex-col">
-                            <!-- Saldo Card -->
+                            
+                            <!-- Saldo/Budget Card -->
                             <div class="bg-run-purple text-run-white rounded-3xl p-7 mb-8 shadow-xl relative overflow-hidden">
                                 <div class="absolute -right-10 -top-10 w-40 h-40 bg-run-red rounded-full opacity-90 blur-3xl"></div>
                                 <div class="absolute -left-6 -bottom-6 w-32 h-32 bg-run-white rounded-full opacity-10 blur-2xl"></div>
-                                <p class="text-run-white/80 text-xs font-bold mb-1 relative z-10 uppercase tracking-widest">Total Saldo Saat Ini</p>
+                                
+                                <p class="text-run-white/80 text-xs font-bold mb-1 relative z-10 uppercase tracking-widest">Sisa Budget Expense (Bulan Ini)</p>
                                 <h2 id="saldo-total" class="text-4xl lg:text-5xl font-extrabold tracking-tighter relative z-10 mt-2">Rp 0</h2>
+                                
+                                <div class="relative z-10 mt-6 pt-4 border-t border-run-white/20 flex flex-col sm:flex-row justify-between items-start sm:items-center text-xs font-medium gap-3 sm:gap-2">
+                                    <span class="w-full sm:w-auto">Anggaran: <strong id="budget-tersedia" class="font-bold bg-run-white/20 py-1 px-2 rounded-md ml-1">Rp 0</strong></span>
+                                    <span class="w-full sm:w-auto">Pengeluaran: <strong id="budget-terpakai" class="font-bold bg-run-red/80 py-1 px-2 rounded-md ml-1">Rp 0</strong></span>
+                                </div>
                             </div>
 
                             <!-- Form Input Transaksi -->
@@ -276,74 +303,7 @@
                         </div>
                     </div>
 
-                    <!-- Tombol Toggle Pengaturan Persentase -->
-                    <div class="flex justify-between items-center mb-4">
-                        <h3 class="text-lg font-extrabold text-run-purple">Alokasi & Realisasi Pos</h3>
-                        <button id="btn-toggle-percentages" class="text-xs font-bold text-run-purple bg-run-purple/10 hover:bg-run-purple/20 py-2 px-4 rounded-xl transition flex items-center gap-1.5">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path></svg>
-                            Ubah Persentase Pos
-                        </button>
-                    </div>
-
-                    <!-- Panel Pengaturan Persentase (Hidden by default) -->
-                    <div id="panel-percentages" class="hidden bg-run-white p-6 rounded-3xl border-2 border-run-purple/20 shadow-lg mb-8">
-                        <div class="flex justify-between items-center pb-3 border-b border-run-purple/10 mb-4">
-                            <h4 class="text-sm font-extrabold text-run-purple uppercase">Atur % Alokasi Pos Utama</h4>
-                            <span id="total-pct-badge" class="text-xs font-extrabold py-1 px-3 rounded-lg bg-green-100 text-green-700">Total: 100%</span>
-                        </div>
-                        
-                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-                            <div>
-                                <label class="block text-xs font-bold text-run-purple mb-1">Expense Bulanan (%)</label>
-                                <input type="number" id="pct-expense" value="50" class="w-full bg-run-purple/5 border rounded-xl p-2.5 font-bold text-run-purple text-sm">
-                            </div>
-                            <div>
-                                <label class="block text-xs font-bold text-run-purple mb-1">Keluarga (%)</label>
-                                <input type="number" id="pct-keluarga" value="20" class="w-full bg-run-purple/5 border rounded-xl p-2.5 font-bold text-run-purple text-sm">
-                            </div>
-                            <div>
-                                <label class="block text-xs font-bold text-run-purple mb-1">Sosial (%)</label>
-                                <input type="number" id="pct-sosial" value="10" class="w-full bg-run-purple/5 border rounded-xl p-2.5 font-bold text-run-purple text-sm">
-                            </div>
-                            <div>
-                                <label class="block text-xs font-bold text-run-purple mb-1">Investasi (%)</label>
-                                <input type="number" id="pct-investasi" value="20" class="w-full bg-run-purple/5 border rounded-xl p-2.5 font-bold text-run-purple text-sm">
-                            </div>
-                        </div>
-
-                        <div class="pt-4 border-t border-run-purple/10 mb-4">
-                            <h4 class="text-sm font-extrabold text-run-purple uppercase mb-3">Atur % Rincian Sub-Pos Investasi (Total 100% dari Porsi Investasi)</h4>
-                            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
-                                <div>
-                                    <label class="block text-[11px] font-bold text-run-purple/80 mb-1">Pernikahan (%)</label>
-                                    <input type="number" id="pct-inv-pernikahan" value="30" class="w-full bg-run-purple/5 border rounded-xl p-2 font-bold text-run-purple text-xs">
-                                </div>
-                                <div>
-                                    <label class="block text-[11px] font-bold text-run-purple/80 mb-1">Pulang Kampung (%)</label>
-                                    <input type="number" id="pct-inv-pulang" value="20" class="w-full bg-run-purple/5 border rounded-xl p-2 font-bold text-run-purple text-xs">
-                                </div>
-                                <div>
-                                    <label class="block text-[11px] font-bold text-run-purple/80 mb-1">Kado Ulang Tahun (%)</label>
-                                    <input type="number" id="pct-inv-kado" value="10" class="w-full bg-run-purple/5 border rounded-xl p-2 font-bold text-run-purple text-xs">
-                                </div>
-                                <div>
-                                    <label class="block text-[11px] font-bold text-run-purple/80 mb-1">Rumah (%)</label>
-                                    <input type="number" id="pct-inv-rumah" value="25" class="w-full bg-run-purple/5 border rounded-xl p-2 font-bold text-run-purple text-xs">
-                                </div>
-                                <div>
-                                    <label class="block text-[11px] font-bold text-run-purple/80 mb-1">Mobil (%)</label>
-                                    <input type="number" id="pct-inv-mobil" value="15" class="w-full bg-run-purple/5 border rounded-xl p-2 font-bold text-run-purple text-xs">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="flex justify-end gap-3 pt-2">
-                            <button id="btn-cancel-pct" class="py-2.5 px-4 text-xs font-bold text-run-purple bg-run-purple/10 rounded-xl">Batal</button>
-                            <button id="btn-save-pct" class="py-2.5 px-5 text-xs font-bold text-run-white bg-run-red rounded-xl shadow-md">Simpan Persentase</button>
-                        </div>
-                    </div>
-
-                    <!-- BANNER Cerdas Limpahan Sisa Anggaran -->
+                    <!-- BANNER Cerdas Limpahan Sisa Anggaran (Sistem Toggle Otomatis) -->
                     <div class="bg-gradient-to-r from-run-purple to-indigo-900 text-run-white rounded-3xl p-6 shadow-md mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                         <div class="flex items-center gap-4">
                             <div class="w-12 h-12 bg-run-white/10 rounded-2xl flex items-center justify-center shrink-0">
@@ -351,28 +311,32 @@
                             </div>
                             <div>
                                 <h4 class="font-bold text-base">Fitur Limpahan Sisa Otomatis</h4>
-                                <p class="text-xs text-run-white/70 mt-0.5">Selisih positif antara rencana dan realisasi dari pos lain akan otomatis dialihkan untuk menambah anggaran Expense Bulanan Anda.</p>
+                                <p class="text-xs text-run-white/70 mt-0.5">Setiap sisa positif dari realisasi pos lain akan <strong>otomatis & seketika</strong> menambah anggaran Expense Bulanan.</p>
                             </div>
                         </div>
-                        <button id="btn-limpahkan" class="bg-run-red hover:bg-[#c40024] text-run-white font-extrabold text-xs py-3 px-5 rounded-xl shadow-lg transition shrink-0 whitespace-nowrap flex items-center gap-2">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
-                            Limpahkan Sisa ke Expense Bulanan
-                        </button>
+                        
+                        <div class="flex items-center gap-3 shrink-0 bg-run-white/10 py-2.5 px-4 rounded-xl">
+                            <span class="text-xs font-bold text-run-white/90 uppercase tracking-wide" id="label-limpahan">Nonaktif</span>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" id="toggle-limpahan" class="sr-only peer">
+                                <div class="w-12 h-6 bg-run-purple/40 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-run-red"></div>
+                            </label>
+                        </div>
                     </div>
 
-                    <!-- Tabel / List Perencanaan & Realisasi -->
+                    <!-- Tabel / List Perencanaan & Realisasi dengan Slider Inline -->
                     <div class="bg-run-white rounded-3xl border border-run-purple/10 shadow-sm overflow-hidden">
                         <div class="p-5 border-b border-run-purple/10 bg-run-purple/5 flex justify-between items-center">
                             <h3 class="text-sm font-extrabold text-run-purple uppercase tracking-wider">Rincian Pos Anggaran & Realisasi</h3>
-                            <button id="btn-save-realisasi" class="bg-green-600 hover:bg-green-700 text-white text-xs font-bold py-2 px-4 rounded-xl transition shadow-sm">Simpan Realisasi</button>
+                            <button id="btn-save-all-plan" class="bg-green-600 hover:bg-green-700 text-white text-xs font-bold py-2 px-4 rounded-xl transition shadow-sm">Simpan Perubahan</button>
                         </div>
                         
                         <div class="overflow-x-auto">
                             <table class="w-full text-left border-collapse">
                                 <thead>
                                     <tr class="text-[11px] uppercase font-extrabold text-run-purple/60 border-b border-run-purple/10 bg-run-white">
-                                        <th class="p-4">Nama Pos</th>
-                                        <th class="p-4">% Alokasi</th>
+                                        <th class="p-4 min-w-[200px]">Nama Pos</th>
+                                        <th class="p-4 min-w-[150px]">% Alokasi (Geser)</th>
                                         <th class="p-4">Target Rencana (Rp)</th>
                                         <th class="p-4">Realisasi (Rp)</th>
                                         <th class="p-4">Sisa / Selisih (Rp)</th>
@@ -456,7 +420,7 @@
                 <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
             </div>
             <h3 class="text-xl font-extrabold text-run-purple mb-2">Hapus Transaksi?</h3>
-            <p class="text-run-purple/60 text-sm font-medium mb-8">Data ini akan dihapus permanen. Total saldo Anda akan otomatis disesuaikan.</p>
+            <p class="text-run-purple/60 text-sm font-medium mb-8">Data ini akan dihapus permanen.</p>
             <div class="flex gap-3">
                 <button id="btn-cancel-delete" class="flex-1 py-3.5 bg-run-purple/10 hover:bg-run-purple/20 text-run-purple font-bold rounded-xl transition">Batal</button>
                 <button id="btn-confirm-delete" class="flex-1 py-3.5 bg-run-red hover:bg-[#c40024] text-run-white font-bold rounded-xl transition shadow-lg shadow-run-red/30">Hapus</button>
@@ -518,7 +482,6 @@
         const inputTanggal = document.getElementById('tanggal');
         const emptyState = document.getElementById('empty-state');
         const listTransaksi = document.getElementById('daftar-transaksi');
-        const saldoTotal = document.getElementById('saldo-total');
         const modalConfirm = document.getElementById('modal-confirm');
         
         const tabPengeluaran = document.getElementById('tab-pengeluaran');
@@ -541,9 +504,7 @@
         const btnCancelEditKategori = document.getElementById('btn-cancel-edit-kategori');
         const btnSubmitKategori = document.getElementById('btn-submit-kategori');
 
-        // ----------------------------------------------------
         // DATA KATEGORI BAWAAN SISTEM
-        // ----------------------------------------------------
         const defaultPengeluaran = [
             "11 - Makanan Pokok", "12 - Aqua Galon", "13 - Makanan Ringan", "14 - Makanan Khusus Olahraga", "15 - Pemberian Makanan",
             "21 - Bensin Motor", "22 - Travel/Perjalanan", "23 - Parkir", "24 - Sewa Kendaraan",
@@ -557,64 +518,69 @@
             "101 - Member Gym", "102 - Alat dan Event Olahraga",
             "111 - Uang Kas Paguyuban/Seksi", "112 - Iuran CBB", "113 - Biaya Administrasi Bank", "114 - Donasi/Iuran Lainnya", "115 - Bea Meterai", "116 - Pemberian Hadiah/Oleh-oleh", "117 - Biaya Administrasi Lainnya", "118 - Simpanan Pokok KKMP", "119 - Simpanan Wajib KKMP"
         ];
-
-        const defaultPemasukan = [
-            "1 - Gaji/Pendapatan Utama", "2 - Bonus/Tunjangan", "3 - Hasil Usaha/Investasi", "4 - Uang Masuk/Pengalihan", "5 - Pemasukan Lainnya"
-        ];
+        const defaultPemasukan = ["1 - Gaji/Pendapatan Utama", "2 - Bonus/Tunjangan", "3 - Hasil Usaha/Investasi", "4 - Uang Masuk/Pengalihan", "5 - Pemasukan Lainnya"];
 
         // ----------------------------------------------------
-        // LOGIKA PERENCANAAN GAJI & POS ANGGARAN
+        // LOGIKA PERENCANAAN & DASHBOARD BUDGET GLOBAL
         // ----------------------------------------------------
         let currentPlanningMonth = new Date().toISOString().slice(0, 7); // Format: YYYY-MM
+        let currentMonthGlobal = new Date().toISOString().slice(0, 7); // Untuk Dashboard
+        let unsubscribePerencanaanGlobal = null;
+        let globalPlanData = null; // Menyimpan Rencana Bulan Ini dari DB
+
         let planPercentages = {
             expense: 50,
             keluarga: 20,
             sosial: 10,
             investasi: 20,
-            investasiSub: {
-                pernikahan: 30,
-                pulang: 20,
-                kado: 10,
-                rumah: 25,
-                mobil: 15
-            }
+            investasiSub: { pernikahan: 30, pulang: 20, kado: 10, rumah: 25, mobil: 15 }
         };
         let planDataCurrentMonth = {
             gajiPokok: 0,
             tukin: 0,
-            extraExpense: 0, // Limpahan dari pos lain
+            isLimpahanAktif: false,
             realisasi: {}
         };
 
         const planPeriodeInput = document.getElementById('plan-periode');
         planPeriodeInput.value = currentPlanningMonth;
-
         planPeriodeInput.addEventListener('change', (e) => {
             currentPlanningMonth = e.target.value;
             loadPerencanaanData();
         });
 
-        // Toggle Panel Edit Persentase
-        const btnTogglePct = document.getElementById('btn-toggle-percentages');
-        const panelPct = document.getElementById('panel-percentages');
-        const btnCancelPct = document.getElementById('btn-cancel-pct');
-        const btnSavePct = document.getElementById('btn-save-pct');
+        // Setup Toggle Limpahan Event
+        const toggleLimpahan = document.getElementById('toggle-limpahan');
+        const labelLimpahan = document.getElementById('label-limpahan');
+        toggleLimpahan.addEventListener('change', (e) => {
+            planDataCurrentMonth.isLimpahanAktif = e.target.checked;
+            labelLimpahan.innerText = e.target.checked ? "Aktif" : "Nonaktif";
+            updatePlanVisuals(); // Langsung terapkan hitungan di layar
+        });
 
-        btnTogglePct.addEventListener('click', () => panelPct.classList.toggle('hidden'));
-        btnCancelPct.addEventListener('click', () => panelPct.classList.add('hidden'));
-
-        // Input Format Helper (Rupiah)
-        function parseRupiahInput(val) {
-            if(!val) return 0;
-            const clean = val.toString().replace(/\./g, '').replace(',', '.');
-            return parseFloat(clean) || 0;
+        // Menghitung Sisa Positif Pos Lainnya untuk Expense
+        function hitungLimpahan(totalIncome, real) {
+            let sisa = 0;
+            const keluargaPlan = totalIncome * (planPercentages.keluarga / 100);
+            const sosialPlan = totalIncome * (planPercentages.sosial / 100);
+            const invPlan = totalIncome * (planPercentages.investasi / 100);
+            
+            const sKeluarga = keluargaPlan - (parseFloat(real['keluarga']) || 0);
+            const sSosial = sosialPlan - (parseFloat(real['sosial']) || 0);
+            if(sKeluarga > 0) sisa += sKeluarga;
+            if(sSosial > 0) sisa += sSosial;
+            
+            const sub = planPercentages.investasiSub || {};
+            ['pernikahan', 'pulang', 'kado', 'rumah', 'mobil'].forEach(key => {
+                const target = invPlan * (sub[key] / 100);
+                const sSub = target - (parseFloat(real['inv_' + key]) || 0);
+                if(sSub > 0) sisa += sSub;
+            });
+            
+            return sisa;
         }
 
-        function formatRp(num) {
-            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(num || 0);
-        }
-
-        // Buka / Muat Data Perencanaan dari Firestore
+        // Buka / Muat Data Perencanaan Settings
         async function loadPerencanaanSettings() {
             if(!currentUser) return;
             try {
@@ -625,127 +591,152 @@
                 } else {
                     await setDoc(docRef, planPercentages);
                 }
-                updatePctInputFields();
-            } catch(e) {
-                console.error("Gagal memuat persentase perencanaan:", e);
-            }
+                loadPerencanaanGlobal(); // Mulai memantau budget Dashboard setelah setting di-load
+            } catch(e) { console.error("Gagal memuat persentase:", e); }
         }
-
-        function updatePctInputFields() {
-            document.getElementById('pct-expense').value = planPercentages.expense;
-            document.getElementById('pct-keluarga').value = planPercentages.keluarga;
-            document.getElementById('pct-sosial').value = planPercentages.sosial;
-            document.getElementById('pct-investasi').value = planPercentages.investasi;
-
-            const sub = planPercentages.investasiSub || {};
-            document.getElementById('pct-inv-pernikahan').value = sub.pernikahan || 30;
-            document.getElementById('pct-inv-pulang').value = sub.pulang || 20;
-            document.getElementById('pct-inv-kado').value = sub.kado || 10;
-            document.getElementById('pct-inv-rumah').value = sub.rumah || 25;
-            document.getElementById('pct-inv-mobil').value = sub.mobil || 15;
-        }
-
-        btnSavePct.addEventListener('click', async () => {
-            planPercentages.expense = parseFloat(document.getElementById('pct-expense').value) || 0;
-            planPercentages.keluarga = parseFloat(document.getElementById('pct-keluarga').value) || 0;
-            planPercentages.sosial = parseFloat(document.getElementById('pct-sosial').value) || 0;
-            planPercentages.investasi = parseFloat(document.getElementById('pct-investasi').value) || 0;
-
-            planPercentages.investasiSub = {
-                pernikahan: parseFloat(document.getElementById('pct-inv-pernikahan').value) || 0,
-                pulang: parseFloat(document.getElementById('pct-inv-pulang').value) || 0,
-                kado: parseFloat(document.getElementById('pct-inv-kado').value) || 0,
-                rumah: parseFloat(document.getElementById('pct-inv-rumah').value) || 0,
-                mobil: parseFloat(document.getElementById('pct-inv-mobil').value) || 0,
-            };
-
-            const total = planPercentages.expense + planPercentages.keluarga + planPercentages.sosial + planPercentages.investasi;
-            if(total !== 100) {
-                showToast(`Total persentase pos utama adalah ${total}%. Disarankan 100%.`, 'error');
-            }
-
-            if(currentUser) {
-                const docRef = doc(db, 'users', currentUser.uid, 'settings', 'perencanaan');
-                await setDoc(docRef, planPercentages);
-                showToast("Persentase berhasil diperbarui!");
-            }
-            panelPct.classList.add('hidden');
-            renderPerencanaanTable();
-        });
 
         async function loadPerencanaanData() {
             if(!currentUser) return;
             try {
-                await loadPerencanaanSettings();
                 const docRef = doc(db, 'users', currentUser.uid, 'perencanaan', currentPlanningMonth);
                 const docSnap = await getDoc(docRef);
                 
                 if(docSnap.exists()) {
                     planDataCurrentMonth = docSnap.data();
                 } else {
-                    planDataCurrentMonth = {
-                        gajiPokok: 0,
-                        tukin: 0,
-                        extraExpense: 0,
-                        realisasi: {}
-                    };
+                    planDataCurrentMonth = { gajiPokok: 0, tukin: 0, isLimpahanAktif: false, realisasi: {} };
                 }
                 
                 document.getElementById('input-gaji-pokok').value = planDataCurrentMonth.gajiPokok ? formatNumberForInput(planDataCurrentMonth.gajiPokok) : '';
                 document.getElementById('input-tukin').value = planDataCurrentMonth.tukin ? formatNumberForInput(planDataCurrentMonth.tukin) : '';
+                
+                toggleLimpahan.checked = !!planDataCurrentMonth.isLimpahanAktif;
+                labelLimpahan.innerText = toggleLimpahan.checked ? "Aktif" : "Nonaktif";
+
                 renderPerencanaanTable();
-            } catch(e) {
-                console.error("Gagal memuat perencanaan bulan ini:", e);
-            }
+            } catch(e) { console.error("Gagal memuat perencanaan bulan ini:", e); }
         }
 
         document.getElementById('btn-save-income').addEventListener('click', async () => {
-            const gp = parseRupiahInput(document.getElementById('input-gaji-pokok').value);
-            const tk = parseRupiahInput(document.getElementById('input-tukin').value);
-
-            planDataCurrentMonth.gajiPokok = gp;
-            planDataCurrentMonth.tukin = tk;
-
-            await savePerencanaanCurrentMonth();
-            showToast("Gaji & Tunjangan berhasil disimpan!");
+            planDataCurrentMonth.gajiPokok = parseRupiahInput(document.getElementById('input-gaji-pokok').value);
+            planDataCurrentMonth.tukin = parseRupiahInput(document.getElementById('input-tukin').value);
+            await setDoc(doc(db, 'users', currentUser.uid, 'perencanaan', currentPlanningMonth), planDataCurrentMonth);
+            showToast("Pendapatan disimpan!");
             renderPerencanaanTable();
         });
 
-        async function savePerencanaanCurrentMonth() {
-            if(!currentUser) return;
-            const docRef = doc(db, 'users', currentUser.uid, 'perencanaan', currentPlanningMonth);
-            await setDoc(docRef, planDataCurrentMonth);
+        // ----------------------------------------------------
+        // ALGORITMA PENYEIMBANG PERSENTASE OTOMATIS (100% SAFEGUARD)
+        // ----------------------------------------------------
+        function balancePercentages(changedIdRaw, newValue, type) {
+            const changedId = changedIdRaw.replace('inv_', '');
+            const items = type === 'main' 
+                ? ['expense', 'keluarga', 'sosial', 'investasi'] 
+                : ['pernikahan', 'pulang', 'kado', 'rumah', 'mobil'];
+            let obj = type === 'main' ? planPercentages : planPercentages.investasiSub;
+            
+            let sumOthers = 0;
+            items.forEach(id => { if(id !== changedId) sumOthers += obj[id]; });
+            
+            if (newValue + sumOthers > 100) {
+                let excess = (newValue + sumOthers) - 100;
+                let others = items.filter(id => id !== changedId).sort((a, b) => obj[b] - obj[a]);
+                for(let id of others) {
+                    if (excess <= 0) break;
+                    let deduct = Math.min(obj[id], excess);
+                    obj[id] -= deduct;
+                    excess -= deduct;
+                }
+                obj[changedId] = newValue;
+            } else if (newValue + sumOthers < 100) {
+                let deficit = 100 - (newValue + sumOthers);
+                let defaultBucket = type === 'main' ? (changedId === 'expense' ? 'investasi' : 'expense') : (changedId === 'pernikahan' ? 'rumah' : 'pernikahan');
+                obj[defaultBucket] += deficit;
+                obj[changedId] = newValue;
+            } else {
+                obj[changedId] = newValue;
+            }
         }
 
+        // Memperbarui UI di Tabel Tanpa Render Ulang (agar slider mulus)
+        function updatePlanVisuals() {
+            const totalIncome = (planDataCurrentMonth.gajiPokok || 0) + (planDataCurrentMonth.tukin || 0);
+            let limpahan = 0;
+            if(planDataCurrentMonth.isLimpahanAktif) {
+                limpahan = hitungLimpahan(totalIncome, planDataCurrentMonth.realisasi || {});
+            }
+            
+            const expNominal = (totalIncome * (planPercentages.expense / 100)) + limpahan;
+            const keluargaNominal = totalIncome * (planPercentages.keluarga / 100);
+            const sosialNominal = totalIncome * (planPercentages.sosial / 100);
+            const invTotalNominal = totalIncome * (planPercentages.investasi / 100);
+            
+            // Sync Value UI (Inputs & Sliders)
+            ['expense', 'keluarga', 'sosial', 'investasi'].forEach(id => {
+                const val = planPercentages[id];
+                if(document.getElementById(`pct-slider-${id}`)) document.getElementById(`pct-slider-${id}`).value = val;
+                if(document.getElementById(`pct-input-${id}`)) document.getElementById(`pct-input-${id}`).value = val;
+            });
+            ['pernikahan', 'pulang', 'kado', 'rumah', 'mobil'].forEach(id => {
+                const val = planPercentages.investasiSub[id];
+                const fullId = `inv_${id}`;
+                if(document.getElementById(`pct-slider-${fullId}`)) document.getElementById(`pct-slider-${fullId}`).value = val;
+                if(document.getElementById(`pct-input-${fullId}`)) document.getElementById(`pct-input-${fullId}`).value = val;
+            });
+
+            // Fungsi Update Baris
+            const updateRow = (id, nominal) => {
+                const elNom = document.getElementById(`nom-${id}`);
+                if(elNom) elNom.innerText = formatRp(nominal);
+                
+                const real = parseFloat(planDataCurrentMonth.realisasi[id]) || 0;
+                const sisa = nominal - real;
+                const elSisa = document.getElementById(`sisa-${id}`);
+                if(elSisa) {
+                    elSisa.innerText = formatRp(sisa);
+                    elSisa.className = `p-4 font-bold ${sisa < 0 ? 'text-run-red' : 'text-green-600'}`;
+                }
+            };
+
+            updateRow('expense', expNominal);
+            updateRow('keluarga', keluargaNominal);
+            updateRow('sosial', sosialNominal);
+            
+            const elNomInv = document.getElementById('nom-investasi_header');
+            if(elNomInv) elNomInv.innerText = formatRp(invTotalNominal);
+            
+            ['pernikahan', 'pulang', 'kado', 'rumah', 'mobil'].forEach(id => {
+                updateRow(`inv_${id}`, invTotalNominal * (planPercentages.investasiSub[id] / 100));
+            });
+
+            // Update Label Limpahan Pada Expense Bulanan
+            const extraLabel = document.getElementById('extra-expense-label');
+            if(extraLabel) {
+                extraLabel.innerHTML = limpahan > 0 ? `<br><span class="text-[10px] text-green-600 font-normal">+Limpahan Rp ${formatRp(limpahan)}</span>` : '';
+            }
+        }
+
+        // Render Struktur Dasar Tabel Perencanaan
         function renderPerencanaanTable() {
             const totalIncome = (planDataCurrentMonth.gajiPokok || 0) + (planDataCurrentMonth.tukin || 0);
-            
             document.getElementById('plan-total-income').innerText = formatRp(totalIncome);
             document.getElementById('summary-gaji-pokok').innerText = formatRp(planDataCurrentMonth.gajiPokok);
             document.getElementById('summary-tukin').innerText = formatRp(planDataCurrentMonth.tukin);
 
             const tableBody = document.getElementById('table-plan-body');
             tableBody.innerHTML = '';
-
-            const expNominal = (totalIncome * (planPercentages.expense / 100)) + (planDataCurrentMonth.extraExpense || 0);
-            const keluargaNominal = totalIncome * (planPercentages.keluarga / 100);
-            const sosialNominal = totalIncome * (planPercentages.sosial / 100);
-            const investasiTotalNominal = totalIncome * (planPercentages.investasi / 100);
-
             const real = planDataCurrentMonth.realisasi || {};
 
             const items = [
-                { id: 'expense', name: '1. Expense Bulanan', pct: `${planPercentages.expense}%`, plan: expNominal, isMain: true, extra: planDataCurrentMonth.extraExpense },
-                { id: 'keluarga', name: '2. Keluarga', pct: `${planPercentages.keluarga}%`, plan: keluargaNominal, isMain: true },
-                { id: 'sosial', name: '3. Sosial', pct: `${planPercentages.sosial}%`, plan: sosialNominal, isMain: true },
-                { id: 'investasi_header', name: '4. Investasi (Total Pos)', pct: `${planPercentages.investasi}%`, plan: investasiTotalNominal, isHeader: true },
-                
-                // Sub-pos Investasi
-                { id: 'inv_pernikahan', name: '↳ Tabungan Pernikahan', pct: `${planPercentages.investasiSub?.pernikahan || 30}% (inv)`, plan: investasiTotalNominal * ((planPercentages.investasiSub?.pernikahan || 30)/100), isSub: true },
-                { id: 'inv_pulang', name: '↳ Tabungan Pulang Kampung', pct: `${planPercentages.investasiSub?.pulang || 20}% (inv)`, plan: investasiTotalNominal * ((planPercentages.investasiSub?.pulang || 20)/100), isSub: true },
-                { id: 'inv_kado', name: '↳ Tabungan Kado Ulang Tahun', pct: `${planPercentages.investasiSub?.kado || 10}% (inv)`, plan: investasiTotalNominal * ((planPercentages.investasiSub?.kado || 10)/100), isSub: true },
-                { id: 'inv_rumah', name: '↳ Tabungan Rumah', pct: `${planPercentages.investasiSub?.rumah || 25}% (inv)`, plan: investasiTotalNominal * ((planPercentages.investasiSub?.rumah || 25)/100), isSub: true },
-                { id: 'inv_mobil', name: '↳ Tabungan Mobil', pct: `${planPercentages.investasiSub?.mobil || 15}% (inv)`, plan: investasiTotalNominal * ((planPercentages.investasiSub?.mobil || 15)/100), isSub: true },
+                { id: 'expense', name: '1. Expense Bulanan', isMain: true },
+                { id: 'keluarga', name: '2. Keluarga', isMain: true },
+                { id: 'sosial', name: '3. Sosial', isMain: true },
+                { id: 'investasi', name: '4. Investasi (Total Pos)', isHeader: true, isMain: true },
+                { id: 'inv_pernikahan', name: '↳ Tabungan Pernikahan', isSub: true },
+                { id: 'inv_pulang', name: '↳ Tabungan Pulang Kampung', isSub: true },
+                { id: 'inv_kado', name: '↳ Tabungan Kado Ulang Tahun', isSub: true },
+                { id: 'inv_rumah', name: '↳ Tabungan Rumah', isSub: true },
+                { id: 'inv_mobil', name: '↳ Tabungan Mobil', isSub: true },
             ];
 
             items.forEach(item => {
@@ -754,35 +745,58 @@
                     tr.className = "bg-run-purple/10 font-bold border-t-2 border-run-purple/10";
                     tr.innerHTML = `
                         <td class="p-4 font-extrabold">${item.name}</td>
-                        <td class="p-4">${item.pct}</td>
-                        <td class="p-4">${formatRp(item.plan)}</td>
+                        <td class="p-4">
+                            <div class="flex items-center gap-2">
+                                <input type="range" data-id="${item.id}" data-type="main" min="0" max="100" class="pct-slider w-20 h-1.5 bg-run-purple/20 rounded-lg appearance-none cursor-pointer" id="pct-slider-${item.id}">
+                                <input type="number" data-id="${item.id}" data-type="main" class="pct-input w-12 text-xs font-bold bg-transparent border-b border-run-purple/20 outline-none text-center" id="pct-input-${item.id}">
+                            </div>
+                        </td>
+                        <td class="p-4" id="nom-investasi_header">-</td>
                         <td class="p-4 text-run-purple/50">-</td>
                         <td class="p-4 text-run-purple/50">-</td>
                     `;
                 } else {
                     const currentReal = real[item.id] !== undefined ? real[item.id] : '';
-                    const sisa = item.plan - (parseFloat(currentReal) || 0);
                     const isSubClass = item.isSub ? 'pl-8 text-xs text-run-purple/80' : 'font-extrabold';
-
+                    const dataType = item.isSub ? 'sub' : 'main';
                     tr.innerHTML = `
                         <td class="p-4 ${isSubClass}">
                             ${item.name}
-                            ${item.extra ? `<span class="block text-[10px] text-green-600 font-normal">+Limpahan Rp ${formatNumberForInput(item.extra)}</span>` : ''}
+                            ${item.id === 'expense' ? '<span id="extra-expense-label"></span>' : ''}
                         </td>
-                        <td class="p-4 text-xs">${item.pct}</td>
-                        <td class="p-4 font-bold">${formatRp(item.plan)}</td>
                         <td class="p-4">
-                            <input type="text" data-id="${item.id}" value="${currentReal ? formatNumberForInput(currentReal) : ''}" placeholder="0" class="realisasi-input bg-run-purple/5 border border-run-purple/10 rounded-lg p-2 font-bold text-xs w-32 outline-none focus:border-run-purple">
+                            <div class="flex items-center gap-2">
+                                <input type="range" data-id="${item.id}" data-type="${dataType}" min="0" max="100" class="pct-slider w-20 h-1.5 bg-run-purple/20 rounded-lg appearance-none cursor-pointer" id="pct-slider-${item.id}">
+                                <input type="number" data-id="${item.id}" data-type="${dataType}" class="pct-input w-12 text-xs font-bold bg-transparent border-b border-run-purple/20 outline-none text-center" id="pct-input-${item.id}">
+                            </div>
                         </td>
-                        <td class="p-4 font-bold ${sisa < 0 ? 'text-run-red' : 'text-green-600'}">
-                            ${formatRp(sisa)}
+                        <td class="p-4 font-bold" id="nom-${item.id}">-</td>
+                        <td class="p-4">
+                            <input type="text" data-id="${item.id}" value="${currentReal ? formatNumberForInput(currentReal) : ''}" placeholder="0" class="realisasi-input bg-run-purple/5 border border-run-purple/10 rounded-lg p-2 font-bold text-xs w-28 md:w-32 outline-none focus:border-run-purple">
                         </td>
+                        <td class="p-4 font-bold" id="sisa-${item.id}">-</td>
                     `;
                 }
                 tableBody.appendChild(tr);
             });
 
-            // Re-attach auto format angka pada input realisasi
+            updatePlanVisuals();
+
+            // Pasang Event Listeners ke UI Tabel Dinamis
+            document.querySelectorAll('.pct-slider, .pct-input').forEach(el => {
+                el.addEventListener('input', (e) => {
+                    const id = e.target.dataset.id;
+                    const type = e.target.dataset.type;
+                    let val = parseInt(e.target.value) || 0;
+                    if(val > 100) val = 100;
+                    if(val < 0) val = 0;
+                    
+                    document.getElementById(`pct-input-${id}`).value = val;
+                    balancePercentages(id, val, type);
+                    updatePlanVisuals();
+                });
+            });
+
             document.querySelectorAll('.realisasi-input').forEach(input => {
                 input.addEventListener('input', function() {
                     let val = this.value.replace(/[^0-9,]/g, '');
@@ -790,68 +804,81 @@
                     if (parts.length > 2) val = parts[0] + ',' + parts.slice(1).join('');
                     if (parts[0].length > 0) parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
                     this.value = parts[0];
+                    
+                    // Simpan sementara & hitung ulang limpahan Sisa saat mengetik!
+                    planDataCurrentMonth.realisasi[this.dataset.id] = parseRupiahInput(this.value);
+                    updatePlanVisuals();
                 });
             });
         }
 
-        // Simpan Realisasi
-        document.getElementById('btn-save-realisasi').addEventListener('click', async () => {
-            const realObj = {};
-            document.querySelectorAll('.realisasi-input').forEach(input => {
-                const id = input.getAttribute('data-id');
-                const val = parseRupiahInput(input.value);
-                if(id) realObj[id] = val;
-            });
-            planDataCurrentMonth.realisasi = realObj;
-            await savePerencanaanCurrentMonth();
-            showToast("Realisasi anggaran disimpan!");
-            renderPerencanaanTable();
-        });
-
-        // Limpahkan Sisa Anggaran Otomatis ke Expense Bulanan
-        document.getElementById('btn-limpahkan').addEventListener('click', async () => {
-            const totalIncome = (planDataCurrentMonth.gajiPokok || 0) + (planDataCurrentMonth.tukin || 0);
-            if(totalIncome <= 0) return showToast("Isi pendapatan terlebih dahulu!", "error");
-
-            const keluargaPlan = totalIncome * (planPercentages.keluarga / 100);
-            const sosialPlan = totalIncome * (planPercentages.sosial / 100);
-            const invTotalPlan = totalIncome * (planPercentages.investasi / 100);
-
-            const real = planDataCurrentMonth.realisasi || {};
-
-            // Hitung sisa positif dari Keluarga & Sosial
-            let sisaEkstra = 0;
-            const sisaKeluarga = keluargaPlan - (real['keluarga'] || 0);
-            const sisaSosial = sosialPlan - (real['sosial'] || 0);
-
-            if(sisaKeluarga > 0) sisaEkstra += sisaKeluarga;
-            if(sisaSosial > 0) sisaEkstra += sisaSosial;
-
-            // Hitung sisa positif dari Sub-pos Investasi
-            const sub = planPercentages.investasiSub || {};
-            const subItems = [
-                { id: 'inv_pernikahan', pct: sub.pernikahan || 30 },
-                { id: 'inv_pulang', pct: sub.pulang || 20 },
-                { id: 'inv_kado', pct: sub.kado || 10 },
-                { id: 'inv_rumah', pct: sub.rumah || 25 },
-                { id: 'inv_mobil', pct: sub.mobil || 15 },
-            ];
-
-            subItems.forEach(item => {
-                const targetNominal = invTotalPlan * (item.pct / 100);
-                const sisa = targetNominal - (real[item.id] || 0);
-                if(sisa > 0) sisaEkstra += sisa;
-            });
-
-            if(sisaEkstra <= 0) {
-                return showToast("Tidak ada sisa anggaran positif dari pos lain untuk dilimpahkan.", "error");
+        // Tombol Simpan Perubahan Utama
+        document.getElementById('btn-save-all-plan').addEventListener('click', async () => {
+            const btn = document.getElementById('btn-save-all-plan');
+            btn.innerText = "Menyimpan...";
+            
+            try {
+                // Simpan Setting (Persentase)
+                await setDoc(doc(db, 'users', currentUser.uid, 'settings', 'perencanaan'), planPercentages);
+                // Simpan Data Bulan Ini (Realisasi & Limpahan Toggle & Gaji)
+                await setDoc(doc(db, 'users', currentUser.uid, 'perencanaan', currentPlanningMonth), planDataCurrentMonth);
+                
+                showToast("Semua Perubahan Disimpan!");
+            } catch (error) {
+                showToast("Gagal menyimpan!", "error");
+            } finally {
+                btn.innerText = "Simpan Perubahan";
             }
-
-            planDataCurrentMonth.extraExpense = (planDataCurrentMonth.extraExpense || 0) + sisaEkstra;
-            await savePerencanaanCurrentMonth();
-            showToast(`Sisa Rp ${formatNumberForInput(sisaEkstra)} berhasil dilimpahkan ke Expense Bulanan!`);
-            renderPerencanaanTable();
         });
+
+        // ----------------------------------------------------
+        // INTEGRASI BUDGET KE HALAMAN REKAM HARIAN (DASHBOARD)
+        // ----------------------------------------------------
+        function loadPerencanaanGlobal() {
+            if(!currentUser) return;
+            const docRef = doc(db, 'users', currentUser.uid, 'perencanaan', currentMonthGlobal);
+            if(unsubscribePerencanaanGlobal) unsubscribePerencanaanGlobal();
+            
+            unsubscribePerencanaanGlobal = onSnapshot(docRef, (docSnap) => {
+                globalPlanData = docSnap.exists() ? docSnap.data() : null;
+                updateDashboardUI();
+            });
+        }
+
+        function updateDashboardUI() {
+            let totalIncome = 0;
+            let baseExpense = 0;
+            let limpahan = 0;
+            
+            if (globalPlanData && planPercentages) {
+                totalIncome = (globalPlanData.gajiPokok || 0) + (globalPlanData.tukin || 0);
+                baseExpense = totalIncome * ((planPercentages.expense || 50) / 100);
+                
+                if (globalPlanData.isLimpahanAktif) {
+                    limpahan = hitungLimpahan(totalIncome, globalPlanData.realisasi || {});
+                }
+            }
+            
+            const totalBudget = baseExpense + limpahan;
+            
+            let terpakai = 0;
+            transaksiData.forEach(t => {
+                if (t.jenis === 'pengeluaran' && t.tanggal && t.tanggal.startsWith(currentMonthGlobal)) {
+                    terpakai += t.jumlah;
+                }
+            });
+            
+            const sisa = totalBudget - terpakai;
+            
+            const elSaldo = document.getElementById('saldo-total');
+            const elBudget = document.getElementById('budget-tersedia');
+            const elTerpakai = document.getElementById('budget-terpakai');
+            
+            if(elSaldo) elSaldo.innerText = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(sisa);
+            if(elBudget) elBudget.innerText = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(totalBudget);
+            if(elTerpakai) elTerpakai.innerText = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(terpakai);
+        }
+
 
         // ----------------------------------------------------
         // ROUTING BERBASIS HASH URL & SIDEBAR
@@ -866,7 +893,6 @@
 
         function handleRouting() {
             if (!currentUser) return;
-            
             const hash = window.location.hash.toLowerCase() || '#rekam';
 
             viewRekam.classList.add('hidden');
@@ -917,7 +943,6 @@
                 toggleSidebar();
             }
         }
-
         window.addEventListener('hashchange', handleRouting);
 
         // ----------------------------------------------------
@@ -940,6 +965,9 @@
                 
                 renderDropdownKategori();
                 renderUIKategoriKustom();
+                
+                // Mulai load budget setelah basic setting termuat
+                await loadPerencanaanSettings();
             } catch (error) {
                 console.log("Error loading settings:", error);
             }
@@ -1051,9 +1079,7 @@
             e.preventDefault();
             const val = inputKategoriBaru.value.trim();
             if(!val) return;
-            
             const arr = isSettingsPengeluaran ? kategoriData.pengeluaran : kategoriData.pemasukan;
-            
             if(isEditingCategory) {
                 if(arr.includes(val) && val !== arr[editingCategoryIndex]) {
                     return showToast("Nama kategori sudah digunakan", "error");
@@ -1067,7 +1093,6 @@
                 arr.push(val);
                 showToast("Kategori ditambahkan");
             }
-            
             resetKategoriForm();
             saveSettings();
         });
@@ -1077,7 +1102,6 @@
             inputKategoriBaru.value = arr[index];
             isEditingCategory = true;
             editingCategoryIndex = index;
-            
             btnCancelEditKategori.classList.remove('hidden');
             btnSubmitKategori.innerText = "Simpan";
             btnSubmitKategori.classList.remove('bg-run-purple', 'hover:bg-[#3d1d56]');
@@ -1086,76 +1110,41 @@
         };
 
         window.hapusKategoriKustom = (index) => {
-            if(isSettingsPengeluaran) {
-                kategoriData.pengeluaran.splice(index, 1);
-            } else {
-                kategoriData.pemasukan.splice(index, 1);
-            }
-            if (isEditingCategory && editingCategoryIndex === index) {
-                resetKategoriForm();
-            }
+            if(isSettingsPengeluaran) kategoriData.pengeluaran.splice(index, 1);
+            else kategoriData.pemasukan.splice(index, 1);
+            if (isEditingCategory && editingCategoryIndex === index) resetKategoriForm();
             showToast("Kategori dihapus");
             saveSettings();
         };
 
         // ----------------------------------------------------
-        // FITUR EXPORT CSV
+        // FITUR EXPORT CSV & PWA
         // ----------------------------------------------------
         window.eksporKeCSV = () => {
-            if (transaksiData.length === 0) {
-                return showToast("Belum ada data untuk diekspor", "error");
-            }
-            
-            let csvContent = "data:text/csv;charset=utf-8,";
-            csvContent += "Tanggal,Nama Transaksi,Kategori,Jenis,Jumlah (Rp)\n";
-            
+            if (transaksiData.length === 0) return showToast("Belum ada data untuk diekspor", "error");
+            let csvContent = "data:text/csv;charset=utf-8,Tanggal,Nama Transaksi,Kategori,Jenis,Jumlah (Rp)\n";
             transaksiData.forEach(t => {
                 const ket = t.keterangan ? t.keterangan.replace(/,/g, "") : "";
                 const kat = t.kategori ? t.kategori.replace(/,/g, "") : "";
-                const row = `${t.tanggal},${ket},${kat},${t.jenis},${t.jumlah}`;
-                csvContent += row + "\n";
+                csvContent += `${t.tanggal},${ket},${kat},${t.jenis},${t.jumlah}\n`;
             });
-
             const encodedUri = encodeURI(csvContent);
             const link = document.createElement("a");
-            const dateStr = new Date().toISOString().split('T')[0];
-            
             link.setAttribute("href", encodedUri);
-            link.setAttribute("download", `RUN_FINANCE_Export_${dateStr}.csv`);
+            link.setAttribute("download", `RUN_FINANCE_Export_${new Date().toISOString().split('T')[0]}.csv`);
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
-            
             showToast("Proses unduh dimulai!");
         };
 
-        // ----------------------------------------------------
-        // FITUR PWA (SERVICE WORKER)
-        // ----------------------------------------------------
         const manifest = {
-            "name": "RUN FINANCE",
-            "short_name": "RUN FIN",
-            "start_url": ".",
-            "display": "standalone",
-            "background_color": "#FEFEFE",
-            "theme_color": "#512D6D",
-            "icons": [
-                { "src": "logo.png", "sizes": "192x192", "type": "image/png" },
-                { "src": "logo.png", "sizes": "512x512", "type": "image/png" }
-            ]
+            "name": "RUN FINANCE", "short_name": "RUN FIN", "start_url": ".", "display": "standalone",
+            "background_color": "#FEFEFE", "theme_color": "#512D6D",
+            "icons": [{ "src": "logo.png", "sizes": "192x192", "type": "image/png" }, { "src": "logo.png", "sizes": "512x512", "type": "image/png" }]
         };
-        const manifestUrl = 'data:application/manifest+json;charset=utf-8,' + encodeURIComponent(JSON.stringify(manifest));
-        document.head.insertAdjacentHTML('beforeend', `<link rel="manifest" href="${manifestUrl}">`);
-
-        const swCode = `
-            self.addEventListener('install', (e) => { self.skipWaiting(); });
-            self.addEventListener('activate', (e) => { e.waitUntil(clients.claim()); });
-            self.addEventListener('fetch', (e) => { });
-        `;
-        const swBlob = new Blob([swCode], {type: 'application/javascript'});
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register(URL.createObjectURL(swBlob)).catch(err => console.log(err));
-        }
+        document.head.insertAdjacentHTML('beforeend', `<link rel="manifest" href="data:application/manifest+json;charset=utf-8,${encodeURIComponent(JSON.stringify(manifest))}">`);
+        if ('serviceWorker' in navigator) navigator.serviceWorker.register(URL.createObjectURL(new Blob([`self.addEventListener('install',(e)=>{self.skipWaiting()});self.addEventListener('activate',(e)=>{e.waitUntil(clients.claim())});self.addEventListener('fetch',(e)=>{});`], {type: 'application/javascript'}))).catch(err => console.log(err));
 
         // ----------------------------------------------------
         // LOGIKA INPUT FORM & NOTIFIKASI
@@ -1164,15 +1153,21 @@
         setModePengaturanKategori(true);
         setTanggalHariIni();
 
+        function parseRupiahInput(val) {
+            if(!val) return 0;
+            return parseFloat(val.toString().replace(/\./g, '').replace(',', '.')) || 0;
+        }
+
+        function formatRp(num) {
+            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(num || 0);
+        }
+
         function formatNumberForInput(num) {
             if(!num && num !== 0) return '';
             let str = num.toString().replace('.', ',');
             let parts = str.split(',');
             parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-            if (parts[1] !== undefined) {
-                return parts[0] + ',' + parts[1].substring(0, 2);
-            }
-            return parts[0];
+            return parts[1] !== undefined ? parts[0] + ',' + parts[1].substring(0, 2) : parts[0];
         }
 
         inputJumlah.addEventListener('input', function(e) {
@@ -1180,45 +1175,31 @@
             const parts = val.split(',');
             if (parts.length > 2) val = parts[0] + ',' + parts.slice(1).join('');
             if (parts[0].length > 0) parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-            
-            if (parts[1] !== undefined) {
-                parts[1] = parts[1].substring(0, 2);
-                this.value = parts[0] + ',' + parts[1];
-            } else {
-                this.value = parts[0];
-            }
+            this.value = parts[1] !== undefined ? parts[0] + ',' + parts[1].substring(0, 2) : parts[0];
         });
 
-        // Event formatting untuk Gaji Pokok & Tukin
         ['input-gaji-pokok', 'input-tukin'].forEach(id => {
             const el = document.getElementById(id);
-            if(el) {
-                el.addEventListener('input', function() {
-                    let val = this.value.replace(/[^0-9,]/g, '');
-                    const parts = val.split(',');
-                    if (parts.length > 2) val = parts[0] + ',' + parts.slice(1).join('');
-                    if (parts[0].length > 0) parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-                    this.value = parts[0];
-                });
-            }
+            if(el) el.addEventListener('input', function() {
+                let val = this.value.replace(/[^0-9,]/g, '');
+                const parts = val.split(',');
+                if (parts.length > 2) val = parts[0] + ',' + parts.slice(1).join('');
+                if (parts[0].length > 0) parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+                this.value = parts[0];
+            });
         });
 
         function setTanggalHariIni() {
             const today = new Date();
-            const year = today.getFullYear();
-            const month = String(today.getMonth() + 1).padStart(2, '0');
-            const day = String(today.getDate()).padStart(2, '0');
-            inputTanggal.value = `${year}-${month}-${day}`;
+            inputTanggal.value = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
         }
 
         function showToast(message, type = 'success') {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
-            const bgColor = type === 'error' ? 'bg-run-red' : 'bg-run-purple';
-            toast.className = `${bgColor} text-run-white px-5 py-3 rounded-xl shadow-2xl text-sm font-bold toast-enter-active flex items-center gap-2 max-w-xs md:max-w-md`;
+            toast.className = `${type === 'error' ? 'bg-run-red' : 'bg-run-purple'} text-run-white px-5 py-3 rounded-xl shadow-2xl text-sm font-bold toast-enter-active flex items-center gap-2 max-w-xs md:max-w-md`;
             toast.innerText = message;
             container.appendChild(toast);
-
             setTimeout(() => {
                 toast.classList.remove('toast-enter-active');
                 toast.classList.add('toast-exit-active');
@@ -1231,13 +1212,11 @@
             formTransaksi.reset();
             setModeTransaksi(true);
             setTanggalHariIni();
-            
             formTitle.innerText = "Tambah Transaksi Baru";
             textSubmitForm.innerText = "Simpan Transaksi";
             btnCancelEdit.classList.add('hidden');
             formTransaksi.classList.remove('ring-4', 'ring-run-purple/20');
         }
-
         btnCancelEdit.addEventListener('click', resetFormState);
 
         // ----------------------------------------------------
@@ -1249,11 +1228,8 @@
                 currentUser = user;
                 viewLogin.classList.add('hidden');
                 viewApp.classList.remove('hidden');
-                
-                const nama = user.displayName || (user.isAnonymous ? "Tamu" : "Pengguna");
-                userGreeting.innerText = `Halo, ${nama}`;
-                
-                showToast(`Selamat datang, ${nama}!`);
+                userGreeting.innerText = `Halo, ${user.displayName || (user.isAnonymous ? "Tamu" : "Pengguna")}`;
+                showToast(`Selamat datang!`);
                 loadSettings();
                 loadDataTransaksi();
                 handleRouting(); 
@@ -1261,34 +1237,23 @@
                 currentUser = null;
                 viewApp.classList.add('hidden');
                 viewLogin.classList.remove('hidden');
-                
                 if (unsubscribeSnapshot) unsubscribeSnapshot();
+                if (unsubscribePerencanaanGlobal) unsubscribePerencanaanGlobal();
                 transaksiData = [];
-                kategoriData = { pengeluaran: [], pemasukan: [] };
                 renderUI();
             }
         });
 
-        document.getElementById('btn-login-google').addEventListener('click', () => {
-            signInWithPopup(auth, googleProvider).catch(error => showToast(error.message, 'error'));
-        });
-        document.getElementById('btn-login-anon').addEventListener('click', () => {
-            signInAnonymously(auth).catch(error => showToast(error.message, 'error'));
-        });
-        document.getElementById('btn-logout').addEventListener('click', () => {
-            signOut(auth).then(() => showToast("Berhasil keluar")).catch(e => showToast(e.message, 'error'));
-        });
+        document.getElementById('btn-login-google').addEventListener('click', () => { signInWithPopup(auth, googleProvider).catch(error => showToast(error.message, 'error')); });
+        document.getElementById('btn-login-anon').addEventListener('click', () => { signInAnonymously(auth).catch(error => showToast(error.message, 'error')); });
+        document.getElementById('btn-logout').addEventListener('click', () => { signOut(auth).then(() => showToast("Berhasil keluar")).catch(e => showToast(e.message, 'error')); });
 
         function loadDataTransaksi() {
             if (!currentUser) return;
             const transaksiRef = collection(db, 'users', currentUser.uid, 'transaksi');
-
             unsubscribeSnapshot = onSnapshot(transaksiRef, (snapshot) => {
                 transaksiData = [];
-                snapshot.forEach((document) => {
-                    transaksiData.push({ id: document.id, ...document.data() });
-                });
-
+                snapshot.forEach((document) => { transaksiData.push({ id: document.id, ...document.data() }); });
                 transaksiData.sort((a, b) => {
                     const dateA = a.tanggal || "1970-01-01";
                     const dateB = b.tanggal || "1970-01-01";
@@ -1296,47 +1261,36 @@
                     return b.createdAt - a.createdAt;
                 });
                 renderUI();
-            }, (error) => {
-                showToast("Gagal memuat data", 'error');
-            });
+            }, (error) => { showToast("Gagal memuat data", 'error'); });
         }
 
         formTransaksi.addEventListener('submit', async (e) => {
             e.preventDefault();
             if (!currentUser) return;
-
             const btnSubmit = formTransaksi.querySelector('button[type="submit"]');
             btnSubmit.disabled = true;
             textSubmitForm.innerText = "Menyimpan...";
 
             try {
-                const jumlahRaw = inputJumlah.value;
-                const jumlahClean = jumlahRaw.replace(/\./g, '').replace(',', '.');
-                const jumlahFloat = parseFloat(jumlahClean);
-
+                const jumlahFloat = parseRupiahInput(inputJumlah.value);
                 if (isNaN(jumlahFloat) || jumlahFloat <= 0) {
                     showToast("Jumlah tidak valid", 'error');
                     throw new Error("Invalid Input");
                 }
-
                 const dataSimpan = {
-                    keterangan: inputKeterangan.value,
-                    jumlah: jumlahFloat,
+                    keterangan: inputKeterangan.value, jumlah: jumlahFloat,
                     jenis: isPengeluaran ? 'pengeluaran' : 'pemasukan',
-                    kategori: inputKategori.value,
-                    tanggal: inputTanggal.value,
+                    kategori: inputKategori.value, tanggal: inputTanggal.value,
                     createdAt: currentEditId ? undefined : Date.now() 
                 };
 
                 if (currentEditId) {
                     delete dataSimpan.createdAt;
-                    const docRef = doc(db, 'users', currentUser.uid, 'transaksi', currentEditId);
-                    await updateDoc(docRef, dataSimpan);
-                    showToast("Transaksi berhasil diperbarui");
+                    await updateDoc(doc(db, 'users', currentUser.uid, 'transaksi', currentEditId), dataSimpan);
+                    showToast("Transaksi diperbarui");
                 } else {
-                    const transaksiRef = collection(db, 'users', currentUser.uid, 'transaksi');
-                    await addDoc(transaksiRef, dataSimpan);
-                    showToast("Transaksi berhasil dicatat");
+                    await addDoc(collection(db, 'users', currentUser.uid, 'transaksi'), dataSimpan);
+                    showToast("Transaksi dicatat");
                 }
                 resetFormState();
             } catch (error) {
@@ -1349,31 +1303,17 @@
 
         function renderUI() {
             listTransaksi.innerHTML = '';
-            let saldo = 0;
-
-            if (transaksiData.length === 0) {
-                emptyState.classList.remove('hidden');
-            } else {
-                emptyState.classList.add('hidden');
-            }
+            if (transaksiData.length === 0) emptyState.classList.remove('hidden');
+            else emptyState.classList.add('hidden');
 
             transaksiData.forEach((t) => {
                 const isItemPengeluaran = t.jenis === 'pengeluaran';
-                saldo += !isItemPengeluaran ? t.jumlah : -t.jumlah;
-
                 const li = document.createElement('li');
                 const bgClass = (currentEditId === t.id) ? 'bg-run-purple/10 border-run-purple/30' : 'bg-run-white border-run-purple/5 hover:border-run-purple/20';
                 li.className = `${bgClass} border-2 rounded-2xl p-4 md:p-5 flex justify-between items-start transition duration-200 gap-3 md:gap-4`;
                 
-                const formattedJumlah = new Intl.NumberFormat('id-ID', { 
-                    style: 'currency', currency: 'IDR', minimumFractionDigits: 0, maximumFractionDigits: 2 
-                }).format(t.jumlah);
-
                 let formattedTanggal = "";
-                if (t.tanggal) {
-                    const dateObj = new Date(t.tanggal);
-                    formattedTanggal = new Intl.DateTimeFormat('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }).format(dateObj);
-                }
+                if (t.tanggal) formattedTanggal = new Intl.DateTimeFormat('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }).format(new Date(t.tanggal));
 
                 li.innerHTML = `
                     <div class="flex items-start gap-3 md:gap-4 flex-1 min-w-0 pt-0.5">
@@ -1386,7 +1326,6 @@
                         <div class="flex-1 min-w-0">
                             <p class="font-extrabold text-run-purple text-[15px] md:text-lg tracking-tight truncate leading-tight">${t.keterangan}</p>
                             <p class="text-[10px] md:text-xs text-run-purple/50 font-bold truncate uppercase tracking-wider mb-1 mt-0.5">${t.kategori || t.jenis}</p>
-                            
                             <div class="flex flex-wrap items-center gap-x-1.5 md:gap-x-2 gap-y-1 mt-1">
                                 ${formattedTanggal ? `<span class="text-[11px] md:text-sm text-run-purple/60 font-semibold whitespace-nowrap">${formattedTanggal}</span>` : ''}
                                 <span class="text-[10px] text-run-purple/30 hidden md:inline">•</span>
@@ -1398,34 +1337,29 @@
                         </div>
                     </div>
                     <span class="${!isItemPengeluaran ? 'text-run-purple' : 'text-run-red'} font-extrabold text-[15px] md:text-lg whitespace-nowrap shrink-0 text-right pt-0.5">
-                        ${!isItemPengeluaran ? '+' : '-'}${formattedJumlah}
+                        ${!isItemPengeluaran ? '+' : '-'}${formatRp(t.jumlah)}
                     </span>
                 `;
                 listTransaksi.appendChild(li);
             });
-
-            saldoTotal.innerText = new Intl.NumberFormat('id-ID', { 
-                style: 'currency', currency: 'IDR', minimumFractionDigits: 0, maximumFractionDigits: 2 
-            }).format(saldo);
+            
+            // Perbarui Global Dashboard (Menggantikan Kalkulasi Saldo Lama)
+            updateDashboardUI();
         }
 
         window.triggerEdit = (id) => {
             const dataToEdit = transaksiData.find(t => t.id === id);
             if (!dataToEdit) return;
-
             currentEditId = id;
             setModeTransaksi(dataToEdit.jenis === 'pengeluaran');
-            
             inputKeterangan.value = dataToEdit.keterangan;
             inputJumlah.value = formatNumberForInput(dataToEdit.jumlah);
             inputTanggal.value = dataToEdit.tanggal;
             inputKategori.value = dataToEdit.kategori || ""; 
-
             formTitle.innerText = "Edit Transaksi";
             textSubmitForm.innerText = "Update Transaksi";
             btnCancelEdit.classList.remove('hidden');
             formTransaksi.classList.add('ring-4', 'ring-run-purple/20');
-            
             formTransaksi.scrollIntoView({ behavior: 'smooth', block: 'center' });
             renderUI(); 
         };
@@ -1434,29 +1368,20 @@
             idToDelete = id;
             modalConfirm.classList.remove('hidden');
         };
-
-        document.getElementById('btn-cancel-delete').addEventListener('click', () => {
-            idToDelete = null;
-            modalConfirm.classList.add('hidden');
-        });
-
+        document.getElementById('btn-cancel-delete').addEventListener('click', () => { idToDelete = null; modalConfirm.classList.add('hidden'); });
         document.getElementById('btn-confirm-delete').addEventListener('click', async () => {
             if (!currentUser || !idToDelete) return;
             const btnConfirm = document.getElementById('btn-confirm-delete');
             btnConfirm.innerText = "Menghapus...";
             btnConfirm.disabled = true;
-
             try {
                 await deleteDoc(doc(db, 'users', currentUser.uid, 'transaksi', idToDelete));
                 if (currentEditId === idToDelete) resetFormState();
                 showToast("Transaksi dihapus");
-            } catch (error) {
-                showToast("Gagal menghapus", "error");
+            } catch (error) { showToast("Gagal menghapus", "error");
             } finally {
-                idToDelete = null;
-                modalConfirm.classList.add('hidden');
-                btnConfirm.innerText = "Hapus";
-                btnConfirm.disabled = false;
+                idToDelete = null; modalConfirm.classList.add('hidden');
+                btnConfirm.innerText = "Hapus"; btnConfirm.disabled = false;
             }
         });
     </script>
