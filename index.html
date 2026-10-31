@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RUN FINANCE</title>
+    <title>AlfReddd App</title>
     
     <!-- FAVICON -->
     <link rel="icon" href="logo.png" type="image/png">
@@ -81,7 +81,7 @@
     <!-- Loading Screen -->
     <div id="loading-screen" class="fixed inset-0 bg-run-white dark:bg-dark-bg z-50 flex flex-col items-center justify-center transition-colors duration-300">
         <div class="animate-spin rounded-full h-12 w-12 border-b-4 border-run-red mb-6"></div>
-        <img src="finance_logo.png" alt="AlfReddd Finance" class="h-6 object-contain">
+        <img src="Logo Vertikal Transparan.png" alt="AlfReddd Finance" class="h-6 object-contain">
     </div>
 
     <!-- Halaman Login -->
@@ -91,7 +91,7 @@
             <div class="w-24 h-24 flex items-center justify-center mx-auto mb-4">
                 <img src="logo.png" alt="Logo" class="w-full h-full object-contain drop-shadow-md" onerror="this.style.display='none'">
             </div>
-            <img src="finance_logo.png" alt="AlfReddd Finance" class="h-10 mx-auto mb-4 object-contain">
+            <img src="Logo Vertikal Transparan.png" alt="AlfReddd Finance" class="h-10 mx-auto mb-4 object-contain">
             <p class="text-run-purple/60 dark:text-gray-400 mb-8 text-sm font-medium">Masuk untuk mulai mencatat keuangan harian Anda secara aman di Cloud.</p>
             
             <button id="btn-login-google" class="w-full flex items-center justify-center gap-3 bg-run-white dark:bg-dark-input border-2 border-run-purple/20 dark:border-white/10 hover:border-run-purple dark:hover:border-gray-500 text-run-purple dark:text-white font-bold py-3 px-4 rounded-xl transition duration-200 shadow-sm">
@@ -118,7 +118,7 @@
         <aside id="sidebar" class="fixed md:relative inset-y-0 left-0 z-50 w-64 bg-run-white dark:bg-dark-card border-r border-run-purple/10 dark:border-white/5 transform -translate-x-full md:translate-x-0 transition-transform duration-300 flex flex-col shadow-2xl md:shadow-none transition-colors duration-300">
             <!-- Header Sidebar -->
             <div class="h-20 flex items-center justify-between px-6 border-b border-run-purple/10 dark:border-white/5">
-                <img src="finance_logo.png" alt="AlfReddd Finance" class="h-8 md:h-10 object-contain">
+                <img src="Logo Vertikal Transparan.png" alt="AlfReddd Finance" class="h-8 md:h-10 object-contain">
                 <button id="btn-close-sidebar" class="md:hidden text-run-purple/60 dark:text-gray-400 hover:text-run-red p-2 rounded-lg">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                 </button>
@@ -177,7 +177,7 @@
                 <button id="btn-open-sidebar" class="text-run-purple dark:text-gray-300 hover:text-run-red p-2 -ml-2 rounded-lg transition">
                     <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16M4 18h16"></path></svg>
                 </button>
-                <img src="finance_logo.png" alt="AlfReddd Finance" class="h-6 object-contain">
+                <img src="Logo Vertikal Transparan.png" alt="AlfReddd Finance" class="h-6 object-contain">
                 <div class="w-8"></div>
             </header>
 
@@ -350,7 +350,7 @@
                                 <thead>
                                     <tr class="text-[11px] uppercase font-extrabold text-run-purple/60 dark:text-gray-400 border-b border-run-purple/10 dark:border-white/5 bg-run-white dark:bg-dark-card transition-colors duration-300">
                                         <th class="p-4 min-w-[200px]">Nama Pos</th>
-                                        <th class="p-4 min-w-[150px]">% Alokasi (Geser)</th>
+                                        <th class="p-4 min-w-[150px]">% Alokasi</th>
                                         <th class="p-4">Target Rencana (Rp)</th>
                                         <th class="p-4">Realisasi (Rp)</th>
                                         <th class="p-4">Sisa / Selisih (Rp)</th>
@@ -670,7 +670,7 @@
             obj[changedId] = newValue;
         }
 
-        function updatePlanVisuals(skipId = null) {
+        function updatePlanVisuals(sourceId = null, sourceField = null) {
             const totalIncome = (planDataCurrentMonth.gajiPokok || 0) + (planDataCurrentMonth.tukin || 0);
             let limpahan = 0;
             if(planDataCurrentMonth.isLimpahanAktif) limpahan = hitungLimpahan(totalIncome, planDataCurrentMonth.realisasi || {});
@@ -680,24 +680,17 @@
             const sosialNominal = totalIncome * (planPercentages.sosial / 100);
             const invTotalNominal = totalIncome * (planPercentages.investasi / 100);
             
-            ['expense', 'keluarga', 'sosial', 'investasi'].forEach(id => {
-                const val = parseFloat((planPercentages[id] || 0).toFixed(2));
-                if(document.getElementById(`pct-slider-${id}`)) document.getElementById(`pct-slider-${id}`).value = val;
-                if(document.getElementById(`pct-input-${id}`) && skipId !== id) document.getElementById(`pct-input-${id}`).value = val;
-            });
-            ['pernikahan', 'pulang', 'kado', 'rumah', 'mobil'].forEach(id => {
-                const val = parseFloat((planPercentages.investasiSub[id] || 0).toFixed(2));
-                const fullId = `inv_${id}`;
-                if(document.getElementById(`pct-slider-${fullId}`)) document.getElementById(`pct-slider-${fullId}`).value = val;
-                if(document.getElementById(`pct-input-${fullId}`) && skipId !== fullId) document.getElementById(`pct-input-${fullId}`).value = val;
-            });
-
-            const updateRow = (id, nominal) => {
-                const elNom = document.querySelector(`.nom-input[data-id="${id}"]`);
-                if(elNom && skipId !== id) elNom.value = formatNumberForInput(nominal);
-                
+            const updateField = (id, pctVal, nomVal) => {
+                if (!(sourceId === id && sourceField === 'pct')) {
+                    const elPct = document.getElementById(`pct-input-${id}`);
+                    if(elPct) elPct.value = parseFloat(pctVal.toFixed(2));
+                }
+                if (!(sourceId === id && sourceField === 'nom')) {
+                    const elNom = document.querySelector(`.nom-input[data-id="${id}"]`);
+                    if(elNom) elNom.value = formatNumberForInput(nomVal);
+                }
                 const real = parseFloat(planDataCurrentMonth.realisasi[id]) || 0;
-                const sisa = nominal - real;
+                const sisa = nomVal - real;
                 const elSisa = document.getElementById(`sisa-${id}`);
                 if(elSisa) {
                     elSisa.innerText = formatRp(sisa);
@@ -705,13 +698,16 @@
                 }
             };
 
-            updateRow('expense', expNominal);
-            updateRow('keluarga', keluargaNominal);
-            updateRow('sosial', sosialNominal);
-            updateRow('investasi', invTotalNominal);
+            updateField('expense', planPercentages.expense || 0, expNominal);
+            updateField('keluarga', planPercentages.keluarga || 0, keluargaNominal);
+            updateField('sosial', planPercentages.sosial || 0, sosialNominal);
+            updateField('investasi', planPercentages.investasi || 0, invTotalNominal);
             
-            ['pernikahan', 'pulang', 'kado', 'rumah', 'mobil'].forEach(id => {
-                updateRow(`inv_${id}`, invTotalNominal * (planPercentages.investasiSub[id] / 100));
+            ['pernikahan', 'pulang', 'kado', 'rumah', 'mobil'].forEach(subId => {
+                const fullId = `inv_${subId}`;
+                const pctVal = planPercentages.investasiSub[subId] || 0;
+                const nomVal = invTotalNominal * (pctVal / 100);
+                updateField(fullId, pctVal, nomVal);
             });
 
             const extraLabel = document.getElementById('extra-expense-label');
@@ -750,9 +746,9 @@
                     tr.innerHTML = `
                         <td class="p-4 font-extrabold">${item.name}</td>
                         <td class="p-4">
-                            <div class="flex items-center gap-2">
-                                <input type="range" step="0.1" data-id="${item.id}" data-type="main" min="0" max="100" class="pct-slider w-20 h-1.5 bg-run-purple/20 dark:bg-gray-600 rounded-lg appearance-none cursor-pointer" id="pct-slider-${item.id}">
-                                <input type="number" step="0.1" data-id="${item.id}" data-type="main" class="pct-input w-12 text-xs font-bold bg-transparent border-b border-run-purple/20 dark:border-gray-500 outline-none text-center" id="pct-input-${item.id}">
+                            <div class="flex items-center gap-1">
+                                <input type="number" step="0.1" data-id="${item.id}" data-type="main" class="pct-input w-16 text-sm font-bold bg-transparent border-b-2 border-run-purple/20 dark:border-gray-500 outline-none text-center focus:border-run-purple dark:focus:border-gray-300" id="pct-input-${item.id}">
+                                <span class="text-xs font-bold text-run-purple/50 dark:text-gray-400">%</span>
                             </div>
                         </td>
                         <td class="p-4">
@@ -770,9 +766,9 @@
                             ${item.id === 'expense' ? '<span id="extra-expense-label"></span>' : ''}
                         </td>
                         <td class="p-4">
-                            <div class="flex items-center gap-2">
-                                <input type="range" step="0.1" data-id="${item.id}" data-type="${dataType}" min="0" max="100" class="pct-slider w-20 h-1.5 bg-run-purple/20 dark:bg-gray-600 rounded-lg appearance-none cursor-pointer" id="pct-slider-${item.id}">
-                                <input type="number" step="0.1" data-id="${item.id}" data-type="${dataType}" class="pct-input w-12 text-xs font-bold bg-transparent border-b border-run-purple/20 dark:border-gray-500 outline-none text-center" id="pct-input-${item.id}">
+                            <div class="flex items-center gap-1">
+                                <input type="number" step="0.1" data-id="${item.id}" data-type="${dataType}" class="pct-input w-16 text-sm font-bold bg-transparent border-b-2 border-run-purple/20 dark:border-gray-500 outline-none text-center focus:border-run-purple dark:focus:border-gray-300" id="pct-input-${item.id}">
+                                <span class="text-xs font-bold text-run-purple/50 dark:text-gray-400">%</span>
                             </div>
                         </td>
                         <td class="p-4">
@@ -789,16 +785,17 @@
 
             updatePlanVisuals();
 
-            document.querySelectorAll('.pct-slider, .pct-input').forEach(el => {
+            document.querySelectorAll('.pct-input').forEach(el => {
                 el.addEventListener('input', (e) => {
                     const id = e.target.dataset.id;
                     const type = e.target.dataset.type;
-                    let val = parseFloat(e.target.value) || 0;
+                    let val = parseFloat(e.target.value);
+                    if(isNaN(val)) return; 
                     if(val > 100) val = 100;
                     if(val < 0) val = 0;
                     
                     setPercentage(id, val, type);
-                    updatePlanVisuals(id);
+                    updatePlanVisuals(id, 'pct');
                 });
             });
 
@@ -826,7 +823,7 @@
                         }
                         
                         setPercentage(id, newPct, type);
-                        updatePlanVisuals(id);
+                        updatePlanVisuals(id, 'nom');
                     }
                 });
             });
