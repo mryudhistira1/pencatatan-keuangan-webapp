@@ -81,8 +81,8 @@
     <!-- Loading Screen -->
     <div id="loading-screen" class="fixed inset-0 bg-run-white dark:bg-dark-bg z-50 flex flex-col items-center justify-center transition-colors duration-300">
         <div class="animate-spin rounded-full h-12 w-12 border-b-4 border-run-red mb-6"></div>
-        <img src="finance_logo.png" alt="AlfReddd Finance" class="h-14 md:h-16 w-auto object-contain block dark:hidden">
-        <img src="finance_logo_putih.png" alt="AlfReddd Finance" class="h-14 md:h-16 w-auto object-contain hidden dark:block">
+        <img src="finance_logo.png" alt="AlfReddd" class="h-14 md:h-16 w-auto object-contain block dark:hidden">
+        <img src="finance_logo_putih.png" alt="AlfReddd" class="h-14 md:h-16 w-auto object-contain hidden dark:block">
     </div>
 
     <!-- Halaman Login -->
@@ -118,10 +118,10 @@
         <div id="sidebar-overlay" class="fixed inset-0 bg-run-purple/50 dark:bg-black/60 z-40 hidden md:hidden backdrop-blur-sm transition-opacity"></div>
         
         <aside id="sidebar" class="fixed md:relative inset-y-0 left-0 z-50 w-64 bg-run-white dark:bg-dark-card border-r border-run-purple/10 dark:border-white/5 transform -translate-x-full md:translate-x-0 transition-transform duration-300 flex flex-col shadow-2xl md:shadow-none transition-colors duration-300">
-            <!-- Header Sidebar -->
-            <div class="h-20 flex items-center justify-between px-6 border-b border-run-purple/10 dark:border-white/5 overflow-hidden">
-                <img src="finance_logo.png" alt="AlfReddd Finance" class="w-40 md:w-48 h-auto object-contain object-left transform scale-125 md:scale-150 origin-left block dark:hidden">
-                <img src="finance_logo_putih.png" alt="AlfReddd Finance" class="w-40 md:w-48 h-auto object-contain object-left transform scale-125 md:scale-150 origin-left hidden dark:block">
+            <!-- Header Sidebar (Logo Fixed Size) -->
+            <div class="h-20 flex items-center justify-between px-6 border-b border-run-purple/10 dark:border-white/5">
+                <img src="finance_logo.png" alt="AlfReddd" class="w-40 md:w-44 h-auto object-contain object-left transform scale-125 md:scale-[1.35] origin-left block dark:hidden">
+                <img src="finance_logo_putih.png" alt="AlfReddd" class="w-40 md:w-44 h-auto object-contain object-left transform scale-125 md:scale-[1.35] origin-left hidden dark:block">
                 <button id="btn-close-sidebar" class="md:hidden text-run-purple/60 dark:text-gray-400 hover:text-run-red p-2 -mr-2 rounded-lg shrink-0 relative z-10">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                 </button>
@@ -176,13 +176,13 @@
         <div class="flex-1 flex flex-col h-full overflow-hidden relative">
             
             <!-- Mobile Header -->
-            <header class="md:hidden flex items-center justify-between h-20 px-6 bg-run-white dark:bg-dark-card border-b border-run-purple/10 dark:border-white/5 z-30 shrink-0 transition-colors duration-300 overflow-hidden">
+            <header class="md:hidden flex items-center justify-between h-20 px-6 bg-run-white dark:bg-dark-card border-b border-run-purple/10 dark:border-white/5 z-30 shrink-0 transition-colors duration-300">
                 <button id="btn-open-sidebar" class="text-run-purple dark:text-gray-300 hover:text-run-red p-2 -ml-2 rounded-lg transition shrink-0 relative z-10">
                     <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16M4 18h16"></path></svg>
                 </button>
                 <div class="flex-1 flex justify-center px-4">
-                    <img src="finance_logo.png" alt="AlfReddd Finance" class="w-36 md:w-44 h-auto object-contain transform scale-125 md:scale-150 block dark:hidden">
-                    <img src="finance_logo_putih.png" alt="AlfReddd Finance" class="w-36 md:w-44 h-auto object-contain transform scale-125 md:scale-150 hidden dark:block">
+                    <img src="finance_logo.png" alt="AlfReddd" class="w-36 md:w-40 h-auto object-contain transform scale-125 md:scale-[1.35] block dark:hidden">
+                    <img src="finance_logo_putih.png" alt="AlfReddd" class="w-36 md:w-40 h-auto object-contain transform scale-125 md:scale-[1.35] hidden dark:block">
                 </div>
                 <div class="w-8 shrink-0 relative z-10"></div>
             </header>
