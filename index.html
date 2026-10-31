@@ -81,7 +81,7 @@
     <!-- Loading Screen -->
     <div id="loading-screen" class="fixed inset-0 bg-run-white dark:bg-dark-bg z-50 flex flex-col items-center justify-center transition-colors duration-300">
         <div class="animate-spin rounded-full h-12 w-12 border-b-4 border-run-red mb-6"></div>
-        <img src="finance_logo.png" alt="AlfReddd Finance" class="h-6 object-contain">
+        <img src="finance_logo.png" alt="AlfReddd Finance" class="h-10 md:h-12 w-auto object-contain">
     </div>
 
     <!-- Halaman Login -->
@@ -91,7 +91,7 @@
             <div class="w-24 h-24 flex items-center justify-center mx-auto mb-4">
                 <img src="logo.png" alt="Logo" class="w-full h-full object-contain drop-shadow-md" onerror="this.style.display='none'">
             </div>
-            <img src="finance_logo.png" alt="AlfReddd Finance" class="h-10 mx-auto mb-4 object-contain">
+            <h1 class="text-4xl font-extrabold mb-2 text-run-purple tracking-tight font-montserrat">Alf<span class="text-run-red">Reddd</span></h1>
             <p class="text-run-purple/60 dark:text-gray-400 mb-8 text-sm font-medium">Masuk untuk mulai mencatat keuangan harian Anda secara aman di Cloud.</p>
             
             <button id="btn-login-google" class="w-full flex items-center justify-center gap-3 bg-run-white dark:bg-dark-input border-2 border-run-purple/20 dark:border-white/10 hover:border-run-purple dark:hover:border-gray-500 text-run-purple dark:text-white font-bold py-3 px-4 rounded-xl transition duration-200 shadow-sm">
@@ -118,7 +118,7 @@
         <aside id="sidebar" class="fixed md:relative inset-y-0 left-0 z-50 w-64 bg-run-white dark:bg-dark-card border-r border-run-purple/10 dark:border-white/5 transform -translate-x-full md:translate-x-0 transition-transform duration-300 flex flex-col shadow-2xl md:shadow-none transition-colors duration-300">
             <!-- Header Sidebar -->
             <div class="h-20 flex items-center justify-between px-6 border-b border-run-purple/10 dark:border-white/5">
-                <img src="finance_logo.png" alt="AlfReddd Finance" class="h-8 md:h-10 object-contain">
+                <img src="finance_logo.png" alt="AlfReddd Finance" class="h-10 md:h-14 w-auto object-contain">
                 <button id="btn-close-sidebar" class="md:hidden text-run-purple/60 dark:text-gray-400 hover:text-run-red p-2 rounded-lg">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                 </button>
@@ -177,7 +177,7 @@
                 <button id="btn-open-sidebar" class="text-run-purple dark:text-gray-300 hover:text-run-red p-2 -ml-2 rounded-lg transition">
                     <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16M4 18h16"></path></svg>
                 </button>
-                <img src="finance_logo.png" alt="AlfReddd Finance" class="h-6 object-contain">
+                <img src="finance_logo.png" alt="AlfReddd Finance" class="h-9 w-auto object-contain">
                 <div class="w-8"></div>
             </header>
 
@@ -324,7 +324,7 @@
                             </div>
                             <div>
                                 <h4 class="font-bold text-base">Fitur Limpahan Sisa Otomatis</h4>
-                                <p class="text-xs text-run-white/70 dark:text-gray-400 mt-0.5">Setiap sisa positif dari realisasi pos lain akan <strong>otomatis & seketika</strong> menambah anggaran Expense Bulanan.</p>
+                                <p class="text-xs text-run-white/70 dark:text-gray-400 mt-0.5">Jumlah bersih sisa anggaran (positif maupun negatif) dari realisasi pos lain akan <strong>otomatis & seketika</strong> dialihkan ke Expense Bulanan.</p>
                             </div>
                         </div>
                         
@@ -581,14 +581,13 @@
             
             const sKeluarga = keluargaPlan - (parseFloat(real['keluarga']) || 0);
             const sSosial = sosialPlan - (parseFloat(real['sosial']) || 0);
-            if(sKeluarga > 0) sisa += sKeluarga;
-            if(sSosial > 0) sisa += sSosial;
+            sisa += sKeluarga + sSosial;
             
             const sub = planPercentages.investasiSub || {};
             ['pernikahan', 'pulang', 'kado', 'rumah', 'mobil'].forEach(key => {
                 const target = invPlan * (sub[key] / 100);
                 const sSub = target - (parseFloat(real['inv_' + key]) || 0);
-                if(sSub > 0) sisa += sSub;
+                sisa += sSub;
             });
             return sisa;
         }
@@ -711,7 +710,15 @@
             });
 
             const extraLabel = document.getElementById('extra-expense-label');
-            if(extraLabel) extraLabel.innerHTML = limpahan > 0 ? `<br><span class="text-[10px] text-green-600 dark:text-green-400 font-normal">+Limpahan Rp ${formatRp(limpahan)}</span>` : '';
+            if(extraLabel) {
+                if (limpahan > 0) {
+                    extraLabel.innerHTML = `<br><span class="text-[10px] text-green-600 dark:text-green-400 font-normal">+Limpahan Rp ${formatRp(limpahan)}</span>`;
+                } else if (limpahan < 0) {
+                    extraLabel.innerHTML = `<br><span class="text-[10px] text-run-red dark:text-[#ff6b84] font-normal">-Kekurangan Rp ${formatRp(Math.abs(limpahan))}</span>`;
+                } else {
+                    extraLabel.innerHTML = '';
+                }
+            }
             
             checkPlanValidity();
         }
