@@ -3,24 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RUN FINANCE</title>
+    <title>AlfReddd</title>
     
     <!-- FAVICON -->
     <link rel="icon" href="logo.png" type="image/png">
     <link rel="apple-touch-icon" href="logo.png">
     
+    <!-- DARK MODE INITIALIZATION (Prevent Flash) -->
+    <script>
+        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
+
     <!-- TAILWIND CSS CDN & SAFE INITIALIZATION -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-        // Guard initialization untuk mencegah ReferenceError jika script CDN terlambat load
         window.tailwind = window.tailwind || {};
         tailwind.config = {
+            darkMode: 'class', // Enable Class-based Dark Mode
             theme: {
                 extend: {
                     colors: {
                         'run-red': '#E4002B',
                         'run-purple': '#512D6D',
                         'run-white': '#FEFEFE',
+                        'dark-bg': '#121212',
+                        'dark-card': '#1E1E1E',
+                        'dark-input': '#2A2A2A',
                     }
                 }
             }
@@ -35,7 +47,7 @@
             --run-purple: #512D6D;
             --run-white: #FEFEFE;
         }
-        body { font-family: 'Inter', sans-serif; background-color: #FEFEFE; }
+        body { font-family: 'Inter', sans-serif; }
         .font-montserrat { font-family: 'Montserrat Alternates', sans-serif; }
         
         .toast-enter { transform: translateY(100%); opacity: 0; }
@@ -45,49 +57,44 @@
         
         .custom-scroll::-webkit-scrollbar { width: 6px; }
         .custom-scroll::-webkit-scrollbar-track { background: transparent; }
-        .custom-scroll::-webkit-scrollbar-thumb { background-color: #512D6D20; border-radius: 20px; }
-        .custom-scroll::-webkit-scrollbar-thumb:hover { background-color: #512D6D50; }
+        .custom-scroll::-webkit-scrollbar-thumb { background-color: rgba(81, 45, 109, 0.2); border-radius: 20px; }
+        .dark .custom-scroll::-webkit-scrollbar-thumb { background-color: rgba(255, 255, 255, 0.2); }
+        .custom-scroll::-webkit-scrollbar-thumb:hover { background-color: rgba(81, 45, 109, 0.5); }
+        .dark .custom-scroll::-webkit-scrollbar-thumb:hover { background-color: rgba(255, 255, 255, 0.4); }
 
         /* Styling Slider Persentase Kustom */
         .pct-slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-            background: var(--run-red);
-            cursor: pointer;
+            -webkit-appearance: none; appearance: none;
+            width: 16px; height: 16px; border-radius: 50%;
+            background: var(--run-red); cursor: pointer;
             box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
         .pct-slider::-moz-range-thumb {
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-            background: var(--run-red);
-            cursor: pointer;
+            width: 16px; height: 16px; border-radius: 50%;
+            background: var(--run-red); cursor: pointer;
             box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
     </style>
 </head>
-<body class="text-run-purple antialiased fixed inset-0 w-full flex flex-col md:flex-row overflow-hidden bg-run-white">
+<body class="text-run-purple dark:text-gray-100 bg-run-white dark:bg-dark-bg transition-colors duration-300 antialiased fixed inset-0 w-full flex flex-col md:flex-row overflow-hidden">
 
     <!-- Loading Screen -->
-    <div id="loading-screen" class="fixed inset-0 bg-run-white z-50 flex flex-col items-center justify-center">
-        <div class="animate-spin rounded-full h-12 w-12 border-b-4 border-run-red mb-4"></div>
-        <p class="text-run-purple font-medium tracking-widest font-montserrat">RUN FINANCE</p>
+    <div id="loading-screen" class="fixed inset-0 bg-run-white dark:bg-dark-bg z-50 flex flex-col items-center justify-center transition-colors duration-300">
+        <div class="animate-spin rounded-full h-12 w-12 border-b-4 border-run-red mb-6"></div>
+        <p class="text-run-purple dark:text-gray-200 font-medium tracking-widest font-montserrat">RUN FINANCE</p>
     </div>
 
     <!-- Halaman Login -->
     <div id="login-view" class="hidden w-full max-w-md p-6 mx-auto mt-16 z-40 overflow-y-auto">
-        <div class="bg-run-white rounded-2xl shadow-xl p-8 text-center border border-run-purple/10 relative overflow-hidden">
+        <div class="bg-run-white dark:bg-dark-card rounded-2xl shadow-xl p-8 text-center border border-run-purple/10 dark:border-white/10 relative overflow-hidden transition-colors duration-300">
             <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-run-purple to-run-red"></div>
             <div class="w-24 h-24 flex items-center justify-center mx-auto mb-4">
                 <img src="logo.png" alt="Logo" class="w-full h-full object-contain drop-shadow-md" onerror="this.style.display='none'">
             </div>
-            <h1 class="text-3xl font-extrabold mb-2 text-run-purple tracking-tight font-montserrat">RUN <span class="text-run-red">FINANCE</span></h1>
-            <p class="text-run-purple/60 mb-8 text-sm font-medium">Masuk untuk mulai mencatat keuangan harian Anda secara aman di Cloud.</p>
+            <h1 class="text-3xl font-extrabold mb-2 text-run-purple dark:text-white tracking-tight font-montserrat">RUN <span class="text-run-red">FINANCE</span></h1>
+            <p class="text-run-purple/60 dark:text-gray-400 mb-8 text-sm font-medium">Masuk untuk mulai mencatat keuangan harian Anda secara aman di Cloud.</p>
             
-            <button id="btn-login-google" class="w-full flex items-center justify-center gap-3 bg-run-white border-2 border-run-purple/20 hover:border-run-purple hover:bg-run-purple/5 text-run-purple font-bold py-3 px-4 rounded-xl transition duration-200 shadow-sm">
+            <button id="btn-login-google" class="w-full flex items-center justify-center gap-3 bg-run-white dark:bg-dark-input border-2 border-run-purple/20 dark:border-white/10 hover:border-run-purple dark:hover:border-gray-500 text-run-purple dark:text-white font-bold py-3 px-4 rounded-xl transition duration-200 shadow-sm">
                 <svg class="w-5 h-5" viewBox="0 0 24 24">
                     <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
                     <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
@@ -96,7 +103,7 @@
                 </svg>
                 Masuk dengan Google
             </button>
-            <button id="btn-login-anon" class="w-full mt-4 flex items-center justify-center gap-3 bg-run-purple/5 hover:bg-run-purple/10 text-run-purple/70 font-semibold py-3 px-4 rounded-xl transition duration-200">
+            <button id="btn-login-anon" class="w-full mt-4 flex items-center justify-center gap-3 bg-run-purple/5 dark:bg-white/5 hover:bg-run-purple/10 dark:hover:bg-white/10 text-run-purple/70 dark:text-gray-300 font-semibold py-3 px-4 rounded-xl transition duration-200">
                 Masuk sebagai Tamu
             </button>
         </div>
@@ -106,26 +113,26 @@
     <div id="app-view" class="hidden w-full h-full flex flex-col md:flex-row flex-1">
         
         <!-- SIDEBAR -->
-        <div id="sidebar-overlay" class="fixed inset-0 bg-run-purple/50 z-40 hidden md:hidden backdrop-blur-sm transition-opacity"></div>
+        <div id="sidebar-overlay" class="fixed inset-0 bg-run-purple/50 dark:bg-black/60 z-40 hidden md:hidden backdrop-blur-sm transition-opacity"></div>
         
-        <aside id="sidebar" class="fixed md:relative inset-y-0 left-0 z-50 w-64 bg-run-white border-r border-run-purple/10 transform -translate-x-full md:translate-x-0 transition-transform duration-300 flex flex-col shadow-2xl md:shadow-none">
+        <aside id="sidebar" class="fixed md:relative inset-y-0 left-0 z-50 w-64 bg-run-white dark:bg-dark-card border-r border-run-purple/10 dark:border-white/5 transform -translate-x-full md:translate-x-0 transition-transform duration-300 flex flex-col shadow-2xl md:shadow-none transition-colors duration-300">
             <!-- Header Sidebar -->
-            <div class="h-20 flex items-center justify-between px-6 border-b border-run-purple/10">
-                <h1 class="text-xl md:text-2xl font-extrabold text-run-purple tracking-tight font-montserrat">RUN<span class="text-run-red">FINANCE</span></h1>
-                <button id="btn-close-sidebar" class="md:hidden text-run-purple/60 hover:text-run-red p-2 rounded-lg">
+            <div class="h-20 flex items-center justify-between px-6 border-b border-run-purple/10 dark:border-white/5">
+                <h1 class="text-xl md:text-2xl font-extrabold text-run-purple dark:text-white tracking-tight font-montserrat">RUN<span class="text-run-red">FINANCE</span></h1>
+                <button id="btn-close-sidebar" class="md:hidden text-run-purple/60 dark:text-gray-400 hover:text-run-red p-2 rounded-lg">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                 </button>
             </div>
             
             <!-- Profil Singkat -->
-            <div class="px-6 py-5 border-b border-run-purple/5">
-                <p class="text-xs font-semibold text-run-purple/50 uppercase tracking-wider mb-1">Akun Anda</p>
-                <p id="user-greeting" class="text-sm font-bold text-run-purple truncate">Halo, Pengguna</p>
+            <div class="px-6 py-5 border-b border-run-purple/5 dark:border-white/5">
+                <p class="text-xs font-semibold text-run-purple/50 dark:text-gray-400 uppercase tracking-wider mb-1">Akun Anda</p>
+                <p id="user-greeting" class="text-sm font-bold text-run-purple dark:text-white truncate">Halo, Pengguna</p>
             </div>
 
-            <!-- Navigasi Menu (Sistem Hash Routing) -->
+            <!-- Navigasi Menu -->
             <nav class="flex-1 px-4 py-6 space-y-2 overflow-y-auto custom-scroll">
-                <a href="#dashboard" id="nav-dashboard" class="w-full flex items-center gap-3 px-4 py-3 text-sm font-semibold text-run-purple/60 hover:text-run-purple hover:bg-run-purple/5 rounded-xl transition nav-btn">
+                <a href="#dashboard" id="nav-dashboard" class="w-full flex items-center gap-3 px-4 py-3 text-sm font-semibold text-run-purple/60 dark:text-gray-400 hover:text-run-purple dark:hover:text-white hover:bg-run-purple/5 dark:hover:bg-white/5 rounded-xl transition nav-btn">
                     <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
                     Dashboard
                 </a>
@@ -133,23 +140,29 @@
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
                     Rekam Harian
                 </a>
-                <a href="#perencanaan" id="nav-perencanaan" class="w-full flex items-center gap-3 px-4 py-3 text-sm font-semibold text-run-purple/60 hover:text-run-purple hover:bg-run-purple/5 rounded-xl transition nav-btn">
+                <a href="#perencanaan" id="nav-perencanaan" class="w-full flex items-center gap-3 px-4 py-3 text-sm font-semibold text-run-purple/60 dark:text-gray-400 hover:text-run-purple dark:hover:text-white hover:bg-run-purple/5 dark:hover:bg-white/5 rounded-xl transition nav-btn">
                     <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                     Perencanaan
                 </a>
-                <a href="#report" id="nav-report" class="w-full flex items-center gap-3 px-4 py-3 text-sm font-semibold text-run-purple/60 hover:text-run-purple hover:bg-run-purple/5 rounded-xl transition nav-btn">
+                <a href="#report" id="nav-report" class="w-full flex items-center gap-3 px-4 py-3 text-sm font-semibold text-run-purple/60 dark:text-gray-400 hover:text-run-purple dark:hover:text-white hover:bg-run-purple/5 dark:hover:bg-white/5 rounded-xl transition nav-btn">
                     <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                     Report
                 </a>
-                <a href="#pengaturan" id="nav-pengaturan" class="w-full flex items-center gap-3 px-4 py-3 text-sm font-semibold text-run-purple/60 hover:text-run-purple hover:bg-run-purple/5 rounded-xl transition nav-btn">
+                <a href="#pengaturan" id="nav-pengaturan" class="w-full flex items-center gap-3 px-4 py-3 text-sm font-semibold text-run-purple/60 dark:text-gray-400 hover:text-run-purple dark:hover:text-white hover:bg-run-purple/5 dark:hover:bg-white/5 rounded-xl transition nav-btn">
                     <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
                     Pengaturan
                 </a>
             </nav>
 
-            <!-- Bottom Sidebar (Logout) -->
-            <div class="p-4 border-t border-run-purple/10">
-                <button id="btn-logout" class="w-full flex items-center justify-center gap-2 text-sm bg-run-red/10 hover:bg-run-red hover:text-run-white text-run-red font-bold py-3 px-4 rounded-xl transition duration-300">
+            <!-- Bottom Sidebar (Dark Mode & Logout) -->
+            <div class="p-4 border-t border-run-purple/10 dark:border-white/5 space-y-2">
+                <button id="btn-toggle-dark" class="w-full flex items-center justify-center gap-2 text-sm bg-run-purple/5 dark:bg-white/10 hover:bg-run-purple/10 dark:hover:bg-white/20 text-run-purple dark:text-gray-200 font-bold py-3 px-4 rounded-xl transition duration-300">
+                    <svg class="w-5 h-5 dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+                    <svg class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                    <span class="dark:hidden">Mode Gelap</span>
+                    <span class="hidden dark:block">Mode Terang</span>
+                </button>
+                <button id="btn-logout" class="w-full flex items-center justify-center gap-2 text-sm bg-run-red/10 dark:bg-run-red/20 hover:bg-run-red hover:text-run-white text-run-red dark:text-[#ff6b84] dark:hover:text-white font-bold py-3 px-4 rounded-xl transition duration-300">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
                     Keluar
                 </button>
@@ -160,16 +173,16 @@
         <div class="flex-1 flex flex-col h-full overflow-hidden relative">
             
             <!-- Mobile Header -->
-            <header class="md:hidden flex items-center justify-between h-20 px-6 bg-run-white border-b border-run-purple/10 z-30 shrink-0">
-                <button id="btn-open-sidebar" class="text-run-purple hover:text-run-red p-2 -ml-2 rounded-lg transition">
+            <header class="md:hidden flex items-center justify-between h-20 px-6 bg-run-white dark:bg-dark-card border-b border-run-purple/10 dark:border-white/5 z-30 shrink-0 transition-colors duration-300">
+                <button id="btn-open-sidebar" class="text-run-purple dark:text-gray-300 hover:text-run-red p-2 -ml-2 rounded-lg transition">
                     <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16M4 18h16"></path></svg>
                 </button>
-                <h1 class="text-xl font-extrabold text-run-purple tracking-tight font-montserrat">RUN<span class="text-run-red">FINANCE</span></h1>
+                <h1 class="text-xl font-extrabold text-run-purple dark:text-white tracking-tight font-montserrat">RUN<span class="text-run-red">FINANCE</span></h1>
                 <div class="w-8"></div>
             </header>
 
             <!-- Area Scroll Konten -->
-            <main class="flex-1 overflow-y-auto bg-run-white p-4 md:p-8 custom-scroll">
+            <main class="flex-1 overflow-y-auto p-4 md:p-8 custom-scroll">
                 
                 <!-- TAMPILAN: REKAM HARIAN -->
                 <div id="view-rekam" class="max-w-6xl mx-auto pb-24 md:pb-10">
@@ -179,52 +192,52 @@
                         <div class="lg:col-span-5 flex flex-col">
                             
                             <!-- Saldo/Budget Card -->
-                            <div class="bg-run-purple text-run-white rounded-3xl p-7 mb-8 shadow-xl relative overflow-hidden">
+                            <div class="bg-run-purple dark:bg-gray-800 text-run-white rounded-3xl p-7 mb-8 shadow-xl relative overflow-hidden transition-colors duration-300">
                                 <div class="absolute -right-10 -top-10 w-40 h-40 bg-run-red rounded-full opacity-90 blur-3xl"></div>
                                 <div class="absolute -left-6 -bottom-6 w-32 h-32 bg-run-white rounded-full opacity-10 blur-2xl"></div>
                                 
-                                <p class="text-run-white/80 text-xs font-bold mb-1 relative z-10 uppercase tracking-widest">Sisa Budget Expense (Bulan Ini)</p>
+                                <p class="text-run-white/80 dark:text-gray-300 text-xs font-bold mb-1 relative z-10 uppercase tracking-widest">Sisa Budget Expense (Bulan Ini)</p>
                                 <h2 id="saldo-total" class="text-4xl lg:text-5xl font-extrabold tracking-tighter relative z-10 mt-2">Rp 0</h2>
                                 
-                                <div class="relative z-10 mt-6 pt-4 border-t border-run-white/20 flex flex-col sm:flex-row justify-between items-start sm:items-center text-xs font-medium gap-3 sm:gap-2">
-                                    <span class="w-full sm:w-auto">Anggaran: <strong id="budget-tersedia" class="font-bold bg-run-white/20 py-1 px-2 rounded-md ml-1">Rp 0</strong></span>
-                                    <span class="w-full sm:w-auto">Pengeluaran: <strong id="budget-terpakai" class="font-bold bg-run-red/80 py-1 px-2 rounded-md ml-1">Rp 0</strong></span>
+                                <div class="relative z-10 mt-6 pt-4 border-t border-run-white/20 dark:border-gray-600 flex flex-col sm:flex-row justify-between items-start sm:items-center text-xs font-medium gap-3 sm:gap-2">
+                                    <span class="w-full sm:w-auto">Anggaran: <strong id="budget-tersedia" class="font-bold bg-run-white/20 dark:bg-white/10 py-1 px-2 rounded-md ml-1">Rp 0</strong></span>
+                                    <span class="w-full sm:w-auto">Pengeluaran: <strong id="budget-terpakai" class="font-bold bg-run-red/80 dark:bg-run-red/90 py-1 px-2 rounded-md ml-1">Rp 0</strong></span>
                                 </div>
                             </div>
 
                             <!-- Form Input Transaksi -->
-                            <form id="form-transaksi" class="bg-run-white p-6 rounded-3xl border border-run-purple/10 shadow-sm relative">
-                                <h3 id="form-title" class="text-sm font-bold text-run-purple mb-5 uppercase tracking-widest border-b border-run-purple/10 pb-4">Tambah Transaksi Baru</h3>
+                            <form id="form-transaksi" class="bg-run-white dark:bg-dark-card p-6 rounded-3xl border border-run-purple/10 dark:border-white/5 shadow-sm relative transition-colors duration-300">
+                                <h3 id="form-title" class="text-sm font-bold text-run-purple dark:text-gray-200 mb-5 uppercase tracking-widest border-b border-run-purple/10 dark:border-white/5 pb-4">Tambah Transaksi Baru</h3>
                                 
-                                <div class="flex gap-2 p-1.5 bg-run-purple/5 rounded-2xl mb-6">
+                                <div class="flex gap-2 p-1.5 bg-run-purple/5 dark:bg-dark-input rounded-2xl mb-6">
                                     <button type="button" id="tab-pengeluaran" class="flex-1 py-3 text-sm font-bold rounded-xl bg-run-red text-run-white shadow-md transition-all">Pengeluaran</button>
-                                    <button type="button" id="tab-pemasukan" class="flex-1 py-3 text-sm font-bold rounded-xl text-run-purple/50 hover:text-run-purple hover:bg-run-purple/10 transition-all">Pemasukan</button>
+                                    <button type="button" id="tab-pemasukan" class="flex-1 py-3 text-sm font-bold rounded-xl text-run-purple/50 dark:text-gray-400 hover:text-run-purple dark:hover:text-white hover:bg-run-purple/10 dark:hover:bg-white/10 transition-all">Pemasukan</button>
                                 </div>
                                 
                                 <div class="mb-4">
-                                    <label class="block text-run-purple text-xs font-bold mb-2 uppercase tracking-wide">Nama Transaksi</label>
-                                    <input type="text" id="keterangan" required class="w-full bg-run-purple/5 border-2 border-transparent rounded-xl py-3.5 px-4 text-run-purple font-medium focus:bg-run-white focus:ring-0 focus:border-run-red outline-none transition" placeholder="Cth: Makan Siang, Bensin">
+                                    <label class="block text-run-purple dark:text-gray-300 text-xs font-bold mb-2 uppercase tracking-wide">Nama Transaksi</label>
+                                    <input type="text" id="keterangan" required class="w-full bg-run-purple/5 dark:bg-dark-input border-2 border-transparent dark:border-white/5 rounded-xl py-3.5 px-4 text-run-purple dark:text-white font-medium focus:bg-run-white dark:focus:bg-gray-800 focus:ring-0 focus:border-run-red dark:focus:border-run-red outline-none transition" placeholder="Cth: Makan Siang, Bensin">
                                 </div>
 
                                 <div class="mb-4">
-                                    <label class="block text-run-purple text-xs font-bold mb-2 uppercase tracking-wide">Kategori</label>
-                                    <select id="kategori" required class="w-full bg-run-purple/5 border-2 border-transparent rounded-xl py-3.5 px-4 text-run-purple font-semibold focus:bg-run-white focus:ring-0 focus:border-run-red outline-none transition appearance-none cursor-pointer">
+                                    <label class="block text-run-purple dark:text-gray-300 text-xs font-bold mb-2 uppercase tracking-wide">Kategori</label>
+                                    <select id="kategori" required class="w-full bg-run-purple/5 dark:bg-dark-input border-2 border-transparent dark:border-white/5 rounded-xl py-3.5 px-4 text-run-purple dark:text-white font-semibold focus:bg-run-white dark:focus:bg-gray-800 focus:ring-0 focus:border-run-red outline-none transition appearance-none cursor-pointer">
                                     </select>
                                 </div>
                                 
                                 <div class="flex gap-4 mb-6">
                                     <div class="w-1/2">
-                                        <label class="block text-run-purple text-xs font-bold mb-2 uppercase tracking-wide">Jumlah (Rp)</label>
-                                        <input type="text" id="jumlah" inputmode="decimal" required class="w-full bg-run-purple/5 border-2 border-transparent rounded-xl py-3.5 px-4 text-run-purple font-medium focus:bg-run-white focus:ring-0 focus:border-run-red outline-none transition" placeholder="10.000,50">
+                                        <label class="block text-run-purple dark:text-gray-300 text-xs font-bold mb-2 uppercase tracking-wide">Jumlah (Rp)</label>
+                                        <input type="text" id="jumlah" inputmode="decimal" required class="w-full bg-run-purple/5 dark:bg-dark-input border-2 border-transparent dark:border-white/5 rounded-xl py-3.5 px-4 text-run-purple dark:text-white font-medium focus:bg-run-white dark:focus:bg-gray-800 focus:ring-0 focus:border-run-red outline-none transition" placeholder="10.000,50">
                                     </div>
                                     <div class="w-1/2">
-                                        <label class="block text-run-purple text-xs font-bold mb-2 uppercase tracking-wide">Tanggal</label>
-                                        <input type="date" id="tanggal" required class="w-full bg-run-purple/5 border-2 border-transparent rounded-xl py-3.5 px-4 text-run-purple font-medium focus:bg-run-white focus:ring-0 focus:border-run-red outline-none transition cursor-pointer">
+                                        <label class="block text-run-purple dark:text-gray-300 text-xs font-bold mb-2 uppercase tracking-wide">Tanggal</label>
+                                        <input type="date" id="tanggal" required class="w-full bg-run-purple/5 dark:bg-dark-input border-2 border-transparent dark:border-white/5 rounded-xl py-3.5 px-4 text-run-purple dark:text-white font-medium focus:bg-run-white dark:focus:bg-gray-800 focus:ring-0 focus:border-run-red outline-none transition cursor-pointer">
                                     </div>
                                 </div>
 
                                 <div class="flex gap-2">
-                                    <button type="button" id="btn-cancel-edit" class="hidden bg-run-purple/10 hover:bg-run-purple/20 text-run-purple font-bold py-3.5 px-4 rounded-xl transition duration-300 w-1/3">Batal</button>
+                                    <button type="button" id="btn-cancel-edit" class="hidden bg-run-purple/10 dark:bg-white/10 hover:bg-run-purple/20 dark:hover:bg-white/20 text-run-purple dark:text-white font-bold py-3.5 px-4 rounded-xl transition duration-300 w-1/3">Batal</button>
                                     <button type="submit" id="btn-submit-form" class="flex-1 bg-run-red hover:bg-[#c40024] text-run-white font-bold py-3.5 px-4 rounded-xl transition duration-300 shadow-lg shadow-run-red/20 flex items-center justify-center gap-2">
                                         <svg class="w-5 h-5 icon-submit" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path></svg>
                                         <span id="text-submit-form">Simpan Transaksi</span>
@@ -236,18 +249,18 @@
                         <!-- KANAN: Daftar Transaksi -->
                         <div class="lg:col-span-7 mt-4 lg:mt-0">
                             <div class="flex justify-between items-end mb-5 px-1">
-                                <h3 class="text-lg font-extrabold text-run-purple">Riwayat Terakhir</h3>
+                                <h3 class="text-lg font-extrabold text-run-purple dark:text-gray-100">Riwayat Terakhir</h3>
                             </div>
                             
                             <div>
                                 <ul id="daftar-transaksi" class="space-y-4"></ul>
                                 
-                                <div id="empty-state" class="hidden text-center py-16 bg-run-purple/5 rounded-3xl border-2 border-dashed border-run-purple/10">
-                                    <div class="w-20 h-20 bg-run-white rounded-full flex items-center justify-center mx-auto mb-5 shadow-sm text-run-purple/30">
+                                <div id="empty-state" class="hidden text-center py-16 bg-run-purple/5 dark:bg-dark-card rounded-3xl border-2 border-dashed border-run-purple/10 dark:border-white/5 transition-colors duration-300">
+                                    <div class="w-20 h-20 bg-run-white dark:bg-dark-input rounded-full flex items-center justify-center mx-auto mb-5 shadow-sm text-run-purple/30 dark:text-gray-500">
                                         <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                                     </div>
-                                    <p class="text-run-purple/60 font-bold text-base">Belum ada transaksi dicatat.</p>
-                                    <p class="text-run-purple/40 text-sm mt-1">Isi form di samping untuk memulai.</p>
+                                    <p class="text-run-purple/60 dark:text-gray-400 font-bold text-base">Belum ada transaksi dicatat.</p>
+                                    <p class="text-run-purple/40 dark:text-gray-500 text-sm mt-1">Isi form di samping untuk memulai.</p>
                                 </div>
                             </div>
                         </div>
@@ -260,81 +273,81 @@
                     <!-- Header & Pilihan Periode -->
                     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
                         <div>
-                            <h2 class="text-2xl font-extrabold text-run-purple">Perencanaan Gaji & Pos Anggaran</h2>
-                            <p class="text-xs text-run-purple/60 font-semibold mt-1">Atur pembagian gaji bulanan dan alokasi ke tiap pos dengan mudah</p>
+                            <h2 class="text-2xl font-extrabold text-run-purple dark:text-gray-100">Perencanaan Gaji & Pos Anggaran</h2>
+                            <p class="text-xs text-run-purple/60 dark:text-gray-400 font-semibold mt-1">Atur pembagian gaji bulanan dan alokasi ke tiap pos dengan mudah</p>
                         </div>
-                        <div class="flex items-center gap-2 bg-run-purple/5 p-1.5 rounded-2xl border border-run-purple/10">
-                            <label class="text-xs font-bold text-run-purple px-2">Bulan:</label>
-                            <input type="month" id="plan-periode" class="bg-run-white border border-run-purple/20 text-run-purple text-xs font-bold py-2 px-3 rounded-xl outline-none focus:border-run-purple cursor-pointer">
+                        <div class="flex items-center gap-2 bg-run-purple/5 dark:bg-dark-card p-1.5 rounded-2xl border border-run-purple/10 dark:border-white/5 transition-colors duration-300">
+                            <label class="text-xs font-bold text-run-purple dark:text-gray-200 px-2">Bulan:</label>
+                            <input type="month" id="plan-periode" class="bg-run-white dark:bg-dark-input border border-run-purple/20 dark:border-white/10 text-run-purple dark:text-white text-xs font-bold py-2 px-3 rounded-xl outline-none focus:border-run-purple cursor-pointer">
                         </div>
                     </div>
 
                     <!-- Panel Pendapatan & Ringkasan -->
                     <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-8">
-                        <div class="lg:col-span-5 bg-run-purple text-run-white rounded-3xl p-6 shadow-xl relative overflow-hidden flex flex-col justify-between">
+                        <div class="lg:col-span-5 bg-run-purple dark:bg-gray-800 text-run-white rounded-3xl p-6 shadow-xl relative overflow-hidden flex flex-col justify-between transition-colors duration-300">
                             <div class="absolute -right-8 -top-8 w-36 h-36 bg-run-red rounded-full opacity-80 blur-2xl"></div>
                             <div>
-                                <span class="text-xs font-bold uppercase tracking-widest text-run-white/70">Total Pendapatan Bulanan</span>
+                                <span class="text-xs font-bold uppercase tracking-widest text-run-white/70 dark:text-gray-300">Total Pendapatan Bulanan</span>
                                 <h3 id="plan-total-income" class="text-3xl lg:text-4xl font-extrabold tracking-tight mt-1 text-run-white">Rp 0</h3>
                             </div>
-                            <div class="mt-6 pt-4 border-t border-run-white/10 flex justify-between items-center text-xs text-run-white/80">
+                            <div class="mt-6 pt-4 border-t border-run-white/10 flex justify-between items-center text-xs text-run-white/80 dark:text-gray-300">
                                 <span>Gaji Pokok: <strong id="summary-gaji-pokok">Rp 0</strong></span>
                                 <span>Tukin: <strong id="summary-tukin">Rp 0</strong></span>
                             </div>
                         </div>
 
                         <!-- Form Input Pendapatan Bulanan -->
-                        <div class="lg:col-span-7 bg-run-white p-6 rounded-3xl border border-run-purple/10 shadow-sm flex flex-col justify-center">
-                            <h3 class="text-sm font-extrabold text-run-purple uppercase tracking-wider mb-4 border-b border-run-purple/10 pb-3">Input Gaji & Tunjangan</h3>
+                        <div class="lg:col-span-7 bg-run-white dark:bg-dark-card p-6 rounded-3xl border border-run-purple/10 dark:border-white/5 shadow-sm flex flex-col justify-center transition-colors duration-300">
+                            <h3 class="text-sm font-extrabold text-run-purple dark:text-gray-200 uppercase tracking-wider mb-4 border-b border-run-purple/10 dark:border-white/5 pb-3">Input Gaji & Tunjangan</h3>
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div>
-                                    <label class="block text-xs font-bold text-run-purple/70 uppercase mb-1.5">Gaji Pokok (Rp)</label>
-                                    <input type="text" id="input-gaji-pokok" inputmode="decimal" placeholder="0" class="w-full bg-run-purple/5 border border-run-purple/10 rounded-xl py-3 px-4 font-bold text-run-purple outline-none focus:border-run-red transition">
+                                    <label class="block text-xs font-bold text-run-purple/70 dark:text-gray-400 uppercase mb-1.5">Gaji Pokok (Rp)</label>
+                                    <input type="text" id="input-gaji-pokok" inputmode="decimal" placeholder="0" class="w-full bg-run-purple/5 dark:bg-dark-input border border-run-purple/10 dark:border-white/5 rounded-xl py-3 px-4 font-bold text-run-purple dark:text-white outline-none focus:border-run-red transition">
                                 </div>
                                 <div>
-                                    <label class="block text-xs font-bold text-run-purple/70 uppercase mb-1.5">Tunjangan Kinerja (Rp)</label>
-                                    <input type="text" id="input-tukin" inputmode="decimal" placeholder="0" class="w-full bg-run-purple/5 border border-run-purple/10 rounded-xl py-3 px-4 font-bold text-run-purple outline-none focus:border-run-red transition">
+                                    <label class="block text-xs font-bold text-run-purple/70 dark:text-gray-400 uppercase mb-1.5">Tunjangan Kinerja (Rp)</label>
+                                    <input type="text" id="input-tukin" inputmode="decimal" placeholder="0" class="w-full bg-run-purple/5 dark:bg-dark-input border border-run-purple/10 dark:border-white/5 rounded-xl py-3 px-4 font-bold text-run-purple dark:text-white outline-none focus:border-run-red transition">
                                 </div>
                             </div>
-                            <button id="btn-save-income" class="mt-4 bg-run-purple hover:bg-[#3d1d56] text-run-white font-bold py-3 px-6 rounded-xl transition shadow-md text-xs tracking-wider uppercase flex items-center justify-center gap-2">
+                            <button id="btn-save-income" class="mt-4 bg-run-purple dark:bg-gray-700 hover:bg-[#3d1d56] dark:hover:bg-gray-600 text-run-white font-bold py-3 px-6 rounded-xl transition shadow-md text-xs tracking-wider uppercase flex items-center justify-center gap-2">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                                 Simpan Pendapatan
                             </button>
                         </div>
                     </div>
 
-                    <!-- BANNER Cerdas Limpahan Sisa Anggaran (Sistem Toggle Otomatis) -->
-                    <div class="bg-gradient-to-r from-run-purple to-indigo-900 text-run-white rounded-3xl p-6 shadow-md mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                    <!-- BANNER Cerdas Limpahan Sisa Anggaran -->
+                    <div class="bg-gradient-to-r from-run-purple to-indigo-900 dark:from-gray-800 dark:to-gray-900 text-run-white rounded-3xl p-6 shadow-md mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border dark:border-gray-700 transition-colors duration-300">
                         <div class="flex items-center gap-4">
                             <div class="w-12 h-12 bg-run-white/10 rounded-2xl flex items-center justify-center shrink-0">
-                                <svg class="w-6 h-6 text-run-red" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                                <svg class="w-6 h-6 text-run-red dark:text-[#ff6b84]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                             </div>
                             <div>
                                 <h4 class="font-bold text-base">Fitur Limpahan Sisa Otomatis</h4>
-                                <p class="text-xs text-run-white/70 mt-0.5">Setiap sisa positif dari realisasi pos lain akan <strong>otomatis & seketika</strong> menambah anggaran Expense Bulanan.</p>
+                                <p class="text-xs text-run-white/70 dark:text-gray-400 mt-0.5">Setiap sisa positif dari realisasi pos lain akan <strong>otomatis & seketika</strong> menambah anggaran Expense Bulanan.</p>
                             </div>
                         </div>
                         
-                        <div class="flex items-center gap-3 shrink-0 bg-run-white/10 py-2.5 px-4 rounded-xl">
+                        <div class="flex items-center gap-3 shrink-0 bg-run-white/10 dark:bg-black/20 py-2.5 px-4 rounded-xl">
                             <span class="text-xs font-bold text-run-white/90 uppercase tracking-wide" id="label-limpahan">Nonaktif</span>
                             <label class="relative inline-flex items-center cursor-pointer">
                                 <input type="checkbox" id="toggle-limpahan" class="sr-only peer">
-                                <div class="w-12 h-6 bg-run-purple/40 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-run-red"></div>
+                                <div class="w-12 h-6 bg-run-purple/40 dark:bg-gray-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-run-red"></div>
                             </label>
                         </div>
                     </div>
 
-                    <!-- Tabel / List Perencanaan & Realisasi dengan Slider Inline -->
-                    <div class="bg-run-white rounded-3xl border border-run-purple/10 shadow-sm overflow-hidden">
-                        <div class="p-5 border-b border-run-purple/10 bg-run-purple/5 flex justify-between items-center">
-                            <h3 class="text-sm font-extrabold text-run-purple uppercase tracking-wider">Rincian Pos Anggaran & Realisasi</h3>
+                    <!-- Tabel / List Perencanaan & Realisasi -->
+                    <div class="bg-run-white dark:bg-dark-card rounded-3xl border border-run-purple/10 dark:border-white/5 shadow-sm overflow-hidden transition-colors duration-300">
+                        <div class="p-5 border-b border-run-purple/10 dark:border-white/5 bg-run-purple/5 dark:bg-white/5 flex justify-between items-center">
+                            <h3 class="text-sm font-extrabold text-run-purple dark:text-gray-200 uppercase tracking-wider">Rincian Pos Anggaran & Realisasi</h3>
                             <button id="btn-save-all-plan" class="bg-green-600 hover:bg-green-700 text-white text-xs font-bold py-2 px-4 rounded-xl transition shadow-sm">Simpan Perubahan</button>
                         </div>
                         
                         <div class="overflow-x-auto">
                             <table class="w-full text-left border-collapse">
                                 <thead>
-                                    <tr class="text-[11px] uppercase font-extrabold text-run-purple/60 border-b border-run-purple/10 bg-run-white">
+                                    <tr class="text-[11px] uppercase font-extrabold text-run-purple/60 dark:text-gray-400 border-b border-run-purple/10 dark:border-white/5 bg-run-white dark:bg-dark-card transition-colors duration-300">
                                         <th class="p-4 min-w-[200px]">Nama Pos</th>
                                         <th class="p-4 min-w-[150px]">% Alokasi (Geser)</th>
                                         <th class="p-4">Target Rencana (Rp)</th>
@@ -342,7 +355,7 @@
                                         <th class="p-4">Sisa / Selisih (Rp)</th>
                                     </tr>
                                 </thead>
-                                <tbody id="table-plan-body" class="divide-y divide-run-purple/5 text-sm font-semibold text-run-purple">
+                                <tbody id="table-plan-body" class="divide-y divide-run-purple/5 dark:divide-white/5 text-sm font-semibold text-run-purple dark:text-gray-200">
                                     <!-- Dynamic rows rendering -->
                                 </tbody>
                             </table>
@@ -353,51 +366,51 @@
 
                 <!-- TAMPILAN: PENGATURAN -->
                 <div id="view-pengaturan" class="hidden max-w-4xl mx-auto pb-24 md:pb-10">
-                    <h2 class="text-2xl font-extrabold text-run-purple mb-6">Pengaturan Aplikasi</h2>
+                    <h2 class="text-2xl font-extrabold text-run-purple dark:text-gray-100 mb-6">Pengaturan Aplikasi</h2>
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <!-- Panel: Kategori Kustom -->
-                        <div class="bg-run-white p-6 rounded-3xl border border-run-purple/10 shadow-sm">
-                            <div class="flex items-center gap-3 mb-5 border-b border-run-purple/10 pb-4">
-                                <div class="w-10 h-10 bg-run-purple/10 text-run-purple rounded-xl flex items-center justify-center">
+                        <div class="bg-run-white dark:bg-dark-card p-6 rounded-3xl border border-run-purple/10 dark:border-white/5 shadow-sm transition-colors duration-300">
+                            <div class="flex items-center gap-3 mb-5 border-b border-run-purple/10 dark:border-white/5 pb-4">
+                                <div class="w-10 h-10 bg-run-purple/10 dark:bg-gray-700 text-run-purple dark:text-white rounded-xl flex items-center justify-center">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path></svg>
                                 </div>
                                 <div>
-                                    <h3 class="text-sm font-bold text-run-purple uppercase tracking-widest">Kategori Transaksi</h3>
-                                    <p class="text-xs text-run-purple/50 font-medium mt-0.5">Kelola seluruh daftar kategori Anda</p>
+                                    <h3 class="text-sm font-bold text-run-purple dark:text-gray-200 uppercase tracking-widest">Kategori Transaksi</h3>
+                                    <p class="text-xs text-run-purple/50 dark:text-gray-400 font-medium mt-0.5">Kelola seluruh daftar kategori Anda</p>
                                 </div>
                             </div>
 
-                            <div class="flex gap-2 p-1.5 bg-run-purple/5 rounded-2xl mb-5">
+                            <div class="flex gap-2 p-1.5 bg-run-purple/5 dark:bg-dark-input rounded-2xl mb-5">
                                 <button type="button" id="set-tab-pengeluaran" class="flex-1 py-2 text-xs font-bold rounded-xl bg-run-red text-run-white shadow-sm transition-all">Pengeluaran</button>
-                                <button type="button" id="set-tab-pemasukan" class="flex-1 py-2 text-xs font-bold rounded-xl text-run-purple/50 hover:text-run-purple hover:bg-run-purple/10 transition-all">Pemasukan</button>
+                                <button type="button" id="set-tab-pemasukan" class="flex-1 py-2 text-xs font-bold rounded-xl text-run-purple/50 dark:text-gray-400 hover:text-run-purple dark:hover:text-white hover:bg-run-purple/10 dark:hover:bg-white/10 transition-all">Pemasukan</button>
                             </div>
 
                             <form id="form-tambah-kategori" class="flex gap-2 mb-5">
-                                <input type="text" id="input-kategori-baru" required class="flex-1 bg-run-purple/5 border-2 border-transparent rounded-xl py-2.5 px-3 text-sm text-run-purple font-medium focus:bg-run-white focus:ring-0 focus:border-run-red outline-none transition" placeholder="Nama Kategori...">
-                                <button type="button" id="btn-cancel-edit-kategori" class="hidden bg-run-purple/10 hover:bg-run-purple/20 text-run-purple font-bold py-2.5 px-3 rounded-xl transition text-sm">Batal</button>
-                                <button type="submit" id="btn-submit-kategori" class="bg-run-purple hover:bg-[#3d1d56] text-run-white font-bold py-2.5 px-4 rounded-xl transition shadow-md text-sm whitespace-nowrap">Tambah</button>
+                                <input type="text" id="input-kategori-baru" required class="flex-1 bg-run-purple/5 dark:bg-dark-input border-2 border-transparent dark:border-white/5 rounded-xl py-2.5 px-3 text-sm text-run-purple dark:text-white font-medium focus:bg-run-white dark:focus:bg-gray-800 focus:ring-0 focus:border-run-red outline-none transition" placeholder="Nama Kategori...">
+                                <button type="button" id="btn-cancel-edit-kategori" class="hidden bg-run-purple/10 dark:bg-white/10 hover:bg-run-purple/20 dark:hover:bg-white/20 text-run-purple dark:text-white font-bold py-2.5 px-3 rounded-xl transition text-sm">Batal</button>
+                                <button type="submit" id="btn-submit-kategori" class="bg-run-purple dark:bg-gray-700 hover:bg-[#3d1d56] dark:hover:bg-gray-600 text-run-white font-bold py-2.5 px-4 rounded-xl transition shadow-md text-sm whitespace-nowrap">Tambah</button>
                             </form>
 
-                            <div class="bg-run-purple/5 rounded-xl border border-run-purple/10 p-3 h-48 overflow-y-auto custom-scroll">
+                            <div class="bg-run-purple/5 dark:bg-dark-input rounded-xl border border-run-purple/10 dark:border-white/5 p-3 h-48 overflow-y-auto custom-scroll">
                                 <ul id="list-kategori-kustom" class="space-y-2"></ul>
-                                <p id="empty-kategori-kustom" class="text-xs text-center text-run-purple/40 font-medium py-16">Belum ada kategori.</p>
+                                <p id="empty-kategori-kustom" class="text-xs text-center text-run-purple/40 dark:text-gray-500 font-medium py-16">Belum ada kategori.</p>
                             </div>
                         </div>
 
                         <!-- Panel: Export Data -->
-                        <div class="bg-run-white p-6 rounded-3xl border border-run-purple/10 shadow-sm h-max">
-                            <div class="flex items-center gap-3 mb-5 border-b border-run-purple/10 pb-4">
-                                <div class="w-10 h-10 bg-green-100 text-green-600 rounded-xl flex items-center justify-center">
+                        <div class="bg-run-white dark:bg-dark-card p-6 rounded-3xl border border-run-purple/10 dark:border-white/5 shadow-sm h-max transition-colors duration-300">
+                            <div class="flex items-center gap-3 mb-5 border-b border-run-purple/10 dark:border-white/5 pb-4">
+                                <div class="w-10 h-10 bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 rounded-xl flex items-center justify-center">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"></path></svg>
                                 </div>
                                 <div>
-                                    <h3 class="text-sm font-bold text-run-purple uppercase tracking-widest">Ekspor Data (CSV)</h3>
-                                    <p class="text-xs text-run-purple/50 font-medium mt-0.5">Unduh data untuk dibuka di Excel</p>
+                                    <h3 class="text-sm font-bold text-run-purple dark:text-gray-200 uppercase tracking-widest">Ekspor Data (CSV)</h3>
+                                    <p class="text-xs text-run-purple/50 dark:text-gray-400 font-medium mt-0.5">Unduh data untuk dibuka di Excel</p>
                                 </div>
                             </div>
                             
-                            <p class="text-sm text-run-purple/70 font-medium mb-6 leading-relaxed">
+                            <p class="text-sm text-run-purple/70 dark:text-gray-300 font-medium mb-6 leading-relaxed">
                                 Unduh seluruh riwayat transaksi Anda dalam format CSV. Format ini dapat dibuka menggunakan aplikasi Spreadsheet seperti Microsoft Excel atau Google Sheets untuk keperluan analisis lebih lanjut.
                             </p>
 
@@ -414,15 +427,15 @@
     </div>
 
     <!-- Custom Modal Konfirmasi Hapus Transaksi -->
-    <div id="modal-confirm" class="hidden fixed inset-0 bg-run-purple/90 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-        <div class="bg-run-white rounded-3xl p-7 w-full max-w-sm shadow-2xl transform scale-100 transition-all text-center">
-            <div class="w-16 h-16 bg-run-red/10 text-run-red rounded-full flex items-center justify-center mx-auto mb-4">
+    <div id="modal-confirm" class="hidden fixed inset-0 bg-run-purple/90 dark:bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-run-white dark:bg-dark-card rounded-3xl p-7 w-full max-w-sm shadow-2xl transform scale-100 transition-all text-center">
+            <div class="w-16 h-16 bg-run-red/10 dark:bg-run-red/20 text-run-red dark:text-[#ff6b84] rounded-full flex items-center justify-center mx-auto mb-4">
                 <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
             </div>
-            <h3 class="text-xl font-extrabold text-run-purple mb-2">Hapus Transaksi?</h3>
-            <p class="text-run-purple/60 text-sm font-medium mb-8">Data ini akan dihapus permanen.</p>
+            <h3 class="text-xl font-extrabold text-run-purple dark:text-white mb-2">Hapus Transaksi?</h3>
+            <p class="text-run-purple/60 dark:text-gray-400 text-sm font-medium mb-8">Data ini akan dihapus permanen.</p>
             <div class="flex gap-3">
-                <button id="btn-cancel-delete" class="flex-1 py-3.5 bg-run-purple/10 hover:bg-run-purple/20 text-run-purple font-bold rounded-xl transition">Batal</button>
+                <button id="btn-cancel-delete" class="flex-1 py-3.5 bg-run-purple/10 dark:bg-white/10 hover:bg-run-purple/20 dark:hover:bg-white/20 text-run-purple dark:text-white font-bold rounded-xl transition">Batal</button>
                 <button id="btn-confirm-delete" class="flex-1 py-3.5 bg-run-red hover:bg-[#c40024] text-run-white font-bold rounded-xl transition shadow-lg shadow-run-red/30">Hapus</button>
             </div>
         </div>
@@ -504,6 +517,16 @@
         const btnCancelEditKategori = document.getElementById('btn-cancel-edit-kategori');
         const btnSubmitKategori = document.getElementById('btn-submit-kategori');
 
+        // ----------------------------------------------------
+        // LOGIKA DARK MODE (TOMBOL TOGGLE)
+        // ----------------------------------------------------
+        const btnToggleDark = document.getElementById('btn-toggle-dark');
+        btnToggleDark.addEventListener('click', () => {
+            const html = document.documentElement;
+            html.classList.toggle('dark');
+            localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+        });
+
         // DATA KATEGORI BAWAAN SISTEM
         const defaultPengeluaran = [
             "11 - Makanan Pokok", "12 - Aqua Galon", "13 - Makanan Ringan", "14 - Makanan Khusus Olahraga", "15 - Pemberian Makanan",
@@ -523,24 +546,16 @@
         // ----------------------------------------------------
         // LOGIKA PERENCANAAN & DASHBOARD BUDGET GLOBAL
         // ----------------------------------------------------
-        let currentPlanningMonth = new Date().toISOString().slice(0, 7); // Format: YYYY-MM
-        let currentMonthGlobal = new Date().toISOString().slice(0, 7); // Untuk Dashboard
+        let currentPlanningMonth = new Date().toISOString().slice(0, 7);
+        let currentMonthGlobal = new Date().toISOString().slice(0, 7);
         let unsubscribePerencanaanGlobal = null;
-        let globalPlanData = null; // Menyimpan Rencana Bulan Ini dari DB
+        let globalPlanData = null;
 
         let planPercentages = {
-            expense: 50,
-            keluarga: 20,
-            sosial: 10,
-            investasi: 20,
+            expense: 50, keluarga: 20, sosial: 10, investasi: 20,
             investasiSub: { pernikahan: 30, pulang: 20, kado: 10, rumah: 25, mobil: 15 }
         };
-        let planDataCurrentMonth = {
-            gajiPokok: 0,
-            tukin: 0,
-            isLimpahanAktif: false,
-            realisasi: {}
-        };
+        let planDataCurrentMonth = { gajiPokok: 0, tukin: 0, isLimpahanAktif: false, realisasi: {} };
 
         const planPeriodeInput = document.getElementById('plan-periode');
         planPeriodeInput.value = currentPlanningMonth;
@@ -549,16 +564,14 @@
             loadPerencanaanData();
         });
 
-        // Setup Toggle Limpahan Event
         const toggleLimpahan = document.getElementById('toggle-limpahan');
         const labelLimpahan = document.getElementById('label-limpahan');
         toggleLimpahan.addEventListener('change', (e) => {
             planDataCurrentMonth.isLimpahanAktif = e.target.checked;
             labelLimpahan.innerText = e.target.checked ? "Aktif" : "Nonaktif";
-            updatePlanVisuals(); // Langsung terapkan hitungan di layar
+            updatePlanVisuals();
         });
 
-        // Menghitung Sisa Positif Pos Lainnya untuk Expense
         function hitungLimpahan(totalIncome, real) {
             let sisa = 0;
             const keluargaPlan = totalIncome * (planPercentages.keluarga / 100);
@@ -576,22 +589,17 @@
                 const sSub = target - (parseFloat(real['inv_' + key]) || 0);
                 if(sSub > 0) sisa += sSub;
             });
-            
             return sisa;
         }
 
-        // Buka / Muat Data Perencanaan Settings
         async function loadPerencanaanSettings() {
             if(!currentUser) return;
             try {
                 const docRef = doc(db, 'users', currentUser.uid, 'settings', 'perencanaan');
                 const docSnap = await getDoc(docRef);
-                if(docSnap.exists()) {
-                    planPercentages = { ...planPercentages, ...docSnap.data() };
-                } else {
-                    await setDoc(docRef, planPercentages);
-                }
-                loadPerencanaanGlobal(); // Mulai memantau budget Dashboard setelah setting di-load
+                if(docSnap.exists()) planPercentages = { ...planPercentages, ...docSnap.data() };
+                else await setDoc(docRef, planPercentages);
+                loadPerencanaanGlobal();
             } catch(e) { console.error("Gagal memuat persentase:", e); }
         }
 
@@ -601,20 +609,16 @@
                 const docRef = doc(db, 'users', currentUser.uid, 'perencanaan', currentPlanningMonth);
                 const docSnap = await getDoc(docRef);
                 
-                if(docSnap.exists()) {
-                    planDataCurrentMonth = docSnap.data();
-                } else {
-                    planDataCurrentMonth = { gajiPokok: 0, tukin: 0, isLimpahanAktif: false, realisasi: {} };
-                }
+                if(docSnap.exists()) planDataCurrentMonth = docSnap.data();
+                else planDataCurrentMonth = { gajiPokok: 0, tukin: 0, isLimpahanAktif: false, realisasi: {} };
                 
                 document.getElementById('input-gaji-pokok').value = planDataCurrentMonth.gajiPokok ? formatNumberForInput(planDataCurrentMonth.gajiPokok) : '';
                 document.getElementById('input-tukin').value = planDataCurrentMonth.tukin ? formatNumberForInput(planDataCurrentMonth.tukin) : '';
                 
                 toggleLimpahan.checked = !!planDataCurrentMonth.isLimpahanAktif;
                 labelLimpahan.innerText = toggleLimpahan.checked ? "Aktif" : "Nonaktif";
-
                 renderPerencanaanTable();
-            } catch(e) { console.error("Gagal memuat perencanaan bulan ini:", e); }
+            } catch(e) { console.error("Gagal memuat perencanaan:", e); }
         }
 
         document.getElementById('btn-save-income').addEventListener('click', async () => {
@@ -625,9 +629,6 @@
             renderPerencanaanTable();
         });
 
-        // ----------------------------------------------------
-        // ALGORITMA PENYEIMBANG PERSENTASE OTOMATIS (100% SAFEGUARD)
-        // ----------------------------------------------------
         function balancePercentages(changedIdRaw, newValue, type) {
             const changedId = changedIdRaw.replace('inv_', '');
             const items = type === 'main' 
@@ -658,20 +659,16 @@
             }
         }
 
-        // Memperbarui UI di Tabel Tanpa Render Ulang (agar slider mulus)
         function updatePlanVisuals() {
             const totalIncome = (planDataCurrentMonth.gajiPokok || 0) + (planDataCurrentMonth.tukin || 0);
             let limpahan = 0;
-            if(planDataCurrentMonth.isLimpahanAktif) {
-                limpahan = hitungLimpahan(totalIncome, planDataCurrentMonth.realisasi || {});
-            }
+            if(planDataCurrentMonth.isLimpahanAktif) limpahan = hitungLimpahan(totalIncome, planDataCurrentMonth.realisasi || {});
             
             const expNominal = (totalIncome * (planPercentages.expense / 100)) + limpahan;
             const keluargaNominal = totalIncome * (planPercentages.keluarga / 100);
             const sosialNominal = totalIncome * (planPercentages.sosial / 100);
             const invTotalNominal = totalIncome * (planPercentages.investasi / 100);
             
-            // Sync Value UI (Inputs & Sliders)
             ['expense', 'keluarga', 'sosial', 'investasi'].forEach(id => {
                 const val = planPercentages[id];
                 if(document.getElementById(`pct-slider-${id}`)) document.getElementById(`pct-slider-${id}`).value = val;
@@ -684,17 +681,15 @@
                 if(document.getElementById(`pct-input-${fullId}`)) document.getElementById(`pct-input-${fullId}`).value = val;
             });
 
-            // Fungsi Update Baris
             const updateRow = (id, nominal) => {
                 const elNom = document.getElementById(`nom-${id}`);
                 if(elNom) elNom.innerText = formatRp(nominal);
-                
                 const real = parseFloat(planDataCurrentMonth.realisasi[id]) || 0;
                 const sisa = nominal - real;
                 const elSisa = document.getElementById(`sisa-${id}`);
                 if(elSisa) {
                     elSisa.innerText = formatRp(sisa);
-                    elSisa.className = `p-4 font-bold ${sisa < 0 ? 'text-run-red' : 'text-green-600'}`;
+                    elSisa.className = `p-4 font-bold ${sisa < 0 ? 'text-run-red dark:text-[#ff6b84]' : 'text-green-600 dark:text-green-400'}`;
                 }
             };
 
@@ -709,14 +704,10 @@
                 updateRow(`inv_${id}`, invTotalNominal * (planPercentages.investasiSub[id] / 100));
             });
 
-            // Update Label Limpahan Pada Expense Bulanan
             const extraLabel = document.getElementById('extra-expense-label');
-            if(extraLabel) {
-                extraLabel.innerHTML = limpahan > 0 ? `<br><span class="text-[10px] text-green-600 font-normal">+Limpahan Rp ${formatRp(limpahan)}</span>` : '';
-            }
+            if(extraLabel) extraLabel.innerHTML = limpahan > 0 ? `<br><span class="text-[10px] text-green-600 dark:text-green-400 font-normal">+Limpahan Rp ${formatRp(limpahan)}</span>` : '';
         }
 
-        // Render Struktur Dasar Tabel Perencanaan
         function renderPerencanaanTable() {
             const totalIncome = (planDataCurrentMonth.gajiPokok || 0) + (planDataCurrentMonth.tukin || 0);
             document.getElementById('plan-total-income').innerText = formatRp(totalIncome);
@@ -742,22 +733,22 @@
             items.forEach(item => {
                 const tr = document.createElement('tr');
                 if(item.isHeader) {
-                    tr.className = "bg-run-purple/10 font-bold border-t-2 border-run-purple/10";
+                    tr.className = "bg-run-purple/10 dark:bg-white/5 font-bold border-t-2 border-run-purple/10 dark:border-white/10";
                     tr.innerHTML = `
                         <td class="p-4 font-extrabold">${item.name}</td>
                         <td class="p-4">
                             <div class="flex items-center gap-2">
-                                <input type="range" data-id="${item.id}" data-type="main" min="0" max="100" class="pct-slider w-20 h-1.5 bg-run-purple/20 rounded-lg appearance-none cursor-pointer" id="pct-slider-${item.id}">
-                                <input type="number" data-id="${item.id}" data-type="main" class="pct-input w-12 text-xs font-bold bg-transparent border-b border-run-purple/20 outline-none text-center" id="pct-input-${item.id}">
+                                <input type="range" data-id="${item.id}" data-type="main" min="0" max="100" class="pct-slider w-20 h-1.5 bg-run-purple/20 dark:bg-gray-600 rounded-lg appearance-none cursor-pointer" id="pct-slider-${item.id}">
+                                <input type="number" data-id="${item.id}" data-type="main" class="pct-input w-12 text-xs font-bold bg-transparent border-b border-run-purple/20 dark:border-gray-500 outline-none text-center" id="pct-input-${item.id}">
                             </div>
                         </td>
                         <td class="p-4" id="nom-investasi_header">-</td>
-                        <td class="p-4 text-run-purple/50">-</td>
-                        <td class="p-4 text-run-purple/50">-</td>
+                        <td class="p-4 text-run-purple/50 dark:text-gray-500">-</td>
+                        <td class="p-4 text-run-purple/50 dark:text-gray-500">-</td>
                     `;
                 } else {
                     const currentReal = real[item.id] !== undefined ? real[item.id] : '';
-                    const isSubClass = item.isSub ? 'pl-8 text-xs text-run-purple/80' : 'font-extrabold';
+                    const isSubClass = item.isSub ? 'pl-8 text-xs text-run-purple/80 dark:text-gray-400' : 'font-extrabold';
                     const dataType = item.isSub ? 'sub' : 'main';
                     tr.innerHTML = `
                         <td class="p-4 ${isSubClass}">
@@ -766,13 +757,13 @@
                         </td>
                         <td class="p-4">
                             <div class="flex items-center gap-2">
-                                <input type="range" data-id="${item.id}" data-type="${dataType}" min="0" max="100" class="pct-slider w-20 h-1.5 bg-run-purple/20 rounded-lg appearance-none cursor-pointer" id="pct-slider-${item.id}">
-                                <input type="number" data-id="${item.id}" data-type="${dataType}" class="pct-input w-12 text-xs font-bold bg-transparent border-b border-run-purple/20 outline-none text-center" id="pct-input-${item.id}">
+                                <input type="range" data-id="${item.id}" data-type="${dataType}" min="0" max="100" class="pct-slider w-20 h-1.5 bg-run-purple/20 dark:bg-gray-600 rounded-lg appearance-none cursor-pointer" id="pct-slider-${item.id}">
+                                <input type="number" data-id="${item.id}" data-type="${dataType}" class="pct-input w-12 text-xs font-bold bg-transparent border-b border-run-purple/20 dark:border-gray-500 outline-none text-center" id="pct-input-${item.id}">
                             </div>
                         </td>
                         <td class="p-4 font-bold" id="nom-${item.id}">-</td>
                         <td class="p-4">
-                            <input type="text" data-id="${item.id}" value="${currentReal ? formatNumberForInput(currentReal) : ''}" placeholder="0" class="realisasi-input bg-run-purple/5 border border-run-purple/10 rounded-lg p-2 font-bold text-xs w-28 md:w-32 outline-none focus:border-run-purple">
+                            <input type="text" data-id="${item.id}" value="${currentReal ? formatNumberForInput(currentReal) : ''}" placeholder="0" class="realisasi-input bg-run-purple/5 dark:bg-dark-input border border-run-purple/10 dark:border-white/5 rounded-lg p-2 font-bold text-xs w-28 md:w-32 outline-none focus:border-run-purple dark:focus:border-gray-400">
                         </td>
                         <td class="p-4 font-bold" id="sisa-${item.id}">-</td>
                     `;
@@ -782,7 +773,6 @@
 
             updatePlanVisuals();
 
-            // Pasang Event Listeners ke UI Tabel Dinamis
             document.querySelectorAll('.pct-slider, .pct-input').forEach(el => {
                 el.addEventListener('input', (e) => {
                     const id = e.target.dataset.id;
@@ -804,25 +794,18 @@
                     if (parts.length > 2) val = parts[0] + ',' + parts.slice(1).join('');
                     if (parts[0].length > 0) parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
                     this.value = parts[0];
-                    
-                    // Simpan sementara & hitung ulang limpahan Sisa saat mengetik!
                     planDataCurrentMonth.realisasi[this.dataset.id] = parseRupiahInput(this.value);
                     updatePlanVisuals();
                 });
             });
         }
 
-        // Tombol Simpan Perubahan Utama
         document.getElementById('btn-save-all-plan').addEventListener('click', async () => {
             const btn = document.getElementById('btn-save-all-plan');
             btn.innerText = "Menyimpan...";
-            
             try {
-                // Simpan Setting (Persentase)
                 await setDoc(doc(db, 'users', currentUser.uid, 'settings', 'perencanaan'), planPercentages);
-                // Simpan Data Bulan Ini (Realisasi & Limpahan Toggle & Gaji)
                 await setDoc(doc(db, 'users', currentUser.uid, 'perencanaan', currentPlanningMonth), planDataCurrentMonth);
-                
                 showToast("Semua Perubahan Disimpan!");
             } catch (error) {
                 showToast("Gagal menyimpan!", "error");
@@ -853,23 +836,16 @@
             if (globalPlanData && planPercentages) {
                 totalIncome = (globalPlanData.gajiPokok || 0) + (globalPlanData.tukin || 0);
                 baseExpense = totalIncome * ((planPercentages.expense || 50) / 100);
-                
-                if (globalPlanData.isLimpahanAktif) {
-                    limpahan = hitungLimpahan(totalIncome, globalPlanData.realisasi || {});
-                }
+                if (globalPlanData.isLimpahanAktif) limpahan = hitungLimpahan(totalIncome, globalPlanData.realisasi || {});
             }
             
             const totalBudget = baseExpense + limpahan;
-            
             let terpakai = 0;
             transaksiData.forEach(t => {
-                if (t.jenis === 'pengeluaran' && t.tanggal && t.tanggal.startsWith(currentMonthGlobal)) {
-                    terpakai += t.jumlah;
-                }
+                if (t.jenis === 'pengeluaran' && t.tanggal && t.tanggal.startsWith(currentMonthGlobal)) terpakai += t.jumlah;
             });
             
             const sisa = totalBudget - terpakai;
-            
             const elSaldo = document.getElementById('saldo-total');
             const elBudget = document.getElementById('budget-tersedia');
             const elTerpakai = document.getElementById('budget-terpakai');
@@ -878,7 +854,6 @@
             if(elBudget) elBudget.innerText = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(totalBudget);
             if(elTerpakai) elTerpakai.innerText = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(terpakai);
         }
-
 
         // ----------------------------------------------------
         // ROUTING BERBASIS HASH URL & SIDEBAR
@@ -895,12 +870,10 @@
             if (!currentUser) return;
             const hash = window.location.hash.toLowerCase() || '#rekam';
 
-            viewRekam.classList.add('hidden');
-            viewPerencanaan.classList.add('hidden');
-            viewPengaturan.classList.add('hidden');
+            viewRekam.classList.add('hidden'); viewPerencanaan.classList.add('hidden'); viewPengaturan.classList.add('hidden');
 
             navBtns.forEach(btn => {
-                btn.className = "w-full flex items-center gap-3 px-4 py-3 text-sm font-semibold text-run-purple/60 hover:text-run-purple hover:bg-run-purple/5 rounded-xl transition nav-btn";
+                btn.className = "w-full flex items-center gap-3 px-4 py-3 text-sm font-semibold text-run-purple/60 dark:text-gray-400 hover:text-run-purple dark:hover:text-white hover:bg-run-purple/5 dark:hover:bg-white/5 rounded-xl transition nav-btn";
                 const svg = btn.querySelector('svg');
                 if (svg) svg.classList.add('opacity-70');
             });
@@ -916,32 +889,17 @@
 
             switch (hash) {
                 case '#perencanaan':
-                    viewPerencanaan.classList.remove('hidden');
-                    activateButton('nav-perencanaan');
-                    loadPerencanaanData();
-                    break;
+                    viewPerencanaan.classList.remove('hidden'); activateButton('nav-perencanaan'); loadPerencanaanData(); break;
                 case '#pengaturan':
-                    viewPengaturan.classList.remove('hidden');
-                    activateButton('nav-pengaturan');
-                    renderUIKategoriKustom();
-                    break;
-                case '#dashboard':
-                case '#report':
-                    viewRekam.classList.remove('hidden'); 
-                    activateButton('nav-' + hash.substring(1));
+                    viewPengaturan.classList.remove('hidden'); activateButton('nav-pengaturan'); renderUIKategoriKustom(); break;
+                case '#dashboard': case '#report':
+                    viewRekam.classList.remove('hidden'); activateButton('nav-' + hash.substring(1));
                     showToast(`Menu ${hash.substring(1).charAt(0).toUpperCase() + hash.substring(2)} akan segera hadir!`, 'success');
-                    window.location.hash = '#rekam';
-                    break;
-                case '#rekam':
-                default:
-                    viewRekam.classList.remove('hidden');
-                    activateButton('nav-rekam');
-                    break;
+                    window.location.hash = '#rekam'; break;
+                case '#rekam': default:
+                    viewRekam.classList.remove('hidden'); activateButton('nav-rekam'); break;
             }
-
-            if (window.innerWidth < 768 && !sidebar.classList.contains('-translate-x-full')) {
-                toggleSidebar();
-            }
+            if (window.innerWidth < 768 && !sidebar.classList.contains('-translate-x-full')) toggleSidebar();
         }
         window.addEventListener('hashchange', handleRouting);
 
@@ -953,7 +911,6 @@
             try {
                 const docRef = doc(db, 'users', currentUser.uid, 'settings', 'kategori');
                 const docSnap = await getDoc(docRef);
-                
                 if (docSnap.exists()) {
                     kategoriData = docSnap.data();
                     if(!kategoriData.pengeluaran || kategoriData.pengeluaran.length === 0) kategoriData.pengeluaran = [...defaultPengeluaran];
@@ -962,45 +919,33 @@
                     kategoriData = { pengeluaran: [...defaultPengeluaran], pemasukan: [...defaultPemasukan] };
                     await setDoc(docRef, kategoriData);
                 }
-                
                 renderDropdownKategori();
                 renderUIKategoriKustom();
-                
-                // Mulai load budget setelah basic setting termuat
                 await loadPerencanaanSettings();
-            } catch (error) {
-                console.log("Error loading settings:", error);
-            }
+            } catch (error) { console.log("Error loading settings:", error); }
         }
 
         async function saveSettings() {
             if (!currentUser) return;
             try {
-                const docRef = doc(db, 'users', currentUser.uid, 'settings', 'kategori');
-                await setDoc(docRef, kategoriData);
-                renderDropdownKategori();
-                renderUIKategoriKustom();
-            } catch (error) {
-                showToast("Gagal menyimpan pengaturan", "error");
-            }
+                await setDoc(doc(db, 'users', currentUser.uid, 'settings', 'kategori'), kategoriData);
+                renderDropdownKategori(); renderUIKategoriKustom();
+            } catch (error) { showToast("Gagal menyimpan pengaturan", "error"); }
         }
 
         function renderDropdownKategori() {
             inputKategori.innerHTML = '';
             const dataToRender = isPengeluaran ? kategoriData.pengeluaran : kategoriData.pemasukan;
-            
             if (dataToRender && dataToRender.length > 0) {
                 dataToRender.forEach(item => {
                     const option = document.createElement('option');
-                    option.value = item;
-                    option.textContent = item;
-                    option.className = 'font-medium text-gray-800';
+                    option.value = item; option.textContent = item;
+                    option.className = 'font-medium text-gray-800 dark:text-white dark:bg-gray-800';
                     inputKategori.appendChild(option);
                 });
             } else {
                 const option = document.createElement('option');
-                option.value = "";
-                option.textContent = "Belum ada kategori";
+                option.value = ""; option.textContent = "Belum ada kategori";
                 inputKategori.appendChild(option);
             }
         }
@@ -1009,27 +954,21 @@
             isPengeluaran = kePengeluaran;
             if (isPengeluaran) {
                 tabPengeluaran.className = "flex-1 py-3 text-sm font-bold rounded-xl bg-run-red text-run-white shadow-md transition-all";
-                tabPemasukan.className = "flex-1 py-3 text-sm font-bold rounded-xl text-run-purple/50 hover:text-run-purple hover:bg-run-purple/10 transition-all";
+                tabPemasukan.className = "flex-1 py-3 text-sm font-bold rounded-xl text-run-purple/50 dark:text-gray-400 hover:text-run-purple dark:hover:text-white hover:bg-run-purple/10 dark:hover:bg-white/10 transition-all";
             } else {
-                tabPemasukan.className = "flex-1 py-3 text-sm font-bold rounded-xl bg-run-purple text-run-white shadow-md transition-all";
-                tabPengeluaran.className = "flex-1 py-3 text-sm font-bold rounded-xl text-run-purple/50 hover:text-run-purple hover:bg-run-purple/10 transition-all";
+                tabPemasukan.className = "flex-1 py-3 text-sm font-bold rounded-xl bg-run-purple dark:bg-gray-600 text-run-white shadow-md transition-all";
+                tabPengeluaran.className = "flex-1 py-3 text-sm font-bold rounded-xl text-run-purple/50 dark:text-gray-400 hover:text-run-purple dark:hover:text-white hover:bg-run-purple/10 dark:hover:bg-white/10 transition-all";
             }
             renderDropdownKategori();
         }
         tabPengeluaran.addEventListener('click', () => setModeTransaksi(true));
         tabPemasukan.addEventListener('click', () => setModeTransaksi(false));
 
-        let isEditingCategory = false;
-        let editingCategoryIndex = null;
-
+        let isEditingCategory = false; let editingCategoryIndex = null;
         function resetKategoriForm() {
-            isEditingCategory = false;
-            editingCategoryIndex = null;
-            inputKategoriBaru.value = '';
-            btnCancelEditKategori.classList.add('hidden');
-            btnSubmitKategori.innerText = "Tambah";
-            btnSubmitKategori.classList.add('bg-run-purple', 'hover:bg-[#3d1d56]');
-            btnSubmitKategori.classList.remove('bg-run-red', 'hover:bg-[#c40024]', 'shadow-run-red/30');
+            isEditingCategory = false; editingCategoryIndex = null; inputKategoriBaru.value = '';
+            btnCancelEditKategori.classList.add('hidden'); btnSubmitKategori.innerText = "Tambah";
+            btnSubmitKategori.className = "bg-run-purple dark:bg-gray-700 hover:bg-[#3d1d56] dark:hover:bg-gray-600 text-run-white font-bold py-2.5 px-4 rounded-xl transition shadow-md text-sm whitespace-nowrap";
         }
         btnCancelEditKategori.addEventListener('click', resetKategoriForm);
 
@@ -1037,13 +976,12 @@
             isSettingsPengeluaran = kePengeluaran;
             if (isSettingsPengeluaran) {
                 setTabPengeluaran.className = "flex-1 py-2 text-xs font-bold rounded-xl bg-run-red text-run-white shadow-sm transition-all";
-                setTabPemasukan.className = "flex-1 py-2 text-xs font-bold rounded-xl text-run-purple/50 hover:text-run-purple hover:bg-run-purple/10 transition-all";
+                setTabPemasukan.className = "flex-1 py-2 text-xs font-bold rounded-xl text-run-purple/50 dark:text-gray-400 hover:text-run-purple dark:hover:text-white hover:bg-run-purple/10 dark:hover:bg-white/10 transition-all";
             } else {
-                setTabPemasukan.className = "flex-1 py-2 text-xs font-bold rounded-xl bg-run-purple text-run-white shadow-sm transition-all";
-                setTabPengeluaran.className = "flex-1 py-2 text-xs font-bold rounded-xl text-run-purple/50 hover:text-run-purple hover:bg-run-purple/10 transition-all";
+                setTabPemasukan.className = "flex-1 py-2 text-xs font-bold rounded-xl bg-run-purple dark:bg-gray-600 text-run-white shadow-sm transition-all";
+                setTabPengeluaran.className = "flex-1 py-2 text-xs font-bold rounded-xl text-run-purple/50 dark:text-gray-400 hover:text-run-purple dark:hover:text-white hover:bg-run-purple/10 dark:hover:bg-white/10 transition-all";
             }
-            resetKategoriForm();
-            renderUIKategoriKustom();
+            resetKategoriForm(); renderUIKategoriKustom();
         }
         setTabPengeluaran.addEventListener('click', () => setModePengaturanKategori(true));
         setTabPemasukan.addEventListener('click', () => setModePengaturanKategori(false));
@@ -1051,61 +989,46 @@
         function renderUIKategoriKustom() {
             listKategoriKustom.innerHTML = '';
             const dataTarget = isSettingsPengeluaran ? kategoriData.pengeluaran : kategoriData.pemasukan;
-
-            if (!dataTarget || dataTarget.length === 0) {
-                emptyKategoriKustom.classList.remove('hidden');
-            } else {
+            if (!dataTarget || dataTarget.length === 0) emptyKategoriKustom.classList.remove('hidden');
+            else {
                 emptyKategoriKustom.classList.add('hidden');
                 dataTarget.forEach((item, index) => {
                     const li = document.createElement('li');
-                    li.className = "flex justify-between items-center bg-run-white p-2.5 rounded-lg border border-run-purple/5";
+                    li.className = "flex justify-between items-center bg-run-white dark:bg-dark-card p-2.5 rounded-lg border border-run-purple/5 dark:border-white/5 transition-colors duration-300";
                     li.innerHTML = `
-                        <span class="text-sm font-bold text-run-purple truncate pr-2">${item}</span>
+                        <span class="text-sm font-bold text-run-purple dark:text-gray-200 truncate pr-2">${item}</span>
                         <div class="flex items-center gap-1 shrink-0">
-                            <button onclick="window.editKategori(${index})" class="text-run-purple hover:bg-run-purple/10 p-1.5 rounded-md transition">
+                            <button onclick="window.editKategori(${index})" class="text-run-purple dark:text-gray-300 hover:bg-run-purple/10 dark:hover:bg-white/10 p-1.5 rounded-md transition">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
                             </button>
-                            <button onclick="window.hapusKategoriKustom(${index})" class="text-run-red hover:bg-run-red/10 p-1.5 rounded-md transition">
+                            <button onclick="window.hapusKategoriKustom(${index})" class="text-run-red dark:text-[#ff6b84] hover:bg-run-red/10 dark:hover:bg-red-500/20 p-1.5 rounded-md transition">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                             </button>
-                        </div>
-                    `;
+                        </div>`;
                     listKategoriKustom.appendChild(li);
                 });
             }
         }
 
         formTambahKategori.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const val = inputKategoriBaru.value.trim();
-            if(!val) return;
+            e.preventDefault(); const val = inputKategoriBaru.value.trim(); if(!val) return;
             const arr = isSettingsPengeluaran ? kategoriData.pengeluaran : kategoriData.pemasukan;
             if(isEditingCategory) {
-                if(arr.includes(val) && val !== arr[editingCategoryIndex]) {
-                    return showToast("Nama kategori sudah digunakan", "error");
-                }
-                arr[editingCategoryIndex] = val;
-                showToast("Kategori diperbarui");
+                if(arr.includes(val) && val !== arr[editingCategoryIndex]) return showToast("Nama kategori sudah digunakan", "error");
+                arr[editingCategoryIndex] = val; showToast("Kategori diperbarui");
             } else {
-                if(arr.includes(val)) {
-                    return showToast("Kategori sudah ada", "error");
-                }
-                arr.push(val);
-                showToast("Kategori ditambahkan");
+                if(arr.includes(val)) return showToast("Kategori sudah ada", "error");
+                arr.push(val); showToast("Kategori ditambahkan");
             }
-            resetKategoriForm();
-            saveSettings();
+            resetKategoriForm(); saveSettings();
         });
 
         window.editKategori = (index) => {
             const arr = isSettingsPengeluaran ? kategoriData.pengeluaran : kategoriData.pemasukan;
-            inputKategoriBaru.value = arr[index];
-            isEditingCategory = true;
-            editingCategoryIndex = index;
+            inputKategoriBaru.value = arr[index]; isEditingCategory = true; editingCategoryIndex = index;
             btnCancelEditKategori.classList.remove('hidden');
             btnSubmitKategori.innerText = "Simpan";
-            btnSubmitKategori.classList.remove('bg-run-purple', 'hover:bg-[#3d1d56]');
-            btnSubmitKategori.classList.add('bg-run-red', 'hover:bg-[#c40024]', 'shadow-run-red/30');
+            btnSubmitKategori.className = "bg-run-red hover:bg-[#c40024] text-run-white font-bold py-2.5 px-4 rounded-xl transition shadow-md shadow-run-red/30 text-sm whitespace-nowrap";
             inputKategoriBaru.focus();
         };
 
@@ -1113,13 +1036,9 @@
             if(isSettingsPengeluaran) kategoriData.pengeluaran.splice(index, 1);
             else kategoriData.pemasukan.splice(index, 1);
             if (isEditingCategory && editingCategoryIndex === index) resetKategoriForm();
-            showToast("Kategori dihapus");
-            saveSettings();
+            showToast("Kategori dihapus"); saveSettings();
         };
 
-        // ----------------------------------------------------
-        // FITUR EXPORT CSV & PWA
-        // ----------------------------------------------------
         window.eksporKeCSV = () => {
             if (transaksiData.length === 0) return showToast("Belum ada data untuk diekspor", "error");
             let csvContent = "data:text/csv;charset=utf-8,Tanggal,Nama Transaksi,Kategori,Jenis,Jumlah (Rp)\n";
@@ -1128,51 +1047,33 @@
                 const kat = t.kategori ? t.kategori.replace(/,/g, "") : "";
                 csvContent += `${t.tanggal},${ket},${kat},${t.jenis},${t.jumlah}\n`;
             });
-            const encodedUri = encodeURI(csvContent);
-            const link = document.createElement("a");
+            const encodedUri = encodeURI(csvContent); const link = document.createElement("a");
             link.setAttribute("href", encodedUri);
             link.setAttribute("download", `RUN_FINANCE_Export_${new Date().toISOString().split('T')[0]}.csv`);
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+            document.body.appendChild(link); link.click(); document.body.removeChild(link);
             showToast("Proses unduh dimulai!");
         };
 
         const manifest = {
             "name": "RUN FINANCE", "short_name": "RUN FIN", "start_url": ".", "display": "standalone",
-            "background_color": "#FEFEFE", "theme_color": "#512D6D",
+            "background_color": "#121212", "theme_color": "#E4002B",
             "icons": [{ "src": "logo.png", "sizes": "192x192", "type": "image/png" }, { "src": "logo.png", "sizes": "512x512", "type": "image/png" }]
         };
         document.head.insertAdjacentHTML('beforeend', `<link rel="manifest" href="data:application/manifest+json;charset=utf-8,${encodeURIComponent(JSON.stringify(manifest))}">`);
-        if ('serviceWorker' in navigator) navigator.serviceWorker.register(URL.createObjectURL(new Blob([`self.addEventListener('install',(e)=>{self.skipWaiting()});self.addEventListener('activate',(e)=>{e.waitUntil(clients.claim())});self.addEventListener('fetch',(e)=>{});`], {type: 'application/javascript'}))).catch(err => console.log(err));
 
-        // ----------------------------------------------------
-        // LOGIKA INPUT FORM & NOTIFIKASI
-        // ----------------------------------------------------
-        setModeTransaksi(true);
-        setModePengaturanKategori(true);
-        setTanggalHariIni();
+        setModeTransaksi(true); setModePengaturanKategori(true); setTanggalHariIni();
 
-        function parseRupiahInput(val) {
-            if(!val) return 0;
-            return parseFloat(val.toString().replace(/\./g, '').replace(',', '.')) || 0;
-        }
-
-        function formatRp(num) {
-            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(num || 0);
-        }
-
+        function parseRupiahInput(val) { if(!val) return 0; return parseFloat(val.toString().replace(/\./g, '').replace(',', '.')) || 0; }
+        function formatRp(num) { return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(num || 0); }
         function formatNumberForInput(num) {
             if(!num && num !== 0) return '';
             let str = num.toString().replace('.', ',');
-            let parts = str.split(',');
-            parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+            let parts = str.split(','); parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
             return parts[1] !== undefined ? parts[0] + ',' + parts[1].substring(0, 2) : parts[0];
         }
 
         inputJumlah.addEventListener('input', function(e) {
-            let val = this.value.replace(/[^0-9,]/g, '');
-            const parts = val.split(',');
+            let val = this.value.replace(/[^0-9,]/g, ''); const parts = val.split(',');
             if (parts.length > 2) val = parts[0] + ',' + parts.slice(1).join('');
             if (parts[0].length > 0) parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
             this.value = parts[1] !== undefined ? parts[0] + ',' + parts[1].substring(0, 2) : parts[0];
@@ -1181,8 +1082,7 @@
         ['input-gaji-pokok', 'input-tukin'].forEach(id => {
             const el = document.getElementById(id);
             if(el) el.addEventListener('input', function() {
-                let val = this.value.replace(/[^0-9,]/g, '');
-                const parts = val.split(',');
+                let val = this.value.replace(/[^0-9,]/g, ''); const parts = val.split(',');
                 if (parts.length > 2) val = parts[0] + ',' + parts.slice(1).join('');
                 if (parts[0].length > 0) parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
                 this.value = parts[0];
@@ -1195,52 +1095,29 @@
         }
 
         function showToast(message, type = 'success') {
-            const container = document.getElementById('toast-container');
-            const toast = document.createElement('div');
-            toast.className = `${type === 'error' ? 'bg-run-red' : 'bg-run-purple'} text-run-white px-5 py-3 rounded-xl shadow-2xl text-sm font-bold toast-enter-active flex items-center gap-2 max-w-xs md:max-w-md`;
-            toast.innerText = message;
-            container.appendChild(toast);
-            setTimeout(() => {
-                toast.classList.remove('toast-enter-active');
-                toast.classList.add('toast-exit-active');
-                setTimeout(() => toast.remove(), 300);
-            }, 3500);
+            const container = document.getElementById('toast-container'); const toast = document.createElement('div');
+            toast.className = `${type === 'error' ? 'bg-run-red' : 'bg-run-purple dark:bg-gray-800 dark:border dark:border-white/10'} text-run-white dark:text-gray-100 px-5 py-3 rounded-xl shadow-2xl text-sm font-bold toast-enter-active flex items-center gap-2 max-w-xs md:max-w-md`;
+            toast.innerText = message; container.appendChild(toast);
+            setTimeout(() => { toast.classList.remove('toast-enter-active'); toast.classList.add('toast-exit-active'); setTimeout(() => toast.remove(), 300); }, 3500);
         }
 
         function resetFormState() {
-            currentEditId = null;
-            formTransaksi.reset();
-            setModeTransaksi(true);
-            setTanggalHariIni();
-            formTitle.innerText = "Tambah Transaksi Baru";
-            textSubmitForm.innerText = "Simpan Transaksi";
-            btnCancelEdit.classList.add('hidden');
-            formTransaksi.classList.remove('ring-4', 'ring-run-purple/20');
+            currentEditId = null; formTransaksi.reset(); setModeTransaksi(true); setTanggalHariIni();
+            formTitle.innerText = "Tambah Transaksi Baru"; textSubmitForm.innerText = "Simpan Transaksi";
+            btnCancelEdit.classList.add('hidden'); formTransaksi.classList.remove('ring-4', 'ring-run-purple/20', 'dark:ring-white/10');
         }
         btnCancelEdit.addEventListener('click', resetFormState);
 
-        // ----------------------------------------------------
-        // AUTENTIKASI & DATABASE FIREBASE
-        // ----------------------------------------------------
         onAuthStateChanged(auth, (user) => {
             viewLoading.classList.add('hidden');
             if (user) {
-                currentUser = user;
-                viewLogin.classList.add('hidden');
-                viewApp.classList.remove('hidden');
+                currentUser = user; viewLogin.classList.add('hidden'); viewApp.classList.remove('hidden');
                 userGreeting.innerText = `Halo, ${user.displayName || (user.isAnonymous ? "Tamu" : "Pengguna")}`;
-                showToast(`Selamat datang!`);
-                loadSettings();
-                loadDataTransaksi();
-                handleRouting(); 
+                showToast(`Selamat datang!`); loadSettings(); loadDataTransaksi(); handleRouting(); 
             } else {
-                currentUser = null;
-                viewApp.classList.add('hidden');
-                viewLogin.classList.remove('hidden');
-                if (unsubscribeSnapshot) unsubscribeSnapshot();
-                if (unsubscribePerencanaanGlobal) unsubscribePerencanaanGlobal();
-                transaksiData = [];
-                renderUI();
+                currentUser = null; viewApp.classList.add('hidden'); viewLogin.classList.remove('hidden');
+                if (unsubscribeSnapshot) unsubscribeSnapshot(); if (unsubscribePerencanaanGlobal) unsubscribePerencanaanGlobal();
+                transaksiData = []; renderUI();
             }
         });
 
@@ -1252,11 +1129,9 @@
             if (!currentUser) return;
             const transaksiRef = collection(db, 'users', currentUser.uid, 'transaksi');
             unsubscribeSnapshot = onSnapshot(transaksiRef, (snapshot) => {
-                transaksiData = [];
-                snapshot.forEach((document) => { transaksiData.push({ id: document.id, ...document.data() }); });
+                transaksiData = []; snapshot.forEach((document) => { transaksiData.push({ id: document.id, ...document.data() }); });
                 transaksiData.sort((a, b) => {
-                    const dateA = a.tanggal || "1970-01-01";
-                    const dateB = b.tanggal || "1970-01-01";
+                    const dateA = a.tanggal || "1970-01-01"; const dateB = b.tanggal || "1970-01-01";
                     if (dateA !== dateB) return dateB.localeCompare(dateA);
                     return b.createdAt - a.createdAt;
                 });
@@ -1265,18 +1140,13 @@
         }
 
         formTransaksi.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            if (!currentUser) return;
+            e.preventDefault(); if (!currentUser) return;
             const btnSubmit = formTransaksi.querySelector('button[type="submit"]');
-            btnSubmit.disabled = true;
-            textSubmitForm.innerText = "Menyimpan...";
+            btnSubmit.disabled = true; textSubmitForm.innerText = "Menyimpan...";
 
             try {
                 const jumlahFloat = parseRupiahInput(inputJumlah.value);
-                if (isNaN(jumlahFloat) || jumlahFloat <= 0) {
-                    showToast("Jumlah tidak valid", 'error');
-                    throw new Error("Invalid Input");
-                }
+                if (isNaN(jumlahFloat) || jumlahFloat <= 0) { showToast("Jumlah tidak valid", 'error'); throw new Error("Invalid Input"); }
                 const dataSimpan = {
                     keterangan: inputKeterangan.value, jumlah: jumlahFloat,
                     jenis: isPengeluaran ? 'pengeluaran' : 'pemasukan',
@@ -1296,84 +1166,65 @@
             } catch (error) {
                 if(error.message !== "Invalid Input") showToast("Gagal menyimpan: " + error.message, 'error');
             } finally {
-                btnSubmit.disabled = false;
-                textSubmitForm.innerText = currentEditId ? "Update Transaksi" : "Simpan Transaksi";
+                btnSubmit.disabled = false; textSubmitForm.innerText = currentEditId ? "Update Transaksi" : "Simpan Transaksi";
             }
         });
 
         function renderUI() {
             listTransaksi.innerHTML = '';
-            if (transaksiData.length === 0) emptyState.classList.remove('hidden');
-            else emptyState.classList.add('hidden');
+            if (transaksiData.length === 0) emptyState.classList.remove('hidden'); else emptyState.classList.add('hidden');
 
             transaksiData.forEach((t) => {
-                const isItemPengeluaran = t.jenis === 'pengeluaran';
-                const li = document.createElement('li');
-                const bgClass = (currentEditId === t.id) ? 'bg-run-purple/10 border-run-purple/30' : 'bg-run-white border-run-purple/5 hover:border-run-purple/20';
+                const isItemPengeluaran = t.jenis === 'pengeluaran'; const li = document.createElement('li');
+                const bgClass = (currentEditId === t.id) ? 'bg-run-purple/10 dark:bg-white/10 border-run-purple/30 dark:border-white/20' : 'bg-run-white dark:bg-dark-card border-run-purple/5 dark:border-white/5 hover:border-run-purple/20 dark:hover:border-gray-500';
                 li.className = `${bgClass} border-2 rounded-2xl p-4 md:p-5 flex justify-between items-start transition duration-200 gap-3 md:gap-4`;
                 
-                let formattedTanggal = "";
-                if (t.tanggal) formattedTanggal = new Intl.DateTimeFormat('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }).format(new Date(t.tanggal));
+                let formattedTanggal = ""; if (t.tanggal) formattedTanggal = new Intl.DateTimeFormat('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }).format(new Date(t.tanggal));
 
                 li.innerHTML = `
                     <div class="flex items-start gap-3 md:gap-4 flex-1 min-w-0 pt-0.5">
-                        <div class="w-10 h-10 md:w-12 md:h-12 rounded-xl flex items-center justify-center shrink-0 shadow-inner ${!isItemPengeluaran ? 'bg-run-purple/10 text-run-purple' : 'bg-run-red/10 text-run-red'}">
-                            ${!isItemPengeluaran 
-                                ? '<svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>'
-                                : '<svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg>'
-                            }
+                        <div class="w-10 h-10 md:w-12 md:h-12 rounded-xl flex items-center justify-center shrink-0 shadow-inner ${!isItemPengeluaran ? 'bg-run-purple/10 dark:bg-gray-700 text-run-purple dark:text-gray-100' : 'bg-run-red/10 dark:bg-run-red/20 text-run-red dark:text-[#ff6b84]'}">
+                            ${!isItemPengeluaran ? '<svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>' : '<svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg>'}
                         </div>
                         <div class="flex-1 min-w-0">
-                            <p class="font-extrabold text-run-purple text-[15px] md:text-lg tracking-tight truncate leading-tight">${t.keterangan}</p>
-                            <p class="text-[10px] md:text-xs text-run-purple/50 font-bold truncate uppercase tracking-wider mb-1 mt-0.5">${t.kategori || t.jenis}</p>
+                            <p class="font-extrabold text-run-purple dark:text-gray-100 text-[15px] md:text-lg tracking-tight truncate leading-tight">${t.keterangan}</p>
+                            <p class="text-[10px] md:text-xs text-run-purple/50 dark:text-gray-400 font-bold truncate uppercase tracking-wider mb-1 mt-0.5">${t.kategori || t.jenis}</p>
                             <div class="flex flex-wrap items-center gap-x-1.5 md:gap-x-2 gap-y-1 mt-1">
-                                ${formattedTanggal ? `<span class="text-[11px] md:text-sm text-run-purple/60 font-semibold whitespace-nowrap">${formattedTanggal}</span>` : ''}
-                                <span class="text-[10px] text-run-purple/30 hidden md:inline">•</span>
+                                ${formattedTanggal ? `<span class="text-[11px] md:text-sm text-run-purple/60 dark:text-gray-500 font-semibold whitespace-nowrap">${formattedTanggal}</span>` : ''}
+                                <span class="text-[10px] text-run-purple/30 dark:text-gray-600 hidden md:inline">•</span>
                                 <div class="flex gap-2 items-center w-full md:w-auto mt-1 md:mt-0">
-                                    <button onclick="window.triggerEdit('${t.id}')" class="text-[11px] md:text-sm text-run-purple hover:text-run-purple/70 font-bold transition whitespace-nowrap bg-run-purple/5 md:bg-transparent px-2 md:px-0 py-1 md:py-0 rounded-md">Edit</button>
-                                    <button onclick="window.triggerDelete('${t.id}')" class="text-[11px] md:text-sm text-run-red hover:text-[#c40024] font-bold transition whitespace-nowrap bg-run-red/5 md:bg-transparent px-2 md:px-0 py-1 md:py-0 rounded-md">Hapus</button>
+                                    <button onclick="window.triggerEdit('${t.id}')" class="text-[11px] md:text-sm text-run-purple dark:text-gray-300 hover:text-run-purple/70 dark:hover:text-white font-bold transition whitespace-nowrap bg-run-purple/5 dark:bg-white/10 md:bg-transparent px-2 md:px-0 py-1 md:py-0 rounded-md">Edit</button>
+                                    <button onclick="window.triggerDelete('${t.id}')" class="text-[11px] md:text-sm text-run-red dark:text-[#ff6b84] hover:text-[#c40024] dark:hover:text-red-400 font-bold transition whitespace-nowrap bg-run-red/5 dark:bg-run-red/10 md:bg-transparent px-2 md:px-0 py-1 md:py-0 rounded-md">Hapus</button>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <span class="${!isItemPengeluaran ? 'text-run-purple' : 'text-run-red'} font-extrabold text-[15px] md:text-lg whitespace-nowrap shrink-0 text-right pt-0.5">
+                    <span class="${!isItemPengeluaran ? 'text-run-purple dark:text-white' : 'text-run-red dark:text-[#ff6b84]'} font-extrabold text-[15px] md:text-lg whitespace-nowrap shrink-0 text-right pt-0.5">
                         ${!isItemPengeluaran ? '+' : '-'}${formatRp(t.jumlah)}
                     </span>
                 `;
                 listTransaksi.appendChild(li);
             });
-            
-            // Perbarui Global Dashboard (Menggantikan Kalkulasi Saldo Lama)
             updateDashboardUI();
         }
 
         window.triggerEdit = (id) => {
             const dataToEdit = transaksiData.find(t => t.id === id);
             if (!dataToEdit) return;
-            currentEditId = id;
-            setModeTransaksi(dataToEdit.jenis === 'pengeluaran');
-            inputKeterangan.value = dataToEdit.keterangan;
-            inputJumlah.value = formatNumberForInput(dataToEdit.jumlah);
-            inputTanggal.value = dataToEdit.tanggal;
-            inputKategori.value = dataToEdit.kategori || ""; 
-            formTitle.innerText = "Edit Transaksi";
-            textSubmitForm.innerText = "Update Transaksi";
-            btnCancelEdit.classList.remove('hidden');
-            formTransaksi.classList.add('ring-4', 'ring-run-purple/20');
-            formTransaksi.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            renderUI(); 
+            currentEditId = id; setModeTransaksi(dataToEdit.jenis === 'pengeluaran');
+            inputKeterangan.value = dataToEdit.keterangan; inputJumlah.value = formatNumberForInput(dataToEdit.jumlah);
+            inputTanggal.value = dataToEdit.tanggal; inputKategori.value = dataToEdit.kategori || ""; 
+            formTitle.innerText = "Edit Transaksi"; textSubmitForm.innerText = "Update Transaksi";
+            btnCancelEdit.classList.remove('hidden'); formTransaksi.classList.add('ring-4', 'ring-run-purple/20', 'dark:ring-white/10');
+            formTransaksi.scrollIntoView({ behavior: 'smooth', block: 'center' }); renderUI(); 
         };
 
-        window.triggerDelete = (id) => {
-            idToDelete = id;
-            modalConfirm.classList.remove('hidden');
-        };
+        window.triggerDelete = (id) => { idToDelete = id; modalConfirm.classList.remove('hidden'); };
         document.getElementById('btn-cancel-delete').addEventListener('click', () => { idToDelete = null; modalConfirm.classList.add('hidden'); });
         document.getElementById('btn-confirm-delete').addEventListener('click', async () => {
             if (!currentUser || !idToDelete) return;
             const btnConfirm = document.getElementById('btn-confirm-delete');
-            btnConfirm.innerText = "Menghapus...";
-            btnConfirm.disabled = true;
+            btnConfirm.innerText = "Menghapus..."; btnConfirm.disabled = true;
             try {
                 await deleteDoc(doc(db, 'users', currentUser.uid, 'transaksi', idToDelete));
                 if (currentEditId === idToDelete) resetFormState();
