@@ -81,7 +81,8 @@
     <!-- Loading Screen -->
     <div id="loading-screen" class="fixed inset-0 bg-run-white dark:bg-dark-bg z-50 flex flex-col items-center justify-center transition-colors duration-300">
         <div class="animate-spin rounded-full h-12 w-12 border-b-4 border-run-red mb-6"></div>
-        <img src="finance_logo.png" alt="AlfReddd Finance" class="h-10 md:h-12 w-auto object-contain">
+        <img src="finance_logo.png" alt="AlfReddd Finance" class="h-14 md:h-16 w-auto object-contain block dark:hidden">
+        <img src="finance_logo_putih.png" alt="AlfReddd Finance" class="h-14 md:h-16 w-auto object-contain hidden dark:block">
     </div>
 
     <!-- Halaman Login -->
@@ -89,7 +90,8 @@
         <div class="bg-run-white dark:bg-dark-card rounded-2xl shadow-xl p-8 text-center border border-run-purple/10 dark:border-white/10 relative overflow-hidden transition-colors duration-300">
             <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-run-purple to-run-red"></div>
             <div class="w-24 h-24 flex items-center justify-center mx-auto mb-4">
-                <img src="logo.png" alt="Logo" class="w-full h-full object-contain drop-shadow-md" onerror="this.style.display='none'">
+                <img src="logo.png" alt="Logo" class="w-full h-full object-contain drop-shadow-md block dark:hidden" onerror="this.style.display='none'">
+                <img src="logo_putih.png" alt="Logo" class="w-full h-full object-contain drop-shadow-md hidden dark:block" onerror="this.style.display='none'">
             </div>
             <h1 class="text-4xl font-extrabold mb-2 text-run-purple tracking-tight font-montserrat">Alf<span class="text-run-red">Reddd</span></h1>
             <p class="text-run-purple/60 dark:text-gray-400 mb-8 text-sm font-medium">Masuk untuk mulai mencatat keuangan harian Anda secara aman di Cloud.</p>
@@ -118,8 +120,9 @@
         <aside id="sidebar" class="fixed md:relative inset-y-0 left-0 z-50 w-64 bg-run-white dark:bg-dark-card border-r border-run-purple/10 dark:border-white/5 transform -translate-x-full md:translate-x-0 transition-transform duration-300 flex flex-col shadow-2xl md:shadow-none transition-colors duration-300">
             <!-- Header Sidebar -->
             <div class="h-20 flex items-center justify-between px-6 border-b border-run-purple/10 dark:border-white/5">
-                <img src="finance_logo.png" alt="AlfReddd Finance" class="h-10 md:h-14 w-auto object-contain">
-                <button id="btn-close-sidebar" class="md:hidden text-run-purple/60 dark:text-gray-400 hover:text-run-red p-2 rounded-lg">
+                <img src="finance_logo.png" alt="AlfReddd Finance" class="h-10 md:h-12 w-full max-w-[160px] object-contain object-left block dark:hidden">
+                <img src="finance_logo_putih.png" alt="AlfReddd Finance" class="h-10 md:h-12 w-full max-w-[160px] object-contain object-left hidden dark:block">
+                <button id="btn-close-sidebar" class="md:hidden text-run-purple/60 dark:text-gray-400 hover:text-run-red p-2 -mr-2 rounded-lg shrink-0">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                 </button>
             </div>
@@ -174,11 +177,14 @@
             
             <!-- Mobile Header -->
             <header class="md:hidden flex items-center justify-between h-20 px-6 bg-run-white dark:bg-dark-card border-b border-run-purple/10 dark:border-white/5 z-30 shrink-0 transition-colors duration-300">
-                <button id="btn-open-sidebar" class="text-run-purple dark:text-gray-300 hover:text-run-red p-2 -ml-2 rounded-lg transition">
+                <button id="btn-open-sidebar" class="text-run-purple dark:text-gray-300 hover:text-run-red p-2 -ml-2 rounded-lg transition shrink-0">
                     <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16M4 18h16"></path></svg>
                 </button>
-                <img src="finance_logo.png" alt="AlfReddd Finance" class="h-9 w-auto object-contain">
-                <div class="w-8"></div>
+                <div class="flex-1 flex justify-center px-4">
+                    <img src="finance_logo.png" alt="AlfReddd Finance" class="h-11 w-full max-w-[160px] object-contain block dark:hidden">
+                    <img src="finance_logo_putih.png" alt="AlfReddd Finance" class="h-11 w-full max-w-[160px] object-contain hidden dark:block">
+                </div>
+                <div class="w-8 shrink-0"></div>
             </header>
 
             <!-- Area Scroll Konten -->
@@ -887,13 +893,22 @@
                 if (globalPlanData.isLimpahanAktif) limpahan = hitungLimpahan(totalIncome, globalPlanData.realisasi || {});
             }
             
-            const totalBudget = baseExpense + limpahan;
             let terpakai = 0;
+            let tambahanPemasukan = 0;
+            
             transaksiData.forEach(t => {
-                if (t.jenis === 'pengeluaran' && t.tanggal && t.tanggal.startsWith(currentMonthGlobal)) terpakai += t.jumlah;
+                if (t.tanggal && t.tanggal.startsWith(currentMonthGlobal)) {
+                    if (t.jenis === 'pengeluaran') {
+                        terpakai += t.jumlah;
+                    } else if (t.jenis === 'pemasukan') {
+                        tambahanPemasukan += t.jumlah;
+                    }
+                }
             });
             
+            const totalBudget = baseExpense + limpahan + tambahanPemasukan;
             const sisa = totalBudget - terpakai;
+            
             const elSaldo = document.getElementById('saldo-total');
             const elBudget = document.getElementById('budget-tersedia');
             const elTerpakai = document.getElementById('budget-terpakai');
